@@ -38,7 +38,7 @@ pros::Motor LEFTLIFT(LEFTLIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTO
 pros::Motor CHASSISEXTENSION(CHASSISPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor INTAKE(HOOKPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::ADIEncoder sideEnc('G', 'H');
-        
+
 auto liftController = AsyncControllerFactory::posPID({-RIGHTLIFTPORT, LEFTLIFTPORT}, 0.001, 0.0, 0.0001);
 auto filpController = AsyncControllerFactory::posPID(CHASSISPORT, 0.001, 0.0, 0.0001);
 auto intakeController = AsyncControllerFactory::posPID(HOOKPORT, 0.001, 0.0, 0.0001);
@@ -70,8 +70,9 @@ void competition_initialize() {}
 
 void autonomous() {
 	goTo(0, 10);
+  liftController.setTarget(200);
 	rotate(180, 127);
-	goTo(0,0);
+  goTo(0, 5);
 }
 void opcontrol() {
 	 // pros::lcd::initialize();
