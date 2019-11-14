@@ -66,7 +66,14 @@ extern "C" {
 extern pros::Controller controller;
 extern pros::Motor LD;
 extern pros::Motor RD;
+extern pros::Motor LD2;
+extern pros::Motor RD2;
+extern pros::Motor RIGHTLIFT;
+extern pros::Motor LEFTLIFT;
+extern pros::Motor CHASSISEXTENSION;
+extern pros::Motor INTAKE;
 extern pros::ADIEncoder sideEnc;
+extern pros::ADIGyro gyro;
 
 void autonomous(void);
 void initialize(void);
