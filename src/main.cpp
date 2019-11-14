@@ -165,8 +165,8 @@ void setDrive(int left, int right){
 	LD2 = left;
 	RD = right;
 	RD2 = right;
-} 
-
+}
+ 
 void rotate(int degrees, int voltage){
 	int direction = abs(degrees) / degrees;
 	gyro.reset();
