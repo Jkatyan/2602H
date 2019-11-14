@@ -4,7 +4,7 @@
 
 pros::ADIGyro gyro ('b', 1);
 
-const int LDPORT = 1; //Make these negative to rev port
+const int LDPORT = 1;
 const int LD2PORT = 2;
 const int RDPORT = 3;
 const int RD2PORT = 4;
