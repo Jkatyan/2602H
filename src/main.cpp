@@ -13,7 +13,7 @@ const int RIGHTLIFTPORT = 5;
 const int LEFTLIFTPORT = 8;
 const int CHASSISPORT = 6;
 const int HOOKPORT = 7;
-        
+
 const int RC = 1; //Chassis Speed Correction
 const int LC = 1;
 
@@ -39,6 +39,15 @@ pros::Motor CHASSISEXTENSION(CHASSISPORT, pros::E_MOTOR_GEARSET_36, false, pros:
 pros::Motor INTAKE(HOOKPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::ADIEncoder sideEnc('G', 'H');
 
+auto liftController = AsyncControllerFactory::posPID({-RIGHTLIFTPORT, LEFTLIFTPORT}, 0.001, 0.0, 0.0001);
+auto filpController = AsyncControllerFactory::posPID(CHASSISPORT, 0.001, 0.0, 0.0001);
+auto intakeController = AsyncControllerFactory::posPID(HOOKPORT, 0.001, 0.0, 0.0001);
+
+/*
+  liftController.setTarget(200); // Move 200 motor degrees upward
+  liftController.waitUntilSettled(); //Wait until lift settled
+*/
+
 void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
@@ -60,11 +69,9 @@ void disabled() {}
 void competition_initialize() {}
 
 void autonomous() {
-
 	goTo(0, 10);
 	rotate(180, 127);
 	goTo(0,0);
-
 }
 void opcontrol() {
 	 // pros::lcd::initialize();
