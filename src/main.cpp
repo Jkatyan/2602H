@@ -13,7 +13,7 @@ const int RIGHTLIFTPORT = 5;
 const int LEFTLIFTPORT = 8;
 const int CHASSISPORT = 6;
 const int HOOKPORT = 7;
-
+        
 const int RC = 1; //Chassis Speed Correction
 const int LC = 1;
 
@@ -166,7 +166,7 @@ void setDrive(int left, int right){
 	RD = right;
 	RD2 = right;
 }
- 
+
 void rotate(int degrees, int voltage){
 	int direction = abs(degrees) / degrees;
 	gyro.reset();
