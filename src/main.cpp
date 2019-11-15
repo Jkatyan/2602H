@@ -95,7 +95,7 @@ void opcontrol() {
 		pros::lcd::print(0, "X: %f", getX());
 		pros::lcd::print(1, "Y: %f", getY());
 		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
-
+		
 		pros::lcd::print(4, "Side Encoder: %d", sideEnc.get_value());
 		pros::lcd::print(5, "Left Encoder: %f", LD.get_position());
 		pros::lcd::print(6, "Right Encoder: %f", RD.get_position());
