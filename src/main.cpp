@@ -62,6 +62,10 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 	pros::lcd::register_btn1_cb(on_center_button);
+	LEFTLIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
+	RIGHTLIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
+	CHASSISEXTENSION.set_brake_mode(MOTOR_BRAKE_HOLD);
+	INTAKE.set_brake_mode(MOTOR_BRAKE_HOLD);
 	pros::ADIGyro gyro ('b', 1);
 	pros::delay(2000);
 }
@@ -75,8 +79,7 @@ void autonomous() {
   goTo(0, 5);
 }
 void opcontrol() {
-	 // pros::lcd::initialize();
-	 // pros::lcd::set_text(1, "Hello World");
+
 	drivePID = pidInit (7, 0, 0, 0, 100.0,5,15);
 	turnPID = pidInit(40, 0, 0, 0, 100.0,5,15);
 	lastSlewTime = pros::millis();
@@ -95,7 +98,7 @@ void opcontrol() {
 		pros::lcd::print(0, "X: %f", getX());
 		pros::lcd::print(1, "Y: %f", getY());
 		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
-		
+
 		pros::lcd::print(4, "Side Encoder: %d", sideEnc.get_value());
 		pros::lcd::print(5, "Left Encoder: %f", LD.get_position());
 		pros::lcd::print(6, "Right Encoder: %f", RD.get_position());
