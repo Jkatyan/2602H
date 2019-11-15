@@ -4,6 +4,8 @@
 
 pros::ADIGyro gyro ('b', 1);
 pros::ADIEncoder sideEnc('G', 'H');
+pros::ADIEncoder leftEnc('G', 'H');
+pros::ADIEncoder rightEnc('G', 'H');
 
 const int LDPORT = 1;
 const int LD2PORT = 2;

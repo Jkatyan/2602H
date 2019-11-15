@@ -91,8 +91,8 @@ float theta = 0;
 float radius = 0;
 
 void updatePosition() {
-  curLeft = LD.get_position();
-  curRight = RD.get_position();
+  curLeft = leftEnc.get_value();
+  curRight = rightEnc.get_value();
   curSide = sideEnc.get_value();
 
   deltaLeft = (curLeft - lastLeftPos)*(M_PI/180)*(wheelDiameter/2);

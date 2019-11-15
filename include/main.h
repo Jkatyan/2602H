@@ -73,6 +73,8 @@ extern pros::Motor LEFTLIFT;
 extern pros::Motor CHASSISEXTENSION;
 extern pros::Motor INTAKE;
 extern pros::ADIEncoder sideEnc;
+extern pros::ADIEncoder rightEnc;
+extern pros::ADIEncoder leftEnc;
 extern pros::ADIGyro gyro;
 
 void autonomous(void);
