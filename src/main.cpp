@@ -3,6 +3,7 @@
 #include "PID.hpp"
 
 pros::ADIGyro gyro ('b', 1);
+pros::ADIEncoder sideEnc('G', 'H');
 
 const int LDPORT = 1;
 const int LD2PORT = 2;
@@ -37,7 +38,6 @@ pros::Motor RIGHTLIFT(RIGHTLIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MO
 pros::Motor LEFTLIFT(LEFTLIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor CHASSISEXTENSION(CHASSISPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor INTAKE(HOOKPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::ADIEncoder sideEnc('G', 'H');
 
 auto liftController = AsyncControllerFactory::posPID({-RIGHTLIFTPORT, LEFTLIFTPORT}, 0.001, 0.0, 0.0001);
 auto filpController = AsyncControllerFactory::posPID(CHASSISPORT, 0.001, 0.0, 0.0001);

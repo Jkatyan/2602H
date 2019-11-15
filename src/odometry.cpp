@@ -3,6 +3,8 @@
 
 #include "odometry.hpp"
 
+pros::ADIEncoder sideEnc('G', 'H');
+
 /* PILONS Code:
 void trackPosition(int left, int right, int back, sPos& position)
 {
