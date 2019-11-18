@@ -77,12 +77,15 @@ void competition_initialize() {}
   liftController.waitUntilSettled(); //Wait until lift settled
 */
 
+/* Auton Functions
+	goTo - Param: X,Y coordinates of target point. Ex. goTo(1,4);
+	rotate - Param: Degrees, Voltage. Ex. rotate(90,127);
+*/
+
 void autonomous() {
-	goTo(0, 10);
-  liftController.setTarget(200);
-	rotate(180, 127);
-  goTo(0, 5);
+	
 }
+
 void opcontrol() {
 
 	drivePID = pidInit (7, 0, 0, 0, 100.0,5,15);
