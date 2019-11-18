@@ -2,11 +2,6 @@
 #include "odometry.hpp"
 #include "PID.hpp"
 
-pros::ADIGyro gyro ('b', 1);
-pros::ADIEncoder sideEnc('G', 'H');
-pros::ADIEncoder leftEnc('G', 'H');
-pros::ADIEncoder rightEnc('G', 'H');
-
 const int LDPORT = 1;
 const int LD2PORT = 2;
 const int RDPORT = 3;
@@ -17,8 +12,16 @@ const int LEFTLIFTPORT = 8;
 const int CHASSISPORT = 6;
 const int HOOKPORT = 7;
 
-const int RC = 1; //Chassis Speed Correction
-const int LC = 1;
+const double RC = 1; //Chassis Speed Correction
+const double LC = 1;
+
+const char GYROPORT = 'b';
+const double GC = 1; //Gyro Correction
+
+pros::ADIGyro gyro (GYROPORT, GC);
+pros::ADIEncoder sideEnc('G', 'H');
+pros::ADIEncoder leftEnc('G', 'H');
+pros::ADIEncoder rightEnc('G', 'H');
 
 PID drivePID;
 PID turnPID;
@@ -45,11 +48,6 @@ auto liftController = AsyncControllerFactory::posPID({-RIGHTLIFTPORT, LEFTLIFTPO
 auto filpController = AsyncControllerFactory::posPID(CHASSISPORT, 0.001, 0.0, 0.0001);
 auto intakeController = AsyncControllerFactory::posPID(HOOKPORT, 0.001, 0.0, 0.0001);
 
-/*
-  liftController.setTarget(200); // Move 200 motor degrees upward
-  liftController.waitUntilSettled(); //Wait until lift settled
-*/
-
 void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
@@ -68,11 +66,16 @@ void initialize() {
 	RIGHTLIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
 	CHASSISEXTENSION.set_brake_mode(MOTOR_BRAKE_HOLD);
 	INTAKE.set_brake_mode(MOTOR_BRAKE_HOLD);
-	pros::ADIGyro gyro ('b', 1);
+	pros::ADIGyro gyro (GYROPORT, GC);
 	pros::delay(2000);
 }
 void disabled() {}
 void competition_initialize() {}
+
+/* How to use Okapi
+  liftController.setTarget(200); // Move 200 motor degrees upward
+  liftController.waitUntilSettled(); //Wait until lift settled
+*/
 
 void autonomous() {
 	goTo(0, 10);
@@ -92,9 +95,6 @@ void opcontrol() {
 		RD.move(RC*(controller.get_analog(ANALOG_RIGHT_Y)));
 		RD2.move(RC*(controller.get_analog(ANALOG_RIGHT_Y)));
 
-		/*if (controller.get_digital_new_press(DIGITAL_X)) {
-			moveToPoint(0, 0);
-		}*/
 		updatePosition();
 
 		pros::lcd::print(0, "X: %f", getX());
@@ -102,8 +102,8 @@ void opcontrol() {
 		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
 
 		pros::lcd::print(4, "Side Encoder: %d", sideEnc.get_value());
-		pros::lcd::print(5, "Left Encoder: %f", LD.get_position());
-		pros::lcd::print(6, "Right Encoder: %f", RD.get_position());
+		pros::lcd::print(5, "Left Encoder: %f", leftEnc.get_value());
+		pros::lcd::print(6, "Right Encoder: %f", rightEnc.get_value());
 
 		pros::delay(10);
 	}
