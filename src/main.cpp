@@ -82,9 +82,7 @@ void competition_initialize() {}
 	rotate - Param: Degrees, Voltage. Ex. rotate(90,127);
 */
 
-void autonomous() {
-	//Fuck you shishir
-}
+void autonomous() {}
 
 void opcontrol() {
 
