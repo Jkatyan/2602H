@@ -83,7 +83,7 @@ void competition_initialize() {}
 */
 
 void autonomous() {
-	
+	//Fuck you shishir
 }
 
 void opcontrol() {
