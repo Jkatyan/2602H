@@ -16,7 +16,7 @@ const double RC = 1; //Chassis Speed Correction
 const double LC = 1;
 
 const char GYROPORT = 'c';
-const double GC = 1; //Gyro Correction
+const double GC = 0.95; //Gyro Correction
 
 pros::ADIGyro gyro (GYROPORT, GC);
 pros::ADIEncoder sideEnc('G', 'H', true);
@@ -72,6 +72,7 @@ void initialize() {
 	sideEnc.reset();
 	leftEnc.reset();
 	rightEnc.reset();
+	gyro.reset();
 }
 void disabled() {}
 void competition_initialize() {}
@@ -107,7 +108,7 @@ void opcontrol() {
 		pros::lcd::print(0, "X: %f", getX());
 		pros::lcd::print(1, "Y: %f", getY());
 		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
-
+		pros::lcd::print(3, "Gyro Angle: %f", (gyro.get_value()/10.0000));
 		pros::lcd::print(4, "Right Encoder: %d", rightEnc.get_value());
 		pros::lcd::print(6, "Side Encoder: %d", sideEnc.get_value());
 		pros::lcd::print(5, "Left Encoder: %d", leftEnc.get_value());

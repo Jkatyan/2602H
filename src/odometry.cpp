@@ -55,9 +55,9 @@ void trackPosition(int left, int right, int back, sPos& position)
 }
 */
 
-float Sl = 4.6875; //distance from tracking center to middle of left wheel
-float Sr = 5.125; //distance from tracking center to middle of right wheel
-float Ss = 3.375; //distance from tracking center to middle of the tracking wheel
+float Sl = 6.625; //distance from tracking center to middle of left wheel
+float Sr = 6.594; //distance from tracking center to middle of right wheel
+float Ss = 4.344; //distance from tracking center to middle of the tracking wheel
 float wheelDiameter = 3.25; //diameter of the side wheels being used for tracking
 float trackingDiameter = 3.25; //diameter of the sideways tracking wheel
 
