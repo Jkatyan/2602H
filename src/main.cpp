@@ -2,10 +2,10 @@
 #include "odometry.hpp"
 #include "PID.hpp"
 
-const int LDPORT = 1;
-const int LD2PORT = 2;
-const int RDPORT = 3;
-const int RD2PORT = 4;
+const int LDPORT = 9;
+const int LD2PORT = 20;
+const int RDPORT = 10;
+const int RD2PORT = 19;
 
 const int RIGHTLIFTPORT = 5;
 const int LEFTLIFTPORT = 8;
@@ -15,13 +15,13 @@ const int HOOKPORT = 7;
 const double RC = 1; //Chassis Speed Correction
 const double LC = 1;
 
-const char GYROPORT = 'b';
+const char GYROPORT = 'c';
 const double GC = 1; //Gyro Correction
 
 pros::ADIGyro gyro (GYROPORT, GC);
-pros::ADIEncoder sideEnc('G', 'H');
-pros::ADIEncoder leftEnc('G', 'H');
-pros::ADIEncoder rightEnc('G', 'H');
+pros::ADIEncoder sideEnc('F', 'G');
+pros::ADIEncoder leftEnc('D', 'E');
+pros::ADIEncoder rightEnc('A', 'B');
 
 PID drivePID;
 PID turnPID;
@@ -82,9 +82,10 @@ void competition_initialize() {}
 	rotate - Param: Degrees, Voltage. Ex. rotate(90,127);
 */
 
-void autonomous() {}
-
-
+void autonomous() {
+goTo(0,-3);
+pros::delay(19000000);
+}
 void opcontrol() {
 
 	drivePID = pidInit (7, 0, 0, 0, 100.0,5,15);
