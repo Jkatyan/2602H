@@ -88,13 +88,14 @@ void competition_initialize() {}
 */
 
 void autonomous() {
-goTo(0,-3);
+	drivePID = pidInit (7, 0, 0, 0, 100.0,5,15);
+	turnPID = pidInit(40, 0, 0, 0, 100.0,5,15);
+	lastSlewTime = pros::millis();
+goTo(0,20);
 pros::delay(19000000);
 }
 void opcontrol() {
 
-	drivePID = pidInit (7, 0, 0, 0, 100.0,5,15);
-	turnPID = pidInit(40, 0, 0, 0, 100.0,5,15);
 	lastSlewTime = pros::millis();
 
 	while (true) {
