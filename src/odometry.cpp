@@ -3,6 +3,10 @@
 
 #include "odometry.hpp"
 
+pros::ADIEncoder sideEncOdom('G', 'H', true);
+pros::ADIEncoder leftEncOdom('F', 'E');
+pros::ADIEncoder rightEncOdom('A', 'B', true);
+
 /* PILONS Code:
 void trackPosition(int left, int right, int back, sPos& position)
 {
@@ -51,15 +55,15 @@ void trackPosition(int left, int right, int back, sPos& position)
 }
 */
 
-float Sl = 5.125; //distance from tracking center to middle of left wheel
+float Sl = 4.6875; //distance from tracking center to middle of left wheel
 float Sr = 5.125; //distance from tracking center to middle of right wheel
-float Ss = 7.75; //distance from tracking center to middle of the tracking wheel
-float wheelDiameter = 4.125; //diameter of the side wheels being used for tracking
-float trackingDiameter = 4.125; //diameter of the sideways tracking wheel
+float Ss = 3.375; //distance from tracking center to middle of the tracking wheel
+float wheelDiameter = 3.25; //diameter of the side wheels being used for tracking
+float trackingDiameter = 3.25; //diameter of the sideways tracking wheel
 
 float x = 0;
 float y = 0;
-float angle = 0;
+float angle = 0;;
 
 float lastLeftPos = 0;
 float lastRightPos = 0;
@@ -91,41 +95,63 @@ float theta = 0;
 float radius = 0;
 
 void updatePosition() {
-  curLeft = leftEnc.get_value();
-  curRight = rightEnc.get_value();
-  curSide = sideEnc.get_value();
+  curLeft = leftEncOdom.get_value();
+  curRight = rightEncOdom.get_value(); //step 1
+  curSide = sideEncOdom.get_value();
 
   deltaLeft = (curLeft - lastLeftPos)*(M_PI/180)*(wheelDiameter/2);
-  deltaRight = (curRight - lastRightPos)*(M_PI/180)*(wheelDiameter/2);
+  deltaRight = (curRight - lastRightPos)*(M_PI/180)*(wheelDiameter/2); //step 2
   deltaSide = (curSide - lastSidePos)*(M_PI/180)*(trackingDiameter/2);
 
   lastLeftPos = curLeft;
-  lastRightPos = curRight;
+  lastRightPos = curRight; //step 3
   lastSidePos = curSide;
 
-  deltaLr = (curLeft - leftAtReset)*(M_PI/180)*(wheelDiameter/2);
+  deltaLr = (curLeft - leftAtReset)*(M_PI/180)*(wheelDiameter/2); //step 4
   deltaRr = (curRight - rightAtReset)*(M_PI/180)*(wheelDiameter/2);
 
-  thetaNew = (thetaReset + (deltaLr - deltaRr)/(Sl + Sr));
+  thetaNew = (thetaReset + (deltaLr - deltaRr)/(Sl + Sr)); //step 5
+  // if (thetaNew >= M_PI) {
+  //   thetaNew-=2*M_PI;
+  // }
+  // else if (thetaNew <= -M_PI) {
+  //   thetaNew+=2*M_PI;
+  // }
 
-  deltaTheta = thetaNew - angle;
+
+
+  deltaTheta = thetaNew - angle; //step 6
 
   deltaSide = deltaSide-Ss*deltaTheta;
 
   if (deltaTheta == 0) {
-    deltaX = deltaSide;
+    deltaX = deltaSide; //step 7
     deltaY = deltaRight;
   }
   else {
-    deltaX = (2*sin(deltaTheta/2))*(deltaSide/deltaTheta + Ss);
+    deltaX = (2*sin(deltaTheta/2))*(deltaSide/deltaTheta + Ss); //step 8
     deltaY = (2*sin(deltaTheta/2))*(deltaRight/deltaTheta +Sr);
   }
 
-  thetaM = angle + deltaTheta/2;
+  thetaM = angle + deltaTheta/2; //step 9
 
+  // if (deltaX == 0) {
+  //   if (deltaY > 0) {
+  //     theta = M_PI/2;
+  //   }
+  //   else if (deltaY < 0) {
+  //     theta = 3*M_PI/2;
+  //   }
+  //   else {
+  //     theta = 0;
+  //   }
+  // }
+  // else {
+  //   theta = atan(deltaY/deltaX);
+  // }
   theta = atan2f(deltaY, deltaX);
   radius = sqrt(deltaX*deltaX + deltaY*deltaY);
-  theta = theta-thetaM;
+  theta = theta-thetaM;                          //step 10
   deltaX = radius*cos(theta);
   deltaY = radius*sin(theta);
 
@@ -137,7 +163,7 @@ void updatePosition() {
   thetaNew-=M_PI;
 
   angle = thetaNew;
-  x = x - deltaX;
+  x = x - deltaX; //step 11
   y = y + deltaY;
 }
 

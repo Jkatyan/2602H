@@ -19,9 +19,9 @@ const char GYROPORT = 'c';
 const double GC = 1; //Gyro Correction
 
 pros::ADIGyro gyro (GYROPORT, GC);
-pros::ADIEncoder sideEnc('F', 'G');
-pros::ADIEncoder leftEnc('D', 'E');
-pros::ADIEncoder rightEnc('A', 'B');
+pros::ADIEncoder sideEnc('G', 'H', true);
+pros::ADIEncoder leftEnc('F', 'E');
+pros::ADIEncoder rightEnc('A', 'B', true);
 
 PID drivePID;
 PID turnPID;
@@ -34,9 +34,10 @@ void goTo(float targetX, float targetY);
 void setDrive(int left, int right);
 void rotate(int degrees, int voltage);
 float slewRateCalculate(float desiredRate);
+
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
-pros::Motor LD(LDPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor LD2(LD2PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor LD(LDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor LD2(LD2PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor RD(RDPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor RD2(RD2PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor RIGHTLIFT(RIGHTLIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -68,6 +69,9 @@ void initialize() {
 	INTAKE.set_brake_mode(MOTOR_BRAKE_HOLD);
 	pros::ADIGyro gyro (GYROPORT, GC);
 	pros::delay(2000);
+	sideEnc.reset();
+	leftEnc.reset();
+	rightEnc.reset();
 }
 void disabled() {}
 void competition_initialize() {}
@@ -104,11 +108,11 @@ void opcontrol() {
 		pros::lcd::print(1, "Y: %f", getY());
 		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
 
-		pros::lcd::print(4, "Side Encoder: %d", sideEnc.get_value());
-		pros::lcd::print(5, "Left Encoder: %f", leftEnc.get_value());
-		pros::lcd::print(6, "Right Encoder: %f", rightEnc.get_value());
+		pros::lcd::print(4, "Right Encoder: %d", rightEnc.get_value());
+		pros::lcd::print(6, "Side Encoder: %d", sideEnc.get_value());
+		pros::lcd::print(5, "Left Encoder: %d", leftEnc.get_value());
 
-		pros::delay(10);
+		pros::delay(20);
 	}
 }
 
@@ -136,7 +140,7 @@ void goTo(float targetX, float targetY) {
 		turnPower = ((fabs(targetAngle-getAngle())>M_PI)? -1: 1)*pidCalculate(turnPID, targetAngle, getAngle());
 
 		LD.move((power + turnPower)*LC);
-		RD.move((power - turnPower)*RC);
+    RD.move((power - turnPower)*RC);
 		LD2.move((power + turnPower)*LC);
 		RD2.move((power - turnPower)*RC);
 
