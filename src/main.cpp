@@ -114,9 +114,7 @@ goTo(0,20);
 for(;;){pros::delay(20);} //Forever Loop
 }
 void opcontrol() {
-
-	lastSlewTime = pros::millis();
-
+	
 	while (true) {
 		LD.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
 		LD2.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
