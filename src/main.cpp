@@ -34,6 +34,7 @@ void goTo(float targetX, float targetY);
 void setDrive(int left, int right);
 void rotate(int degrees, int voltage);
 float slewRateCalculate(float desiredRate);
+void driveTarget(int target, int time, float speed, bool slew);
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Motor LD(LDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
@@ -125,7 +126,7 @@ void goTo(float targetX, float targetY) {
 	float power =0;
 	float turnPower =0;
 	lastSlewTime = pros::millis();
- 
+
 	while (!atPoint) {
 		updatePosition();
 
@@ -211,4 +212,34 @@ void rotate(int degrees, int voltage){
 		}
 	}
 	setDrive(0,0);
+}
+
+void driveTarget(int target, int time, float speed, bool slew){
+  int atTarget = 0;
+  int driveEnc = 0;
+  int distance = 0;
+  int startTime = pros::millis();
+
+    while ((atTarget != 1) && (pros::millis()-startTime) < time) {
+    driveEnc = ((abs(leftEnc.get_value()))+(abs(rightEnc.get_value())))/2;
+    distance = target - driveEnc;
+
+		pros::lcd::print(1, "Drive Encoder Value: %f", driveEnc);
+		pros::lcd::print(2, "Distance from Target: %f", distance);
+
+    float val = pidCalculate(drivePID, target, driveEnc)*speed;
+    val = (slew)? slewRateCalculate(val): val;
+    int rightVal = val;
+    int leftVal = val;
+
+    RD.move(RC*rightVal*speed);
+    RD2.move(RC*rightVal*speed);
+    LD.move(LC*leftVal*speed);
+    LD2.move(LC*leftVal*speed);
+    if(driveEnc == target){
+       atTarget = 1;
+       pros::lcd::print(2, "Distance from Target: %f", distance);
+      }
+      pros::delay(20);
+    }
 }
