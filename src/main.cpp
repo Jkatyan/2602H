@@ -34,7 +34,7 @@ void goTo(float targetX, float targetY);
 void setDrive(int left, int right);
 void rotate(int degrees, int voltage);
 float slewRateCalculate(float desiredRate);
-void driveTarget(int target, int time, float speed, bool slew);
+void driveTarget(int target, int time, float speed);
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Motor LD(LDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
@@ -84,6 +84,7 @@ void competition_initialize() {}
 */
 
 /* Auton Functions
+	driveTarget - Param: Target (Encoder Counts), Time Allowed (MS), Speed (0-1). Ex. driveTarget(1000, 2500, 1);
 	goTo - Param: X,Y coordinates of target point. Ex. goTo(1,4);
 	rotate - Param: Degrees, Voltage. Ex. rotate(90,127);
 */
@@ -214,7 +215,7 @@ void rotate(int degrees, int voltage){
 	setDrive(0,0);
 }
 
-void driveTarget(int target, int time, float speed, bool slew){
+void driveTarget(int target, int time, float speed){
   int atTarget = 0;
   int driveEnc = 0;
   int distance = 0;
@@ -228,14 +229,14 @@ void driveTarget(int target, int time, float speed, bool slew){
 		pros::lcd::print(2, "Distance from Target: %f", distance);
 
     float val = pidCalculate(drivePID, target, driveEnc)*speed;
-    val = (slew)? slewRateCalculate(val): val;
+    val = slewRateCalculate(val);
     int rightVal = val;
     int leftVal = val;
 
-    RD.move(RC*rightVal*speed);
-    RD2.move(RC*rightVal*speed);
-    LD.move(LC*leftVal*speed);
-    LD2.move(LC*leftVal*speed);
+    RD.move(RC*rightVal);
+    RD2.move(RC*rightVal);
+    LD.move(LC*leftVal);
+    LD2.move(LC*leftVal);
     if(driveEnc == target){
        atTarget = 1;
        pros::lcd::print(2, "Distance from Target: %f", distance);
