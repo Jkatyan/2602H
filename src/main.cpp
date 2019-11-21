@@ -2,20 +2,28 @@
 #include "odometry.hpp"
 #include "PID.hpp"
 
+//Motor Ports
 const int LDPORT = 9;
 const int LD2PORT = 20;
 const int RDPORT = 10;
 const int RD2PORT = 19;
-
 const int RIGHTLIFTPORT = 5;
 const int LEFTLIFTPORT = 8;
 const int CHASSISPORT = 6;
 const int HOOKPORT = 7;
+const char GYROPORT = 'c';
 
+//PID Tuning
+const float DRIVEP = 7;
+const float DRIVEI = 0;
+const float DRIVED = 0;
+const float TURNP = 40;
+const float TURNI = 0;
+const float TURND = 0;
+
+//Correction Constants
 const double RC = 1; //Chassis Speed Correction
 const double LC = 1;
-
-const char GYROPORT = 'c';
 const double GC = 0.95; //Gyro Correction
 
 pros::ADIGyro gyro (GYROPORT, GC);
@@ -78,24 +86,24 @@ void initialize() {
 void disabled() {}
 void competition_initialize() {}
 
-/* How to use Okapi
+/*
+How to use Okapi
   liftController.setTarget(200); // Move 200 motor degrees upward
   liftController.waitUntilSettled(); //Wait until lift settled
-*/
 
-/* Auton Functions
+Auton Functions
 	driveTarget - Param: Target (Encoder Counts), Time Allowed (MS), Speed (0-1). Ex. driveTarget(1000, 2500, 1);
 	goTo - Param: X,Y coordinates of target point. Ex. goTo(1,4);
 	rotate - Param: Degrees, Voltage. Ex. rotate(90,127);
 */
 
 void autonomous() {
-drivePID = pidInit (7, 0, 0, 0, 100.0,5,15);
-turnPID = pidInit(40, 0, 0, 0, 100.0,5,15);
+drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
+turnPID = pidInit(TURNP, TURNI, TURND, 0, 100.0,5,15);
 lastSlewTime = pros::millis();
 //Auton Code Under this line!
 goTo(0,20);
-for(;;){pros::delay(20);}
+for(;;){pros::delay(20);} //Forever Loop
 }
 void opcontrol() {
 
