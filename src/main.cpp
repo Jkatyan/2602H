@@ -88,11 +88,12 @@ void competition_initialize() {}
 */
 
 void autonomous() {
-	drivePID = pidInit (7, 0, 0, 0, 100.0,5,15);
-	turnPID = pidInit(40, 0, 0, 0, 100.0,5,15);
-	lastSlewTime = pros::millis();
+drivePID = pidInit (7, 0, 0, 0, 100.0,5,15);
+turnPID = pidInit(40, 0, 0, 0, 100.0,5,15);
+lastSlewTime = pros::millis();
+//Auton Code Under this line!
 goTo(0,20);
-pros::delay(19000000);
+for(;;){pros::delay(20);}
 }
 void opcontrol() {
 
@@ -111,8 +112,8 @@ void opcontrol() {
 		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
 		pros::lcd::print(3, "Gyro Angle: %f", (gyro.get_value()/10.0000));
 		pros::lcd::print(4, "Right Encoder: %d", rightEnc.get_value());
-		pros::lcd::print(6, "Side Encoder: %d", sideEnc.get_value());
 		pros::lcd::print(5, "Left Encoder: %d", leftEnc.get_value());
+		pros::lcd::print(6, "Side Encoder: %d", sideEnc.get_value());
 
 		pros::delay(20);
 	}
@@ -191,7 +192,7 @@ void setDrive(int left, int right){
 
 void rotate(int degrees, int voltage){
 	int direction = abs(degrees) / degrees;
-	gyro.reset();
+	//gyro.reset();
 	setDrive(-voltage * direction, voltage * direction);
 	while(fabs(gyro.get_value()) < abs(degrees * 10) - 50){
 		pros::delay(10);
