@@ -82,6 +82,14 @@ void initialize() {
 	leftEnc.reset();
 	rightEnc.reset();
 	gyro.reset();
+	LD.tare_position();
+	LD2.tare_position();
+	RD.tare_position();
+	RD2.tare_position();
+	LEFTLIFT.tare_position();
+	RIGHTLIFT.tare_position();
+	INTAKE.tare_position();
+	CHASSISEXTENSION.tare_position();
 }
 void disabled() {}
 void competition_initialize() {}
