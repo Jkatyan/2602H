@@ -3,9 +3,9 @@
 #include "PID.hpp"
 
 //Motor Ports
-const int LDPORT = 9;
-const int LD2PORT = 20;
-const int RDPORT = 10;
+const int LDPORT = 17;
+const int LD2PORT = 18;
+const int RDPORT = 16;
 const int RD2PORT = 19;
 const int RIGHTLIFTPORT = 5;
 const int LEFTLIFTPORT = 8;
@@ -114,7 +114,7 @@ goTo(0,20);
 for(;;){pros::delay(20);} //Forever Loop
 }
 void opcontrol() {
-	
+
 	while (true) {
 		LD.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
 		LD2.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
