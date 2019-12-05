@@ -13,6 +13,8 @@ const int CHASSISPORT = 6;
 const int HOOKPORT = 7;
 const char GYROPORT = 'c';
 
+const int PISTON_L_PORT = 1;
+
 //PID Tuning
 const float DRIVEP = 7;
 const float DRIVEI = 0;
@@ -25,6 +27,14 @@ const float TURND = 0;
 const double RC = 1; //Chassis Speed Correction
 const double LC = 1;
 const double GC = 0.95; //Gyro Correction
+
+
+//backup_autonomous_API
+const int AUTOMOVE_ALLOWABLE_ERROR = 36;
+const int AUTOMOVE_SUCCESS_HOLDING_TIME = 500;
+const int LCD_DISPLAY_FRAMERATE = 30;
+//backup_autonomous_API
+
 
 pros::ADIGyro gyro (GYROPORT, GC);
 pros::ADIEncoder sideEnc('G', 'H', true);
@@ -90,6 +100,10 @@ void initialize() {
 	RIGHTLIFT.tare_position();
 	INTAKE.tare_position();
 	CHASSISEXTENSION.tare_position();
+	//piston::
+	//pros::c::adi_port_set_config(PISTON_L_PORT, pros::E_ADI_DIGITAL_OUT);
+//	pros::ADIDigitalOut piston (8);
+	//pistonENDS
 }
 void disabled() {}
 void competition_initialize() {}
@@ -105,21 +119,129 @@ Auton Functions
 	rotate - Param: Degrees, Voltage. Ex. rotate(90,127);
 */
 
+
+bool S_motorSuccess( pros::Motor motor ){
+	int diff = (int) motor.get_position() - motor.get_target_position();
+
+	if( diff > (-1) * AUTOMOVE_ALLOWABLE_ERROR && diff < AUTOMOVE_ALLOWABLE_ERROR ){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+
+int S_chassis_wait_till_success(int timeOut, int mode){
+	uint32_t startTime = pros::millis();
+	int successCount = 0;
+	int display_update_count = 0;
+
+	while(1){
+		if( successCount > AUTOMOVE_SUCCESS_HOLDING_TIME ){
+			return 0;
+		}
+		if( pros::millis() - startTime > timeOut ){
+			return -1;
+		}
+		if( S_motorSuccess(LD) && S_motorSuccess(LD2) && S_motorSuccess(RD) && S_motorSuccess(RD2) ){
+			successCount++;
+		}
+		else{
+			successCount = 0;
+		}
+
+		if( display_update_count <= ( 1000 / LCD_DISPLAY_FRAMERATE ) ){
+			display_update_count++;
+		}
+		else{
+			if(mode == 0){
+				pros::lcd::print( 0, "command: move" );
+			}
+			else{
+				pros::lcd::print( 0, "command: turn" );
+			}
+			pros::lcd::print(1, "target: %f", LD.get_target_position() );
+			pros::lcd::print(2, "actual: %f", LD.get_position() );
+			pros::lcd::print(3, "success: %d", successCount > 0 );
+			pros::lcd::print(4, "successHold: %d", AUTOMOVE_SUCCESS_HOLDING_TIME - successCount );
+			pros::lcd::print(5, "timeOut: %d", startTime + timeOut - pros::millis() );
+			display_update_count = 0;
+		}
+
+		pros::delay(1);
+	}
+}
+
+
+int S_chassis_move(int angle, float speed, int timeOut){
+	int s = (int) (speed * 127);
+
+	LD.move_relative(angle, s);
+	RD.move_relative(angle, s);
+	LD2.move_relative(angle, s);
+	RD2.move_relative(angle, s);
+
+	return S_chassis_wait_till_success(timeOut, 0);
+}
+
+
+int S_chassis_turn(int angle, float speed, int timeOut){
+	int s = (int) (speed * 127);
+
+	LD.move_relative(angle, s);
+	RD.move_relative((-1)*angle, s);
+	LD2.move_relative(angle, s);
+	RD2.move_relative((-1)*angle, s);
+
+	return S_chassis_wait_till_success(timeOut, 1);
+}
+
+
+
+
 void autonomous() {
+
+	LD.set_brake_mode(MOTOR_BRAKE_HOLD);
+	LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
+	RD.set_brake_mode(MOTOR_BRAKE_HOLD);
+	RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
+
+
 drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
 turnPID = pidInit(TURNP, TURNI, TURND, 0, 100.0,5,15);
 lastSlewTime = pros::millis();
 //Auton Code Under this line!
-goTo(0,20);
+//goTo(0,20);
+
+
+S_chassis_move(3600, 0.5, 15000);
+S_chassis_turn(1800, 0.5, 15000);
+S_chassis_move(-3600, 0.5, 15000);
+
+
 for(;;){pros::delay(20);} //Forever Loop
 }
+
 void opcontrol() {
+
+	LD.set_brake_mode(MOTOR_BRAKE_COAST);
+	LD2.set_brake_mode(MOTOR_BRAKE_COAST);
+	RD.set_brake_mode(MOTOR_BRAKE_COAST);
+	RD2.set_brake_mode(MOTOR_BRAKE_COAST);
+
+	//pros::ADIDigitalOut piston (8);
+
 
 	while (true) {
 		LD.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
 		LD2.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
 		RD.move(RC*(controller.get_analog(ANALOG_RIGHT_Y)));
 		RD2.move(RC*(controller.get_analog(ANALOG_RIGHT_Y)));
+
+		//pistonTest
+		//piston.set_value(controller.get_digital(DIGITAL_A));
+		//pistonEnds
 
 		updatePosition();
 

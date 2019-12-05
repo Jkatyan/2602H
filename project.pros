@@ -274,9 +274,9 @@
         },
         "upload_options": {
             "compress_bin": true,
-            "description": "NorthAndover Test Code (ODOM)",
-            "remote_name": "HydraCode",
-            "slot": 7
+            "description": "HydraTemplate",
+            "remote_name": "HydraTemplate",
+            "slot": 1
         }
     }
 }
