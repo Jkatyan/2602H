@@ -13,7 +13,7 @@ const int CHASSISPORT = 6;
 const int HOOKPORT = 7;
 const char GYROPORT = 'c';
 
-const int PISTON_L_PORT = 1;
+//const char PISTON_L_PORT = 'a';
 
 //PID Tuning
 const float DRIVEP = 7;
@@ -201,26 +201,23 @@ int S_chassis_turn(int angle, float speed, int timeOut){
 
 
 void autonomous() {
-
 	LD.set_brake_mode(MOTOR_BRAKE_HOLD);
 	LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
 	RD.set_brake_mode(MOTOR_BRAKE_HOLD);
 	RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
 
+	drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
+	turnPID = pidInit(TURNP, TURNI, TURND, 0, 100.0,5,15);
+	lastSlewTime = pros::millis();
 
-drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
-turnPID = pidInit(TURNP, TURNI, TURND, 0, 100.0,5,15);
-lastSlewTime = pros::millis();
-//Auton Code Under this line!
-//goTo(0,20);
+	//Auton Code Under this line!
 
-
-S_chassis_move(3600, 0.5, 15000);
-S_chassis_turn(1800, 0.5, 15000);
-S_chassis_move(-3600, 0.5, 15000);
+	S_chassis_move(1800, 0.5, 15000);
+	S_chassis_turn(900, 0.5, 15000);
+	S_chassis_move(-1800, 0.5, 15000);
 
 
-for(;;){pros::delay(20);} //Forever Loop
+	for(;;){pros::delay(20);} //Forever Loop
 }
 
 void opcontrol() {
