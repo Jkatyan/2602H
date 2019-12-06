@@ -7,10 +7,10 @@ const int LDPORT = 17;
 const int LD2PORT = 18;
 const int RDPORT = 16;
 const int RD2PORT = 19;
-const int RIGHTLIFTPORT = 5;
-const int LEFTLIFTPORT = 8;
-const int CHASSISPORT = 6;
-const int HOOKPORT = 7;
+const int INTAKEAPORT = 5;
+const int INTAKEBPORT = 8;
+const int LIFTPORT = 6;
+const int TILTERPORT = 7;
 const char GYROPORT = 'c';
 
 const int PISTON_L_PORT = 1;
@@ -59,14 +59,14 @@ pros::Motor LD(LDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COU
 pros::Motor LD2(LD2PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor RD(RDPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor RD2(RD2PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor RIGHTLIFT(RIGHTLIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor LEFTLIFT(LEFTLIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor CHASSISEXTENSION(CHASSISPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor INTAKE(HOOKPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor INTAKEA(INTAKEAPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor INTAKEB(INTAKEBPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor TILTER(TILTERPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor LIFT(LIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 
-auto liftController = AsyncControllerFactory::posPID({-RIGHTLIFTPORT, LEFTLIFTPORT}, 0.001, 0.0, 0.0001);
+/*auto liftController = AsyncControllerFactory::posPID({-RIGHTLIFTPORT, LEFTLIFTPORT}, 0.001, 0.0, 0.0001);
 auto filpController = AsyncControllerFactory::posPID(CHASSISPORT, 0.001, 0.0, 0.0001);
-auto intakeController = AsyncControllerFactory::posPID(HOOKPORT, 0.001, 0.0, 0.0001);
+auto intakeController = AsyncControllerFactory::posPID(HOOKPORT, 0.001, 0.0, 0.0001);*/
 
 void on_center_button() {
 	static bool pressed = false;
@@ -82,10 +82,10 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 	pros::lcd::register_btn1_cb(on_center_button);
-	LEFTLIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
-	RIGHTLIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
-	CHASSISEXTENSION.set_brake_mode(MOTOR_BRAKE_HOLD);
-	INTAKE.set_brake_mode(MOTOR_BRAKE_HOLD);
+	LIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
+	TILTER.set_brake_mode(MOTOR_BRAKE_HOLD);
+	INTAKEA.set_brake_mode(MOTOR_BRAKE_HOLD);
+	INTAKEB.set_brake_mode(MOTOR_BRAKE_HOLD);
 	pros::ADIGyro gyro (GYROPORT, GC);
 	pros::delay(2000);
 	sideEnc.reset();
@@ -96,10 +96,10 @@ void initialize() {
 	LD2.tare_position();
 	RD.tare_position();
 	RD2.tare_position();
-	LEFTLIFT.tare_position();
-	RIGHTLIFT.tare_position();
-	INTAKE.tare_position();
-	CHASSISEXTENSION.tare_position();
+	LIFT.tare_position();
+	INTAKEA.tare_position();
+	INTAKEB.tare_position();
+	TILTER.tare_position();
 	//piston::
 	//pros::c::adi_port_set_config(PISTON_L_PORT, pros::E_ADI_DIGITAL_OUT);
 //	pros::ADIDigitalOut piston (8);
