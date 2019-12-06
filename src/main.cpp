@@ -64,9 +64,8 @@ pros::Motor INTAKEB(INTAKEBPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_
 pros::Motor TILTER(TILTERPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor LIFT(LIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 
-/*auto liftController = AsyncControllerFactory::posPID({-RIGHTLIFTPORT, LEFTLIFTPORT}, 0.001, 0.0, 0.0001);
-auto filpController = AsyncControllerFactory::posPID(CHASSISPORT, 0.001, 0.0, 0.0001);
-auto intakeController = AsyncControllerFactory::posPID(HOOKPORT, 0.001, 0.0, 0.0001);*/
+auto liftController = AsyncControllerFactory::posPID(LIFTPORT, 0.001, 0.0, 0.0001);
+auto intakeController = AsyncControllerFactory::posPID({INTAKEAPORT, -INTAKEBPORT}, 0.001, 0.0, 0.0001);
 
 void on_center_button() {
 	static bool pressed = false;
