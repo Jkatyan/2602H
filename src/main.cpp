@@ -35,6 +35,8 @@ const int AUTOMOVE_SUCCESS_HOLDING_TIME = 500;
 const int LCD_DISPLAY_FRAMERATE = 30;
 //backup_autonomous_API
 
+const bool DISABLE_AUTONOMOUS = false;
+
 
 pros::ADIGyro gyro (GYROPORT, GC);
 pros::ADIEncoder sideEnc('G', 'H', true);
@@ -200,6 +202,8 @@ int S_chassis_turn(int angle, float speed, int timeOut){
 
 
 void autonomous() {
+	while( DISABLE_AUTONOMOUS ){ pros::delay(20); }
+
 	LD.set_brake_mode(MOTOR_BRAKE_HOLD);
 	LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
 	RD.set_brake_mode(MOTOR_BRAKE_HOLD);
