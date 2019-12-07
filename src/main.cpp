@@ -8,11 +8,11 @@ const int LD2PORT = 18;
 const int RDPORT = 16;
 const int RD2PORT = 19;
 const int INTAKEAPORT = 5;
-const int INTAKEBPORT = 8;
+const int INTAKEBPORT = 9;
 const int LIFTPORT = 6;
 const int TILTERPORT = 7;
 const char GYROPORT = 'c';
-
+const char POTPORT = 'h';
 //const char PISTON_L_PORT = 'a';
 
 //PID Tuning
@@ -29,6 +29,17 @@ const double LC = 1;
 const double GC = 0.95; //Gyro Correction
 
 
+//S_armsMotion_proceed{
+const int TILTER_MAX_VALUE = 0;
+const int TILTER_MIN_VALUE = -2950;
+const int TILTER_SPEED = 127;
+const int LIFT_MAX_VALUE = 1300;
+const int LIFT_MIN_VALUE = 0;
+const int LIFT_SPEED = 127;
+const int INTAKEA_SPEED = 127;
+const int INTAKEB_SPEED = 127;
+//}
+
 //backup_autonomous_API
 const int AUTOMOVE_ALLOWABLE_ERROR = 36;
 const int AUTOMOVE_SUCCESS_HOLDING_TIME = 500;
@@ -39,6 +50,8 @@ const bool DISABLE_AUTONOMOUS = false;
 
 
 pros::ADIGyro gyro (GYROPORT, GC);
+pros::ADIAnalogIn pot (POTPORT);
+
 pros::ADIEncoder sideEnc('G', 'H', true);
 pros::ADIEncoder leftEnc('F', 'E');
 pros::ADIEncoder rightEnc('A', 'B', true);
@@ -57,6 +70,7 @@ float slewRateCalculate(float desiredRate);
 void driveTarget(int target, int time, float speed);
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
+pros::Controller second_controller(pros::E_CONTROLLER_PARTNER);
 pros::Motor LD(LDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor LD2(LD2PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor RD(RDPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -199,6 +213,73 @@ int S_chassis_turn(int angle, float speed, int timeOut){
 }
 
 
+void S_zero_all_motors(){
+	LD.move(0);
+	RD.move(0);
+	LD2.move(0);
+	RD2.move(0);
+	TILTER.move(0);
+	LIFT.move(0);
+	INTAKEA.move(0);
+	INTAKEB.move(0);
+}
+
+
+void S_drive_chassis_tank(){
+	LD.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
+	LD2.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
+	RD.move(RC*(controller.get_analog(ANALOG_RIGHT_Y)));
+	RD2.move(RC*(controller.get_analog(ANALOG_RIGHT_Y)));
+}
+
+
+void S_drive_chassis_arcade(){
+	int x = controller.get_analog(ANALOG_RIGHT_X);
+	int y = controller.get_analog(ANALOG_RIGHT_Y);
+	LD.move(x+y);
+	RD.move(x-y);
+	LD2.move(x+y);
+	RD2.move(x-y);
+}
+
+
+void S_moveMotor_withLimit(pros::Motor motor, int velocity, int max_value, int min_value,
+		pros::controller_digital_e_t button1, pros::controller_digital_e_t button2, int limitSource){
+	int armPoz;
+	if( limitSource == 1 ){
+		armPoz = motor.get_position();
+	}
+	else if( limitSource == 2 ){
+		armPoz = pot.get_value();
+	}
+
+	if( controller.get_digital(button1) && ( ( armPoz < max_value ) || (!limitSource) ) ){
+		motor.move(velocity);
+	}
+	else if( controller.get_digital(button2) && ( ( armPoz > min_value ) || (!limitSource) ) ){
+		motor.move((-1)*velocity);
+	}
+	else{
+		motor.move_velocity(0);
+	}
+	//pros::lcd::print(0, "motorPoz: %d", armPoz);
+}
+
+
+void S_armsMotion_proceed(){
+	S_moveMotor_withLimit(TILTER, TILTER_SPEED, TILTER_MAX_VALUE, TILTER_MIN_VALUE, DIGITAL_L1, DIGITAL_L2, 1);
+	S_moveMotor_withLimit(LIFT, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, DIGITAL_UP, DIGITAL_DOWN, 1);
+	S_moveMotor_withLimit(INTAKEA, INTAKEA_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
+	S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
+}
+
+
+void S_armsMotion_Amode_proceed(){
+	TILTER.move( (-1) * controller.get_analog(ANALOG_LEFT_Y) );
+	S_moveMotor_withLimit(LIFT, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, DIGITAL_UP, DIGITAL_DOWN, 1);
+	S_moveMotor_withLimit(INTAKEA, INTAKEA_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
+	S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R2, DIGITAL_R1, 0);
+}
 
 
 void autonomous() {
@@ -223,7 +304,27 @@ void autonomous() {
 	for(;;){pros::delay(20);} //Forever Loop
 }
 
+
+void S_display_debugInfo(int* d){
+	if( *d <= ( 1000 / LCD_DISPLAY_FRAMERATE ) ){
+		(*d)++;
+	}
+	else{
+		pros::lcd::print(0, "No debug info");
+		/*pros::lcd::print(0, "X: %f", getX());
+		pros::lcd::print(1, "Y: %f", getY());
+		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
+		pros::lcd::print(3, "Gyro Angle: %f", (gyro.get_value()/10.0000));
+		pros::lcd::print(4, "Right Encoder: %d", rightEnc.get_value());
+		pros::lcd::print(5, "Left Encoder: %d", leftEnc.get_value());
+		pros::lcd::print(6, "Side Encoder: %d", sideEnc.get_value());*/
+		*d = 0;
+	}
+}
+
+
 void opcontrol() {
+	int display_update_count = 0;
 
 	LD.set_brake_mode(MOTOR_BRAKE_COAST);
 	LD2.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -232,28 +333,33 @@ void opcontrol() {
 
 	//pros::ADIDigitalOut piston (8);
 
+	while(true){
+		while ( /*( !second_controller.get_digital(DIGITAL_R1) ) &&*/ ( !controller.get_digital(DIGITAL_A) ) ) {
+			S_drive_chassis_tank();
+			S_armsMotion_proceed();
 
-	while (true) {
-		LD.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
-		LD2.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
-		RD.move(RC*(controller.get_analog(ANALOG_RIGHT_Y)));
-		RD2.move(RC*(controller.get_analog(ANALOG_RIGHT_Y)));
+			//pistonTest
+			//piston.set_value(controller.get_digital(DIGITAL_A));
+			//pistonEnds
 
-		//pistonTest
-		//piston.set_value(controller.get_digital(DIGITAL_A));
-		//pistonEnds
+			updatePosition();
 
-		updatePosition();
+			S_display_debugInfo(&display_update_count);
 
-		pros::lcd::print(0, "X: %f", getX());
-		pros::lcd::print(1, "Y: %f", getY());
-		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
-		pros::lcd::print(3, "Gyro Angle: %f", (gyro.get_value()/10.0000));
-		pros::lcd::print(4, "Right Encoder: %d", rightEnc.get_value());
-		pros::lcd::print(5, "Left Encoder: %d", leftEnc.get_value());
-		pros::lcd::print(6, "Side Encoder: %d", sideEnc.get_value());
+			pros::delay(1);
+		}
+		S_zero_all_motors();
+		while( /*second_controller.get_digital(DIGITAL_R1) ||*/ controller.get_digital(DIGITAL_A) ){
+			S_drive_chassis_arcade();
+			S_armsMotion_Amode_proceed();
 
-		pros::delay(20);
+			updatePosition();
+
+			S_display_debugInfo(&display_update_count);
+
+			pros::delay(1);
+		}
+		S_zero_all_motors();
 	}
 }
 
