@@ -296,8 +296,9 @@ void autonomous() {
 
 	//Auton Code Under this line!
 
-	S_chassis_move(-500, 0.5, 5000);
-	S_chassis_move(700, 0.5, 5000);
+	S_chassis_move(-700, 0.5, 3000);
+	pros::delay(2500);
+	S_chassis_move(1000, 0.5, 5000);
 
 	for(;;){pros::delay(20);} //Forever Loop
 }
