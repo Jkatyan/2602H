@@ -234,8 +234,8 @@ void S_drive_chassis_tank(){
 
 
 void S_drive_chassis_arcade(){
-	int x = controller.get_analog(ANALOG_RIGHT_X);
-	int y = controller.get_analog(ANALOG_RIGHT_Y);
+	int x = controller.get_analog(ANALOG_RIGHT_Y);
+	int y = controller.get_analog(ANALOG_RIGHT_X);
 	LD.move(x+y);
 	RD.move(x-y);
 	LD2.move(x+y);
@@ -278,7 +278,7 @@ void S_armsMotion_Amode_proceed(){
 	TILTER.move( (-1) * controller.get_analog(ANALOG_LEFT_Y) );
 	S_moveMotor_withLimit(LIFT, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, DIGITAL_UP, DIGITAL_DOWN, 1);
 	S_moveMotor_withLimit(INTAKEA, INTAKEA_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
-	S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R2, DIGITAL_R1, 0);
+	S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 }
 
 
@@ -296,10 +296,8 @@ void autonomous() {
 
 	//Auton Code Under this line!
 
-	S_chassis_move(1800, 0.5, 15000);
-	S_chassis_turn(900, 0.5, 15000);
-	S_chassis_move(-1800, 0.5, 15000);
-
+	S_chassis_move(-500, 0.5, 5000);
+	S_chassis_move(700, 0.5, 5000);
 
 	for(;;){pros::delay(20);} //Forever Loop
 }
