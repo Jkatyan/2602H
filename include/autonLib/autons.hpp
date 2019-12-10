@@ -12,5 +12,7 @@ void S_drive_chassis_tank();
 void S_drive_chassis_arcade();
 void S_moveMotor_withLimit(pros::Motor motor, int velocity, int max_value, int min_value,
 pros::controller_digital_e_t button1, pros::controller_digital_e_t button2, int limitSource);
+void S_armsMotion_proceed();
+void S_armsMotion_Amode_proceed();
 
 #endif
