@@ -1,8 +1,6 @@
 #ifndef AUTONS_HPP
 #define AUTONS_HPP
 
-#include <main.h>
-
 bool S_motorSuccess( pros::Motor motor );
 int S_chassis_wait_till_success(int timeOut, int mode);
 int S_chassis_move(int angle, float speed, int timeOut);
