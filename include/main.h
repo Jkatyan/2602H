@@ -41,9 +41,7 @@
  */
 #include "okapi/api.hpp"
 
-#include "odometry.hpp"
 
-#include "PID.hpp"
 //#include "pros/api_legacy.h"
 
 /**
@@ -56,7 +54,7 @@
  */
 // using namespace pros;
 // using namespace pros::literals;
-//using namespace okapi;
+using namespace okapi;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
@@ -128,6 +126,8 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
+ #include "odometry.hpp"
+ #include "PID.hpp"
 //#include <iostream>
 #endif
 
