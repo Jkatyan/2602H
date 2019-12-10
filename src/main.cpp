@@ -23,19 +23,6 @@ void rotate(int degrees, int voltage);
 float slewRateCalculate(float desiredRate);
 void driveTarget(int target, int time, float speed);
 
-pros::Controller controller(pros::E_CONTROLLER_MASTER);
-pros::Controller second_controller(pros::E_CONTROLLER_PARTNER);
-pros::Motor LD(LDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor LD2(LD2PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor RD(RDPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor RD2(RD2PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor INTAKEA(INTAKEAPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor INTAKEB(INTAKEBPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor TILTER(TILTERPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor LIFT(LIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
-
-auto liftController = AsyncControllerFactory::posPID(LIFTPORT, 0.001, 0.0, 0.0001);
-auto intakeController = AsyncControllerFactory::posPID({INTAKEAPORT, -INTAKEBPORT}, 0.001, 0.0, 0.0001);
 
 void on_center_button() {
 	static bool pressed = false;
