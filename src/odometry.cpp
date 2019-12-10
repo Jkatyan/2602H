@@ -1,7 +1,7 @@
 #ifndef ODOMETRY_CPP
 #define ODOMETRY_CPP
 
-#include "odometry.hpp"
+#include "main.h"
 
 pros::ADIEncoder sideEncOdom('G', 'H', true);
 pros::ADIEncoder leftEncOdom('F', 'E');

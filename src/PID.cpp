@@ -2,7 +2,6 @@
 #define PID_CPP
 
 #include "main.h"
-#include "PID.hpp"
 
 PID
 pidInit(/*PID pid,*/ float fKP, float fKI, float fKD, float fEpsilonInner, float fEpsilonOuter,float dInner, float dOuter) {

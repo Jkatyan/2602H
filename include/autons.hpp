@@ -20,6 +20,21 @@ const int AUTOMOVE_SUCCESS_HOLDING_TIME = 500;
 const int LCD_DISPLAY_FRAMERATE = 30;
 //backup_autonomous_API
 
+
+PID drivePID;
+PID turnPID;
+
+float lastSlewTime;
+float maxAccel = 0.14;
+float lastSlewRate = 0;
+
+void goTo(float targetX, float targetY);
+void setDrive(int left, int right);
+void rotate(int degrees, int voltage);
+float slewRateCalculate(float desiredRate);
+void driveTarget(int target, int time, float speed);
+
+
 bool S_motorSuccess( pros::Motor motor );
 int S_chassis_wait_till_success(int timeOut, int mode);
 int S_chassis_move(int angle, float speed, int timeOut);

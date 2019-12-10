@@ -40,6 +40,10 @@
  * You should add more #includes here
  */
 #include "okapi/api.hpp"
+
+#include "odometry.hpp"
+
+#include "PID.hpp"
 //#include "pros/api_legacy.h"
 
 /**
@@ -108,11 +112,14 @@ const double GC = 0.95; //Gyro Correction
 
 const bool DISABLE_AUTONOMOUS = false;
 
+
 void autonomous(void);
 void initialize(void);
 void disabled(void);
 void competition_initialize(void);
 void opcontrol(void);
+
+
 #ifdef __cplusplus
 }
 #endif

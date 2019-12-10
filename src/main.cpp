@@ -1,43 +1,9 @@
 #include "main.h"
-#include "odometry.hpp"
-#include "PID.hpp"
 #include "autons.hpp"
 
-pros::ADIGyro gyro (GYROPORT, GC);
-pros::ADIAnalogIn pot (POTPORT);
-
-pros::ADIEncoder sideEnc('G', 'H', true);
-pros::ADIEncoder leftEnc('F', 'E');
-pros::ADIEncoder rightEnc('A', 'B', true);
-
-PID drivePID;
-PID turnPID;
-
-float lastSlewTime;
-float maxAccel = 0.14;
-float lastSlewRate = 0;
-
-void goTo(float targetX, float targetY);
-void setDrive(int left, int right);
-void rotate(int degrees, int voltage);
-float slewRateCalculate(float desiredRate);
-void driveTarget(int target, int time, float speed);
-
-
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
 
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
-	pros::lcd::register_btn1_cb(on_center_button);
 	LIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
 	TILTER.set_brake_mode(MOTOR_BRAKE_HOLD);
 	INTAKEA.set_brake_mode(MOTOR_BRAKE_HOLD);

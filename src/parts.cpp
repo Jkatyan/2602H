@@ -1,5 +1,14 @@
 #include "main.h"
 
+
+pros::ADIGyro gyro (GYROPORT, GC);
+pros::ADIAnalogIn pot (POTPORT);
+
+pros::ADIEncoder sideEnc('G', 'H', true);
+pros::ADIEncoder leftEnc('F', 'E');
+pros::ADIEncoder rightEnc('A', 'B', true);
+
+
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Controller second_controller(pros::E_CONTROLLER_PARTNER);
 pros::Motor LD(LDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
