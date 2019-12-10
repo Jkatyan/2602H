@@ -76,6 +76,10 @@ extern pros::Motor TILTER;
 extern pros::ADIAnalogIn pot;
 extern pros::ADIGyro gyro;
 
+extern pros::ADIEncoder sideEnc;
+extern pros::ADIEncoder leftEnc;
+extern pros::ADIEncoder rightEnc;
+
 //Motor Ports
 const int LDPORT = 17;
 const int LD2PORT = 18;
