@@ -68,10 +68,41 @@ extern pros::Motor LD;
 extern pros::Motor RD;
 extern pros::Motor LD2;
 extern pros::Motor RD2;
-extern pros::Motor RIGHTLIFT;
-extern pros::Motor LEFTLIFT;
-extern pros::Motor CHASSISEXTENSION;
-extern pros::Motor INTAKE;
+extern pros::Motor INTAKEA;
+extern pros::Motor INTAKEB;
+extern pros::Motor LIFT;
+extern pros::Motor TILTER;
+
+extern pros::ADIAnalogIn pot;
+extern pros::ADIGyro gyro;
+
+//Motor Ports
+const int LDPORT = 17;
+const int LD2PORT = 18;
+const int RDPORT = 16;
+const int RD2PORT = 19;
+const int INTAKEAPORT = 5;
+const int INTAKEBPORT = 9;
+const int LIFTPORT = 6;
+const int TILTERPORT = 7;
+const char GYROPORT = 'c';
+const char POTPORT = 'h';
+//const char PISTON_L_PORT = 'a';
+
+//PID Tuning
+const float DRIVEP = 7;
+const float DRIVEI = 0;
+const float DRIVED = 0;
+const float TURNP = 40;
+const float TURNI = 0;
+const float TURND = 0;
+
+//Correction Constants
+const double RC = 1; //Chassis Speed Correction
+const double LC = 1;
+const double GC = 0.95; //Gyro Correction
+
+const bool DISABLE_AUTONOMOUS = false;
 
 void autonomous(void);
 void initialize(void);

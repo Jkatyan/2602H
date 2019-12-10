@@ -1,5 +1,4 @@
-#include <autons.hpp>
-
+#include "autons.hpp"
 
 bool S_motorSuccess( pros::Motor motor ){
 	int diff = (int) motor.get_position() - motor.get_target_position();

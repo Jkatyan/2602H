@@ -1,55 +1,7 @@
 #include "main.h"
 #include "odometry.hpp"
 #include "PID.hpp"
-#include "autonLib\autons.hpp"
-
-
-//Motor Ports
-const int LDPORT = 17;
-const int LD2PORT = 18;
-const int RDPORT = 16;
-const int RD2PORT = 19;
-const int INTAKEAPORT = 5;
-const int INTAKEBPORT = 9;
-const int LIFTPORT = 6;
-const int TILTERPORT = 7;
-const char GYROPORT = 'c';
-const char POTPORT = 'h';
-//const char PISTON_L_PORT = 'a';
-
-//PID Tuning
-const float DRIVEP = 7;
-const float DRIVEI = 0;
-const float DRIVED = 0;
-const float TURNP = 40;
-const float TURNI = 0;
-const float TURND = 0;
-
-//Correction Constants
-const double RC = 1; //Chassis Speed Correction
-const double LC = 1;
-const double GC = 0.95; //Gyro Correction
-
-
-//S_armsMotion_proceed{
-const int TILTER_MAX_VALUE = 0;
-const int TILTER_MIN_VALUE = -2950;
-const int TILTER_SPEED = 127;
-const int LIFT_MAX_VALUE = 1300;
-const int LIFT_MIN_VALUE = 0;
-const int LIFT_SPEED = 127;
-const int INTAKEA_SPEED = 127;
-const int INTAKEB_SPEED = 127;
-//}
-
-//backup_autonomous_API
-const int AUTOMOVE_ALLOWABLE_ERROR = 36;
-const int AUTOMOVE_SUCCESS_HOLDING_TIME = 500;
-const int LCD_DISPLAY_FRAMERATE = 30;
-//backup_autonomous_API
-
-const bool DISABLE_AUTONOMOUS = false;
-
+#include "autons.hpp"
 
 pros::ADIGyro gyro (GYROPORT, GC);
 pros::ADIAnalogIn pot (POTPORT);

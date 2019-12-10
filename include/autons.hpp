@@ -1,6 +1,25 @@
 #ifndef AUTONS_HPP
 #define AUTONS_HPP
 
+#include "main.h"
+
+//S_armsMotion_proceed{
+const int TILTER_MAX_VALUE = 0;
+const int TILTER_MIN_VALUE = -2950;
+const int TILTER_SPEED = 127;
+const int LIFT_MAX_VALUE = 1300;
+const int LIFT_MIN_VALUE = 0;
+const int LIFT_SPEED = 127;
+const int INTAKEA_SPEED = 127;
+const int INTAKEB_SPEED = 127;
+//}
+
+//backup_autonomous_API
+const int AUTOMOVE_ALLOWABLE_ERROR = 36;
+const int AUTOMOVE_SUCCESS_HOLDING_TIME = 500;
+const int LCD_DISPLAY_FRAMERATE = 30;
+//backup_autonomous_API
+
 bool S_motorSuccess( pros::Motor motor );
 int S_chassis_wait_till_success(int timeOut, int mode);
 int S_chassis_move(int angle, float speed, int timeOut);
