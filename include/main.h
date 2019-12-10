@@ -108,9 +108,6 @@ const double RC = 1; //Chassis Speed Correction
 const double LC = 1;
 const double GC = 0.95; //Gyro Correction
 
-const bool DISABLE_AUTONOMOUS = false;
-
-
 void autonomous(void);
 void initialize(void);
 void disabled(void);

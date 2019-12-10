@@ -36,18 +36,6 @@ void initialize() {
 void disabled() {}
 void competition_initialize() {}
 
-/*
-How to use Okapi
-  liftController.setTarget(200); // Move 200 motor degrees upward
-  liftController.waitUntilSettled(); //Wait until lift settled
-
-Auton Functions
-	driveTarget - Param: Target (Encoder Counts), Time Allowed (MS), Speed (0-1). Ex. driveTarget(1000, 2500, 1);
-	goTo - Param: X,Y coordinates of target point. Ex. goTo(1,4);
-	rotate - Param: Degrees, Voltage. Ex. rotate(90,127);
-*/
-
-
 void autonomous() {
 	while( DISABLE_AUTONOMOUS ){ pros::delay(20); }
 

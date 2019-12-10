@@ -3,6 +3,8 @@
 
 #include "main.h"
 
+const bool DISABLE_AUTONOMOUS = false;
+
 //S_armsMotion_proceed{
 const int TILTER_MAX_VALUE = 0;
 const int TILTER_MIN_VALUE = -2950;
