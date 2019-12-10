@@ -20,14 +20,6 @@ const int AUTOMOVE_SUCCESS_HOLDING_TIME = 500;
 const int LCD_DISPLAY_FRAMERATE = 30;
 //backup_autonomous_API
 
-
-PID drivePID;
-PID turnPID;
-
-float lastSlewTime;
-float maxAccel = 0.14;
-float lastSlewRate = 0;
-
 void goTo(float targetX, float targetY);
 void setDrive(int left, int right);
 void rotate(int degrees, int voltage);
