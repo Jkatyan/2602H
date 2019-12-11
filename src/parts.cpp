@@ -8,6 +8,9 @@ pros::ADIEncoder sideEnc('G', 'H', true);
 pros::ADIEncoder leftEnc('F', 'E');
 pros::ADIEncoder rightEnc('A', 'B', true);
 
+pros::ADIEncoder sideEncOdom('G', 'H', true);
+pros::ADIEncoder leftEncOdom('F', 'E');
+pros::ADIEncoder rightEncOdom('A', 'B', true);
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Controller second_controller(pros::E_CONTROLLER_PARTNER);

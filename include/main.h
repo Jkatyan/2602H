@@ -82,6 +82,10 @@ extern pros::ADIEncoder sideEnc;
 extern pros::ADIEncoder leftEnc;
 extern pros::ADIEncoder rightEnc;
 
+extern pros::ADIEncoder sideEncOdom;
+extern pros::ADIEncoder leftEncOdom;
+extern pros::ADIEncoder rightEncOdom;
+
 //Motor Ports
 const int LDPORT = 17;
 const int LD2PORT = 18;

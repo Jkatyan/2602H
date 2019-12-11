@@ -1,13 +1,6 @@
 #include "main.h"
 #include "autons.hpp"
 
-PID drivePID;
-PID turnPID;
-
-float lastSlewTime;
-float maxAccel = 0.14;
-float lastSlewRate = 0;
-
 void initialize() {
 	pros::lcd::initialize();
 	LIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -20,14 +13,7 @@ void initialize() {
 	leftEnc.reset();
 	rightEnc.reset();
 	gyro.reset();
-	LD.tare_position();
-	LD2.tare_position();
-	RD.tare_position();
-	RD2.tare_position();
-	LIFT.tare_position();
-	INTAKEA.tare_position();
-	INTAKEB.tare_position();
-	TILTER.tare_position();
+  S_reset_all_motors();
 	//piston::
 	//pros::c::adi_port_set_config(PISTON_L_PORT, pros::E_ADI_DIGITAL_OUT);
 //	pros::ADIDigitalOut piston (8);
@@ -37,6 +23,9 @@ void disabled() {}
 void competition_initialize() {}
 
 void autonomous() {
+	drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
+	turnPID = pidInit (TURNP, TURNI, TURND, 0, 100.0,5,15);
+	
 	while( DISABLE_AUTONOMOUS ){ pros::delay(20); }
 
 	LD.set_brake_mode(MOTOR_BRAKE_HOLD);

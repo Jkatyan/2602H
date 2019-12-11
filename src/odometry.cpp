@@ -3,58 +3,6 @@
 
 #include "main.h"
 
-pros::ADIEncoder sideEncOdom('G', 'H', true);
-pros::ADIEncoder leftEncOdom('F', 'E');
-pros::ADIEncoder rightEncOdom('A', 'B', true);
-
-/* PILONS Code:
-void trackPosition(int left, int right, int back, sPos& position)
-{
-	float L = (left - position.leftLst) * SPIN_TO_IN_LR; // The amount the left side of the robot moved
-	float R = (right - position.rightLst) * SPIN_TO_IN_LR; // The amount the right side of the robot moved
-	float S = (back - position.backLst) * SPIN_TO_IN_S; // The amount the back side of the robot moved
-
-	// Update the last values
-	position.leftLst = left;
-	position.rightLst = right;
-	position.backLst = back;
-
-	float h; // The hypotenuse of the triangle formed by the middle of the robot on the starting position and ending position and the middle of the circle it travels around
-	float i; // Half on the angle that I've traveled
-	float h2; // The same as h but using the back instead of the side wheels
-	float a = (L - R) / (L_DISTANCE_IN + R_DISTANCE_IN); // The angle that I've traveled
-	if (a)
-	{
-		float r = R / a; // The radius of the circle the robot travel's around with the right side of the robot
-		i = a / 2.0;
-		float sinI = sin(i);
-		h = ((r + R_DISTANCE_IN) * sinI) * 2.0;
-
-		float r2 = S / a; // The radius of the circle the robot travel's around with the back of the robot
-		h2 = ((r2 + S_DISTANCE_IN) * sinI) * 2.0;
-	}
-	else
-	{
-		h = R;
-		i = 0;
-
-		h2 = S;
-	}
-	float p = i + position.a; // The global ending angle of the robot
-	float cosP = cos(p);
-	float sinP = sin(p);
-
-	// Update the global position
-	position.y += h * cosP;
-	position.x += h * sinP;
-
-	position.y += h2 * -sinP; // -sin(x) = sin(-x)
-	position.x += h2 * cosP; // cos(x) = cos(-x)
-
-	position.a += a;
-}
-*/
-
 float Sl = 6.625; //distance from tracking center to middle of left wheel
 float Sr = 6.594; //distance from tracking center to middle of right wheel
 float Ss = 4.344; //distance from tracking center to middle of the tracking wheel

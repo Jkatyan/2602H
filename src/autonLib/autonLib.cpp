@@ -1,11 +1,72 @@
 #include "autons.hpp"
 
-extern PID drivePID;
-extern PID turnPID;
+PID drivePID;
+PID turnPID;
 
-extern float lastSlewTime;
-extern float maxAccel;
-extern float lastSlewRate;
+float lastSlewTime;
+float maxAccel = 0.14;
+float lastSlewRate = 0;
+
+void A_gyroDriveTarget(float angle, int target, int time, float speed){
+  int atTarget = 0;
+  int driveEnc = 0;
+  int startTime = pros::millis();
+
+  while ((atTarget != 1) && (pros::millis()-startTime) < time) {
+  driveEnc = ((abs((LD2.get_position() + LD.get_position())/2))+(abs((RD2.get_position() + RD.get_position()))/2))/2;
+
+      float val = pidCalculate(drivePID, target, -driveEnc)*speed;
+      val = slewRateCalculate(val);
+      int rightVal = val - pidCalculate(turnPID, angle, gyro.get_value()/10.0);
+      int leftVal = val + pidCalculate(turnPID, angle, gyro.get_value()/10.0);
+
+        RD.move(RC*rightVal);
+        RD2.move(RC*rightVal);
+        LD.move(LC*leftVal);
+        LD2.move(LC*leftVal);
+        if(driveEnc == target){
+          atTarget = 1;
+        }
+      pros::delay(15);
+    } //While Loop
+
+    LD.set_zero_position(driveEnc-target); LD.move(0);
+    LD2.set_zero_position(driveEnc-target); LD2.move(0);
+    RD.set_zero_position(driveEnc-target); RD.move(0);
+    RD2.set_zero_position(driveEnc-target); RD2.move(0);
+}
+
+void A_gyroTurn(int target, int accuracy, int time, float speed) {
+	int startTime = pros::millis();
+	bool gyroAtTarget = false;
+	int repsAtTarget = 0;
+	//go into the loop that will repeat to update motor values and break when at target
+	while (!gyroAtTarget  && (pros::millis()-startTime) < time) {
+		// calculate the desired motor value based on the sensor value relative to the target
+		float drive = pidCalculate(turnPID, target, gyro.get_value()/10.0)*speed;
+		drive = ((fabs(gyro.get_value()/10.0-target)>180)? -1 : 1)*drive;
+    LD.move(drive);
+    LD2.move(drive);
+    RD.move(-drive);
+    RD2.move(-drive);
+		//if the sensor value is within the desired range of the target
+		if (fabs(gyro.get_value()/10.0-target) < accuracy) {
+			//if the sensor value is within the range for multiple iterations of the loop where each loop is approximately 20ms
+			if (repsAtTarget > 15) {
+				//break out of the loop
+				gyroAtTarget = true;
+			}
+			else {
+				repsAtTarget++;
+			}
+		}
+		else {
+			repsAtTarget = 0;
+		}
+		pros::delay(15);
+	}
+	S_zero_all_motors();
+}
 
 void goTo(float targetX, float targetY) {
 	bool atPoint = false;
