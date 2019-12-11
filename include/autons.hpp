@@ -30,13 +30,59 @@ extern float maxAccel;
 extern float lastSlewRate;
 
 void goTo(float targetX, float targetY);
-void setDrive(int left, int right);
-void rotate(int degrees, int voltage);
-float slewRateCalculate(float desiredRate);
-void driveTarget(int target, int time, float speed);
-void A_gyroDriveTarget(float angle, int target, int time, float speed);
-void A_gyroTurn(int target, int accuracy, int time, float speed);
+/*
+Goes to a specific coordinate using ODOMETRY
 
+*targetX - X coordinate
+*targetY - Y coordinate
+*/
+void setDrive(int left, int right);
+/*
+Helper function for Chassis
+
+*left - Set left side power
+*right - Set right side power
+*/
+void rotate(int degrees, int voltage);
+/*
+Gyro based turning
+
+*degrees - Amount of degrees you want to turn
+*voltage - Controls chassis voltage (Ex. 127 for max speed)
+*/
+float slewRateCalculate(float desiredRate);
+/*
+A basic 1D motion profiler / Acceleration Control
+
+*desiredRate - Max acceleration allowed. (Ex. 0.16)
+*/
+void driveTarget(int target, int time, float speed);
+/*
+Straight Line Motion
+
+*Target - Desired Target Value
+*Time - Allowed time for the function to run before it ends (ms)
+*Speed - Speed multiplier for the drive (Ex. 0.5 50% speed, 1 100% speed)
+*/
+void A_gyroDriveTarget(float angle, int target, int time, float speed);
+/*
+Straight Line Motion with Gyro Correction.
+
+*Angle - Uses Gyro to correct angle while driving / RELATIVE TO STARTING ALIGNMENT.
+*Target - Desired Target Value
+*Time - Allowed time for the function to run before it ends (ms)
+*Speed - Speed multiplier for the drive (Ex. 0.5 50% speed, 1 100% speed)
+PID and Slew applied by default.
+*/
+void A_gyroTurn(int target, int accuracy, int time, float speed);
+/*
+Gyro based turning with PID and Slew
+
+*Target - Angle of Turn
+*Accuracy - How close to the target the robot is
+*Time - Amount of time allowed for the turn. (In MS)
+*Speed - Speed coefficient. Ex. 1 is max speed, 0.5 is half speed.
+*/
 bool S_motorSuccess( pros::Motor motor );
 int S_chassis_wait_till_success(int timeOut, int mode);
 int S_chassis_move(int angle, float speed, int timeOut);
