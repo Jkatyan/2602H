@@ -192,6 +192,22 @@ return:
 return after:
   -instantly
 */
+void S_reset_chassis_motors();
+/*
+Reset the position of all chassis motors to 0 (WARNING:using this function inappropriatly will cause the motors to malfunction)
+
+parameters:
+  -none
+
+constants:
+  -none
+
+return:
+  -none
+
+return after:
+  -instantly
+*/
 void S_drive_chassis_tank();
 /*
 Drive the chassis with a tank-drive (implement: call the function in the main loop, between 20 to 1000 hz)
