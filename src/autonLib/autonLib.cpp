@@ -68,7 +68,7 @@ void A_gyroTurn(int target, int accuracy, int time, float speed) {
 	S_zero_all_motors();
 }
 
-void goTo(float targetX, float targetY) {
+void A_goTo(float targetX, float targetY) {
 	bool atPoint = false;
 	float targetAngle =0;
 	float power =0;
@@ -139,7 +139,7 @@ void setDrive(int left, int right){
 	RD2 = right;
 }
 
-void rotate(int degrees, int voltage){
+void A_rotate(int degrees, int voltage){
 	int direction = abs(degrees) / degrees;
 	//gyro.reset();
 	setDrive(-voltage * direction, voltage * direction);
@@ -162,7 +162,7 @@ void rotate(int degrees, int voltage){
 	setDrive(0,0);
 }
 
-void driveTarget(int target, int time, float speed){
+void A_driveTarget(int target, int time, float speed){
   int atTarget = 0;
   int driveEnc = 0;
   int distance = 0;

@@ -29,7 +29,7 @@ extern float lastSlewTime;
 extern float maxAccel;
 extern float lastSlewRate;
 
-void goTo(float targetX, float targetY);
+void A_goTo(float targetX, float targetY);
 /*
 Goes to a specific coordinate using ODOMETRY
 
@@ -43,7 +43,7 @@ Helper function for Chassis
 *left - Set left side power
 *right - Set right side power
 */
-void rotate(int degrees, int voltage);
+void A_rotate(int degrees, int voltage);
 /*
 Gyro based turning
 
@@ -56,7 +56,7 @@ A basic 1D motion profiler / Acceleration Control
 
 *desiredRate - Max acceleration allowed. (Ex. 0.16)
 */
-void driveTarget(int target, int time, float speed);
+void A_driveTarget(int target, int time, float speed);
 /*
 Straight Line Motion
 
