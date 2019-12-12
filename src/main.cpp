@@ -8,7 +8,7 @@ void initialize() {
 	INTAKEA.set_brake_mode(MOTOR_BRAKE_HOLD);
 	INTAKEB.set_brake_mode(MOTOR_BRAKE_HOLD);
 	pros::ADIGyro gyro (GYROPORT, GC);
-	pros::delay(2000);
+	//Custom Filter
 	sideEnc.reset();
 	leftEnc.reset();
 	rightEnc.reset();
@@ -25,7 +25,7 @@ void competition_initialize() {}
 void autonomous() {
 	drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
 	turnPID = pidInit (TURNP, TURNI, TURND, 0, 100.0,5,15);
-	
+
 	while( DISABLE_AUTONOMOUS ){ pros::delay(20); }
 
 	LD.set_brake_mode(MOTOR_BRAKE_HOLD);
