@@ -100,6 +100,13 @@ void S_reset_all_motors(){
 	TILTER.tare_position();
 }
 
+void S_reset_chassis_motors(){
+	LD.tare_position();
+	LD2.tare_position();
+	RD.tare_position();
+	RD2.tare_position();
+}
+
 void S_drive_chassis_tank(){
 	LD.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));
 	LD2.move(LC*(controller.get_analog(ANALOG_LEFT_Y)));

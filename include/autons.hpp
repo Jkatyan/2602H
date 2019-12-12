@@ -192,12 +192,125 @@ return:
 return after:
   -instantly
 */
+void S_reset_chassis_motors();
+/*
+Reset the position of all chassis motors to 0 (WARNING:using this function inappropriatly will cause the motors to malfunction)
+
+parameters:
+  -none
+
+constants:
+  -none
+
+return:
+  -none
+
+return after:
+  -instantly
+*/
 void S_drive_chassis_tank();
+/*
+Drive the chassis with a tank-drive (implement: call the function in the main loop, between 20 to 1000 hz)
+
+parameters:
+  -none
+
+constants:
+  -none
+
+return:
+  -none
+
+return after:
+  -instantly
+*/
 void S_drive_chassis_arcade();
+/*
+Drive the chassis with a arcade-drive (implement: call the function in the main loop, between 20 to 1000 hz)
+
+parameters:
+  -none
+
+constants:
+  -none
+
+return:
+  -none
+
+return after:
+  -instantly
+*/
 void S_moveMotor_withLimit(pros::Motor motor, int velocity, int max_value, int min_value,
 pros::controller_digital_e_t button1, pros::controller_digital_e_t button2, int limitSource);
+/*
+Set the movement to a motor according to the status of two buttons and the position and the limit-position in a specific speed
+
+parameters:
+  -pros::Motor motor - motor to be moved
+  -int velocity - the speed of the movement (from 0 to 127)
+  -int max_value - the maximum allowed position of the motor
+  -int min_value - the minimum allowed position of the motor
+  -pros::controller_digital_e_t button1 - the button to use to move the motor forward
+  -pros::controller_digital_e_t button2 - the button to use to move the motor backward
+  -int limitSource - indicate the data source of the motor's position (0 for disable limit, 1 for motor's IMU, 2 for anglemeter, 3 for encoder)
+  WARNING: the anglemeter limit source and the encoder limit source is NOT implemented yet (limitSource 2 OR limitSource 3)
+
+constants:
+  -none
+
+return:
+  -none
+
+return after:
+  -instantly
+*/
 void S_armsMotion_proceed();
+/*
+Control the arms of the robot in the following way: (implement: call the function in the main loop, between 20 to 1000 hz)
+  - button L1 and L2 - tilter
+  - button UP and DOWN - lift
+  - button R1 and R2 - intake
+
+parameters:
+  -none
+
+constants:
+  --TILTER_SPEED, TILTER_MAX_VALUE, TILTER_MIN_VALUE, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, INTAKEA_SPEED, INTAKEB_SPEED
+
+return:
+  -none
+
+return after:
+  -instantly
+*/
 void S_armsMotion_Amode_proceed();
+/*
+Control the arms of the robot in the following way: (implement: call the function in the main loop, between 20 to 1000 hz)
+  - left joystick - tilter
+  - button UP and DOWN - lift
+  - button R1 and R2 - intake
+
+parameters:
+  -none
+
+constants:
+  --LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, INTAKEA_SPEED, INTAKEB_SPEED
+
+return:
+  -none
+
+return after:
+  -instantly
+*/
+
+
+
+
+
+
+
+
+
 
 
 #endif
