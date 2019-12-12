@@ -162,7 +162,7 @@ return after: (WARNING: this is a synchronous function)
 */
 void S_zero_all_motors();
 /*
-Stop all motors from moving (WARNING:using this function inappropriatly will cause the motors to malfunction)
+Stop all motors from moving (WARNING:using this function inappropriately will cause the motors to malfunction)
 
 parameters:
   -none
@@ -178,7 +178,7 @@ return after:
 */
 void S_reset_all_motors();
 /*
-Reset the position of all motors to 0 (WARNING:using this function inappropriatly will cause the motors to malfunction)
+Reset the position of all motors to 0 (WARNING:using this function inappropriately will cause the motors to malfunction)
 
 parameters:
   -none
