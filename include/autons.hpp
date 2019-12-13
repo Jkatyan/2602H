@@ -27,6 +27,7 @@ extern PID turnPID;
 
 extern float lastSlewTime;
 extern float maxAccel;
+extern float maxAccelTray;
 extern float lastSlewRate;
 
 void A_goTo(float targetX, float targetY);
@@ -54,7 +55,27 @@ float slewRateCalculate(float desiredRate);
 /*
 A basic 1D motion profiler / Acceleration Control
 
-*desiredRate - Max acceleration allowed. (Ex. 0.16)
+*desiredRate - Input value for slewrate to be applied to.
+*/
+float motorSlew(float desiredRate, float maxAccelMotor);
+/*
+1D motion profiling for a specific motor.
+
+*desiredRate - Input value for slewrate to be applied to.
+*maxAccelMotor - Input max acceleration rate for the motor.
+*/
+void A_motorTarget(int port, PID pid, int special, int target, int time, float speed, float accel, bool slew);
+/*
+One motor target movement function w/ PID and slew.
+
+*port - Port of the motor
+*pid - Motor's PID **MAKE SURE TO INITIALIZE IN AUTON**
+*special - Get the encoder value from a specific source. 0 = IME, 1 = Potentiometer
+*target - Specified target
+*time - Allowed time in ms
+*speed - Speed coefficient
+*accel - Maximum acceletation allowed (Ex. 0.16)
+*slew - Slew enabled if true
 */
 void A_driveTarget(int target, int time, float speed);
 /*

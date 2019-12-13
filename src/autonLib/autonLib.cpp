@@ -4,8 +4,47 @@ PID drivePID;
 PID turnPID;
 
 float lastSlewTime;
-float maxAccel = 0.14;
+float maxAccel = 0.14; //Chassis
+float maxAccelMotor = 0;
 float lastSlewRate = 0;
+
+void A_motorTarget(int port, PID pid, int special, int target, int time, float speed, float accel, bool slew){
+  pros::Motor motor(port);
+  int atTarget = 0;
+  int encoder = 0;
+  int startTime = pros::millis();
+	while ((atTarget != 1) && (pros::millis()-startTime) < time) {
+  switch(special){case 0:encoder = motor.get_position();break;case 1:encoder = pot.get_value();break;default:break;}
+  float val = pidCalculate(pid, target, encoder)*speed;
+  val = (slew)? motorSlew(val, accel): val;
+  motor.move(val);
+  if(encoder == target){
+    atTarget = 1;
+  }
+  pros::delay(15);
+  }
+  motor.move(0);
+}
+
+float motorSlew (float desiredRate, float maxAccelMotor) {
+    		float deltaTime = pros::millis()-lastSlewTime;
+    		float desiredAccel = (desiredRate -lastSlewRate)/deltaTime;
+    		float addedRate;
+    		float newRate;
+
+    		if (fabs(desiredAccel) < maxAccelMotor || (desiredAccel<0 && desiredRate>0) || (desiredAccel>0 && desiredRate<0)) {
+    		    addedRate = desiredAccel*deltaTime;
+    		    newRate = addedRate+lastSlewRate;
+    		}
+    		else {
+    		    addedRate = ((desiredAccel>0)? 1: -1)*maxAccelMotor*deltaTime;
+            newRate = addedRate+lastSlewRate;
+    		}
+    	  lastSlewTime = lastSlewTime+deltaTime;
+    	  lastSlewRate = newRate;
+
+    		float returnVal = newRate;
+    		return returnVal;}
 
 void A_gyroDriveTarget(float angle, int target, int time, float speed){
   int atTarget = 0;
