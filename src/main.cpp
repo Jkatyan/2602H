@@ -23,8 +23,11 @@ void disabled() {}
 void competition_initialize() {}
 
 void autonomous() {
+	//TUNE THESE VALUES!!!
 	drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
 	turnPID = pidInit (TURNP, TURNI, TURND, 0, 100.0,5,15);
+	liftPID = pidInit (LIFTP, LIFTI, LIFTD, 0, 100.0,5,15);
+	tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
 
 	while( DISABLE_AUTONOMOUS ){ pros::delay(20); }
 

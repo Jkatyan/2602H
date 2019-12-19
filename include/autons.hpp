@@ -24,6 +24,8 @@ const int LCD_DISPLAY_FRAMERATE = 30;
 
 extern PID drivePID;
 extern PID turnPID;
+extern PID tilterPID;
+extern PID liftPID;
 
 extern float lastSlewTime;
 extern float maxAccel;

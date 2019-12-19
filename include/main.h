@@ -103,9 +103,18 @@ const char POTPORT = 'h';
 const float DRIVEP = 7;
 const float DRIVEI = 0;
 const float DRIVED = 0;
+
 const float TURNP = 40;
 const float TURNI = 0;
 const float TURND = 0;
+
+const float TILTERP = 40;
+const float TILTERI = 0;
+const float TILTERD = 0;
+
+const float LIFTP = 40;
+const float LIFTI = 0;
+const float LIFTD = 0;
 
 //Correction Constants
 const double RC = 1; //Chassis Speed Correction

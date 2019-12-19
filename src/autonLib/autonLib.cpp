@@ -2,6 +2,8 @@
 
 PID drivePID;
 PID turnPID;
+PID tilterPID;
+PID liftPID;
 
 float lastSlewTime;
 float maxAccel = 0.14; //Chassis
