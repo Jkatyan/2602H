@@ -38,9 +38,13 @@ void autonomous() {
 
 	//Auton Code Under this line!
 
-	S_chassis_move(-650, 0.5, 5000);
-	pros::delay(2500);
-	S_chassis_move(950, 0.8, 5000);
+	A_driveTarget(1000, 100000, 1);
+	/*S_chassis_move(2000, 0.5, 2500);
+	A_gyroTurn(-90,1,5000,1);
+	S_chassis_move(2000, 0.5, 2500);
+	S_chassis_move(-2000, 0.5, 2500);
+  A_gyroTurn(-90,1,5000,1);
+	S_chassis_move(-2000, 0.5, 2500);*/
 
 	for(;;){pros::delay(20);} //Forever Loop
 }
@@ -51,14 +55,14 @@ void display_debugInfo(int* d){
 		(*d)++;
 	}
 	else{
-		pros::lcd::print(0, "No debug info");
-		/*pros::lcd::print(0, "X: %f", getX());
-		pros::lcd::print(1, "Y: %f", getY());
-		pros::lcd::print(2, "Angle: %f", getAngleDegrees());
+		//pros::lcd::print(0, "No debug info");
+		//pros::lcd::print(0, "X: %f", getX());
+		//pros::lcd::print(1, "Y: %f", getY());
+		//pros::lcd::print(2, "Angle: %f", getAngleDegrees());
 		pros::lcd::print(3, "Gyro Angle: %f", (gyro.get_value()/10.0000));
-		pros::lcd::print(4, "Right Encoder: %d", rightEnc.get_value());
-		pros::lcd::print(5, "Left Encoder: %d", leftEnc.get_value());
-		pros::lcd::print(6, "Side Encoder: %d", sideEnc.get_value());*/
+		//pros::lcd::print(4, "Right Encoder: %d", rightEnc.get_value());
+		//pros::lcd::print(5, "Left Encoder: %d", leftEnc.get_value());
+		//pros::lcd::print(6, "Side Encoder: %d", sideEnc.get_value());
 		*d = 0;
 	}
 }

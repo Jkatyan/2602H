@@ -6,7 +6,7 @@ PID tilterPID;
 PID liftPID;
 
 float lastSlewTime;
-float maxAccel = 0.14; //Chassis
+float maxAccel = 0.17; //Chassis
 float maxAccelMotor = 0;
 float lastSlewRate = 0;
 
@@ -54,7 +54,7 @@ void A_gyroDriveTarget(float angle, int target, int time, float speed){
   int startTime = pros::millis();
 
   while ((atTarget != 1) && (pros::millis()-startTime) < time) {
-  driveEnc = ((abs((LD2.get_position() + LD.get_position())/2))+(abs((RD2.get_position() + RD.get_position()))/2))/2;
+  driveEnc = -((abs((LD2.get_position() + LD.get_position())/2))+(abs((RD2.get_position() + RD.get_position()))/2))/2;
 
       float val = pidCalculate(drivePID, target, -driveEnc)*speed;
       val = slewRateCalculate(val);
@@ -78,6 +78,7 @@ void A_gyroDriveTarget(float angle, int target, int time, float speed){
 }
 
 void A_gyroTurn(int target, int accuracy, int time, float speed) {
+  gyro.reset();
 	int startTime = pros::millis();
 	bool gyroAtTarget = false;
 	int repsAtTarget = 0;
@@ -182,7 +183,7 @@ void setDrive(int left, int right){
 
 void A_rotate(int degrees, int voltage){
 	int direction = abs(degrees) / degrees;
-	//gyro.reset();
+	gyro.reset();
 	setDrive(-voltage * direction, voltage * direction);
 	while(fabs(gyro.get_value()) < abs(degrees * 10) - 50){
 		pros::delay(10);
@@ -210,7 +211,7 @@ void A_driveTarget(int target, int time, float speed){
   int startTime = pros::millis();
 
     while ((atTarget != 1) && (pros::millis()-startTime) < time) {
-    driveEnc = ((abs(leftEnc.get_value()))+(abs(rightEnc.get_value())))/2;
+    driveEnc = -((abs(leftEnc.get_value()))+(abs(rightEnc.get_value())))/2;
     distance = target - driveEnc;
 
 		pros::lcd::print(1, "Drive Encoder Value: %f", driveEnc);

@@ -100,11 +100,11 @@ const char POTPORT = 'h';
 //const char PISTON_L_PORT = 'a';
 
 //PID Tuning
-const float DRIVEP = 7;
+const float DRIVEP = 0.18;
 const float DRIVEI = 0;
 const float DRIVED = 0;
 
-const float TURNP = 40;
+const float TURNP = 0.18;
 const float TURNI = 0;
 const float TURND = 0;
 
@@ -118,8 +118,8 @@ const float LIFTD = 0;
 
 //Correction Constants
 const double RC = 1; //Chassis Speed Correction
-const double LC = 1;
-const double GC = 0.95; //Gyro Correction
+const double LC = 0.97;
+const double GC = 0.92; //Gyro Correction
 
 void autonomous(void);
 void initialize(void);
