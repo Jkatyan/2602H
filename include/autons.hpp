@@ -30,6 +30,9 @@ extern float maxAccel;
 extern float maxAccelTray;
 extern float lastSlewRate;
 
+const int FILTER_BUFFER_LENGTH = 100;
+extern int* f_buf; //Filter-buffer
+
 void A_goTo(float targetX, float targetY);
 /*
 Goes to a specific coordinate using ODOMETRY
