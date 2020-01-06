@@ -10,6 +10,15 @@ float maxAccel = 0.17; //Chassis
 float maxAccelMotor = 0;
 float lastSlewRate = 0;
 
+pros::Motor aLD(LDPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aLD2(LD2PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aRD(RDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aRD2(RD2PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aINTAKEA(INTAKEAPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aINTAKEB(INTAKEBPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aTILTER(TILTERPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aLIFT(LIFTPORT, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_DEGREES);
+
 void A_motorTarget(int port, PID pid, int special, int target, int time, float speed, float accel, bool slew){
   pros::Motor motor(port);
   int atTarget = 0;
@@ -54,27 +63,29 @@ void A_gyroDriveTarget(float angle, int target, int time, float speed){
   int startTime = pros::millis();
 
   while ((atTarget != 1) && (pros::millis()-startTime) < time) {
-  driveEnc = -((abs((LD2.get_position() + LD.get_position())/2))+(abs((RD2.get_position() + RD.get_position()))/2))/2;
-
+  driveEnc = ((abs((aLD2.get_position() + aLD.get_position())/2))+(abs((aRD2.get_position() + aRD.get_position()))/2))/2;
+  // SETTINGdriveEnc = (abs(LD.get_position())+abs(RD.get_position()))/2;
       float val = pidCalculate(drivePID, target, -driveEnc)*speed;
       val = slewRateCalculate(val);
       int rightVal = val - pidCalculate(turnPID, angle, gyro.get_value()/10.0);
       int leftVal = val + pidCalculate(turnPID, angle, gyro.get_value()/10.0);
+      /*pros::lcd::print(3, "Gyro Angle: %f", (gyro.get_value()/10.0000));
+  		pros::lcd::print(4, "driveEnc: %d", driveEnc);*/
 
-        RD.move(RC*rightVal);
-        RD2.move(RC*rightVal);
-        LD.move(LC*leftVal);
-        LD2.move(LC*leftVal);
+        aRD.move(RC*rightVal);
+        aRD2.move(RC*rightVal);
+        aLD.move(LC*leftVal);
+        aLD2.move(LC*leftVal);
         if(driveEnc == target){
           atTarget = 1;
         }
       pros::delay(15);
     } //While Loop
 
-    LD.set_zero_position(driveEnc-target); LD.move(0);
-    LD2.set_zero_position(driveEnc-target); LD2.move(0);
-    RD.set_zero_position(driveEnc-target); RD.move(0);
-    RD2.set_zero_position(driveEnc-target); RD2.move(0);
+    aLD.set_zero_position(driveEnc-target); aLD.move(0);
+    aLD2.set_zero_position(driveEnc-target); aLD2.move(0);
+    aRD.set_zero_position(driveEnc-target); aRD.move(0);
+    aRD2.set_zero_position(driveEnc-target); aRD2.move(0);
 }
 
 void A_gyroTurn(int target, int accuracy, int time, float speed) {
@@ -87,10 +98,10 @@ void A_gyroTurn(int target, int accuracy, int time, float speed) {
 		// calculate the desired motor value based on the sensor value relative to the target
 		float drive = pidCalculate(turnPID, target, gyro.get_value()/10.0)*speed;
 		drive = ((fabs(gyro.get_value()/10.0-target)>180)? -1 : 1)*drive;
-    LD.move(drive);
-    LD2.move(drive);
-    RD.move(-drive);
-    RD2.move(-drive);
+    aLD.move(drive);
+    aLD2.move(drive);
+    aRD.move(-drive);
+    aRD2.move(-drive);
 		//if the sensor value is within the desired range of the target
 		if (fabs(gyro.get_value()/10.0-target) < accuracy) {
 			//if the sensor value is within the range for multiple iterations of the loop where each loop is approximately 20ms
@@ -133,10 +144,10 @@ void A_goTo(float targetX, float targetY) {
 
 		turnPower = ((fabs(targetAngle-getAngle())>M_PI)? -1: 1)*pidCalculate(turnPID, targetAngle, getAngle());
 
-		LD.move((power + turnPower)*LC);
-    RD.move((power - turnPower)*RC);
-		LD2.move((power + turnPower)*LC);
-		RD2.move((power - turnPower)*RC);
+		aLD.move((power + turnPower)*LC);
+    aRD.move((power - turnPower)*RC);
+		aLD2.move((power + turnPower)*LC);
+		aRD2.move((power - turnPower)*RC);
 
 		pros::lcd::print(0, "X: %f", getX());
 		pros::lcd::print(1, "Y: %f", getY());
@@ -175,10 +186,10 @@ float slewRateCalculate (float desiredRate) {
 }
 
 void setDrive(int left, int right){
-	LD = left;
-	LD2 = left;
-	RD = right;
-	RD2 = right;
+	aLD = left;
+	aLD2 = left;
+	aRD = right;
+	aRD2 = right;
 }
 
 void A_rotate(int degrees, int voltage){
@@ -211,21 +222,23 @@ void A_driveTarget(int target, int time, float speed){
   int startTime = pros::millis();
 
     while ((atTarget != 1) && (pros::millis()-startTime) < time) {
-    driveEnc = -((abs(leftEnc.get_value()))+(abs(rightEnc.get_value())))/2;
+    driveEnc = ((abs(aLD.get_position()))+(abs(aRD.get_position())))/2;
     distance = target - driveEnc;
 
 		pros::lcd::print(1, "Drive Encoder Value: %f", driveEnc);
 		pros::lcd::print(2, "Distance from Target: %f", distance);
+    pros::lcd::print(4, "Right Encoder: %d", aRD.get_position());
+		pros::lcd::print(5, "Left Encoder: %d", aLD.get_position());
 
     float val = pidCalculate(drivePID, target, driveEnc)*speed;
     val = slewRateCalculate(val);
     int rightVal = val;
     int leftVal = val;
 
-    RD.move(RC*rightVal);
-    RD2.move(RC*rightVal);
-    LD.move(LC*leftVal);
-    LD2.move(LC*leftVal);
+    aRD.move(RC*rightVal);
+    aRD2.move(RC*rightVal);
+    aLD.move(LC*leftVal);
+    aLD2.move(LC*leftVal);
     if(driveEnc == target){
        atTarget = 1;
        pros::lcd::print(2, "Distance from Target: %f", distance);
