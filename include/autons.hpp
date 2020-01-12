@@ -6,11 +6,11 @@
 const bool DISABLE_AUTONOMOUS = false;
 
 //S_armsMotion_proceed{
-const int TILTER_MAX_VALUE = 0;
-const int TILTER_MIN_VALUE = -2950;
+const int TILTER_MAX_VALUE = 3640;
+const int TILTER_MIN_VALUE = 1280;
 const int TILTER_SPEED = 127;
-const int LIFT_MAX_VALUE = 1300;
-const int LIFT_MIN_VALUE = 0;
+const int LIFT_MAX_VALUE = 1000000;
+const int LIFT_MIN_VALUE = -1000000;
 const int LIFT_SPEED = 127;
 const int INTAKEA_SPEED = 127;
 const int INTAKEB_SPEED = 127;

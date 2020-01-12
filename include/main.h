@@ -87,16 +87,16 @@ extern pros::ADIEncoder leftEncOdom;
 extern pros::ADIEncoder rightEncOdom;
 
 //Motor Ports
-const int LDPORT = 1;
-const int LD2PORT = 18;
-const int RDPORT = 2;
+const int LDPORT = 11;
+const int LD2PORT = 13;
+const int RDPORT = 20;
 const int RD2PORT = 19;
-const int INTAKEAPORT = 5;
-const int INTAKEBPORT = 9;
-const int LIFTPORT = 6;
-const int TILTERPORT = 7;
-const char GYROPORT = 'c';
-const char POTPORT = 'h';
+const int INTAKEAPORT = 1;
+const int INTAKEBPORT = 2;
+const int LIFTPORT = 7;
+const int TILTERPORT = 10;
+const char GYROPORT = 'x';
+const char POTPORT = 'c';
 //const char PISTON_L_PORT = 'a';
 
 //PID Tuning
@@ -108,7 +108,7 @@ const float TURNP = 0.18;
 const float TURNI = 0;
 const float TURND = 0;
 
-const float TILTERP = 40;
+const float TILTERP = 0.4;
 const float TILTERI = 0;
 const float TILTERD = 0;
 

@@ -17,6 +17,18 @@ void initialize() {
 void disabled() {}
 void competition_initialize() {}
 
+using namespace okapi;
+int OLD = LDPORT;
+int OLD2 = LD2PORT * -1;
+int ORD = RDPORT * -1;
+int ORD2 = RD2PORT;
+auto drive = ChassisControllerFactory::create(
+	{OLD2,OLD},
+	{-ORD2,-ORD},
+	AbstractMotor::gearset::green,
+	{3.25_in, 10_in}
+);
+
 void autonomous() {
 	//TUNE THESE VALUES!!
 	drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
@@ -66,7 +78,7 @@ void display_debugInfo(int* d){
 
 void opcontrol() {
 	int display_update_count = 0;
-
+	int macroTrue = 0;
 	LD.set_brake_mode(MOTOR_BRAKE_COAST);
 	LD2.set_brake_mode(MOTOR_BRAKE_COAST);
 	RD.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -75,10 +87,35 @@ void opcontrol() {
 	//pros::ADIDigitalOut piston (8);
 
 	while(true){
+		tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
 		while ( /*( !second_controller.get_digital(DIGITAL_R1) ) &&*/ ( !controller.get_digital(DIGITAL_A) ) ) {
 			S_drive_chassis_tank();
 			S_armsMotion_proceed();
-
+			if(controller.get_digital(DIGITAL_X)){
+				macroTrue = 1;
+			}
+			if(macroTrue == 1){
+				drive.setMaxVelocity(7);
+				INTAKEA.move(-20);
+				INTAKEB.move(-20);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 6000, 0.5, 0.02, false);
+				INTAKEA.move(0);
+				INTAKEB.move(0);
+				drive.moveDistance(0.22_ft);
+				drive.waitUntilSettled();
+				pros::delay(250);
+				drive.setMaxVelocity(40);
+				INTAKEA.move(-45);
+				INTAKEB.move(-45);
+				drive.moveDistanceAsync(-0.4_ft);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 5000, 0.6, 0.03, false);
+				INTAKEA.move(-45);
+				INTAKEB.move(-45);
+				drive.waitUntilSettled();
+				INTAKEA.move(0);
+				INTAKEB.move(0);
+				macroTrue = 0;
+			}
 			updatePosition();
 			display_debugInfo(&display_update_count);
 
