@@ -22,12 +22,14 @@ int OLD = LDPORT;
 int OLD2 = LD2PORT * -1;
 int ORD = RDPORT * -1;
 int ORD2 = RD2PORT;
+int OLIFT = LIFTPORT;
 auto drive = ChassisControllerFactory::create(
 	{OLD2,OLD},
 	{-ORD2,-ORD},
 	AbstractMotor::gearset::green,
 	{3.25_in, 10_in}
 );
+auto liftController = AsyncControllerFactory::posIntegrated(OLIFT);
 
 void autonomous() {
 	//TUNE THESE VALUES!!
@@ -78,33 +80,46 @@ void display_debugInfo(int* d){
 
 void opcontrol() {
 	int display_update_count = 0;
-	int macroTrue = 0;
+	int macroTrue = 0; int macroTrueArmHigh = 0; int macroTrueArmLow = 0; int macroTrueArmMid = 0; int macroArm = 0;
 	LD.set_brake_mode(MOTOR_BRAKE_COAST);
 	LD2.set_brake_mode(MOTOR_BRAKE_COAST);
 	RD.set_brake_mode(MOTOR_BRAKE_COAST);
 	RD2.set_brake_mode(MOTOR_BRAKE_COAST);
 
 	//pros::ADIDigitalOut piston (8);
-
+Controller masterController;
 	while(true){
 		tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
 		while ( /*( !second_controller.get_digital(DIGITAL_R1) ) &&*/ ( !controller.get_digital(DIGITAL_A) ) ) {
-			S_drive_chassis_tank();
+			drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
 			S_armsMotion_proceed();
 			if(controller.get_digital(DIGITAL_X)){
 				macroTrue = 1;
 			}
+			if(controller.get_digital(DIGITAL_UP)){
+				macroTrueArmHigh = 1;
+				macroArm = 1;
+			}
+			if(controller.get_digital(DIGITAL_RIGHT)){
+				macroTrueArmMid = 1;
+				macroArm = 1;
+			}
+			if(controller.get_digital(DIGITAL_DOWN)){
+				macroTrueArmLow = 1;
+				macroArm = 1;
+			}
 			if(macroTrue == 1){
 				drive.setMaxVelocity(7);
-				INTAKEA.move(-20);
-				INTAKEB.move(-20);
+				drive.moveDistanceAsync(0.2_ft);
+				INTAKEA.move(-5);
+				INTAKEB.move(-5);
 				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 6000, 0.5, 0.02, false);
+				drive.waitUntilSettled();
 				INTAKEA.move(0);
 				INTAKEB.move(0);
-				drive.moveDistance(0.22_ft);
-				drive.waitUntilSettled();
+				drive.moveDistance(0.35_ft);
 				pros::delay(250);
-				drive.setMaxVelocity(40);
+				drive.setMaxVelocity(30);
 				INTAKEA.move(-45);
 				INTAKEB.move(-45);
 				drive.moveDistanceAsync(-0.4_ft);
@@ -116,6 +131,23 @@ void opcontrol() {
 				INTAKEB.move(0);
 				macroTrue = 0;
 			}
+			if(macroArm == 0){
+				liftController.setTarget(0);
+			}
+			else if(macroArm == 1){
+			if(macroTrueArmLow == 1){
+				liftController.setTarget(0);
+				macroTrueArmLow = 0;
+			}
+			if(macroTrueArmMid == 1){
+				liftController.setTarget(-2000);
+				macroTrueArmMid = 0;
+			}
+			if(macroTrueArmHigh == 1){
+				liftController.setTarget(-4000);
+				macroTrueArmHigh = 0;
+			}
+		}
 			updatePosition();
 			display_debugInfo(&display_update_count);
 

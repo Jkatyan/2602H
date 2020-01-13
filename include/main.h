@@ -112,7 +112,7 @@ const float TILTERP = 0.4;
 const float TILTERI = 0;
 const float TILTERD = 0;
 
-const float LIFTP = 40;
+const float LIFTP = 0.01;
 const float LIFTI = 0;
 const float LIFTD = 0;
 
