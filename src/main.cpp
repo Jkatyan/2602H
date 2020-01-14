@@ -139,6 +139,9 @@ Controller masterController;
 				macroTrueArmLow = 1;
 				macroArm = 1;
 			}
+			if(controller.get_digital(DIGITAL_LEFT)){
+				macroArm = 0;
+			}
 		/*	if(macroTrue == 1){
 				drive.setMaxVelocity(7);
 				drive.moveDistanceAsync(0.1_ft);
