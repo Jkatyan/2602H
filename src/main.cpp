@@ -47,8 +47,12 @@ void autonomous() {
 
 	//Auton Code Under this line!
 
-	A_driveTarget(1000, 100000, 1);
-
+	//A_driveTarget(1000, 100000, 1);
+	INTAKEA.move(127);
+	INTAKEB.move(127);
+	drive.moveDistance(0.5_ft);
+	A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 500, 1 , 0.03, false);
+	drive.moveDistanceAsync(4_ft);
 	/*S_chassis_move(2000, 0.5, 2500);
 	A_gyroTurn(-90,1,5000,1);
 	S_chassis_move(2000, 0.5, 2500);
@@ -91,10 +95,35 @@ Controller masterController;
 	while(true){
 		tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
 		while ( /*( !second_controller.get_digital(DIGITAL_R1) ) &&*/ ( !controller.get_digital(DIGITAL_A) ) ) {
+			S_moveMotor_withLimit(LIFT, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, DIGITAL_L1, DIGITAL_L2, 1);
+			S_moveMotor_withLimit(INTAKEA, INTAKEA_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
+			S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
+			S_moveMotor_withLimit(TILTER, TILTER_SPEED, 1280, 3650, DIGITAL_A, DIGITAL_B, 2);
 			drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
-			S_armsMotion_proceed();
 			if(controller.get_digital(DIGITAL_X)){
-				macroTrue = 1;
+				/*macroTrue = 1;*/
+				drive.setMaxVelocity(7);
+				INTAKEA.move(-5);
+				INTAKEB.move(-5);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 1675, 650, 0.7, 0.02, false);
+				drive.moveDistanceAsync(0.02_ft);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 2070, 650, 0.7, 0.02, false);
+				drive.moveDistanceAsync(0.02_ft);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 650, 0.7, 0.02, false);
+				drive.moveDistanceAsync(0.02_ft);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 2860, 650, 0.7, 0.02, false);
+				drive.moveDistanceAsync(0.02_ft);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 3255, 650, 0.7, 0.02, false);
+				drive.moveDistanceAsync(0.02_ft);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 650, 0.7, 0.02, false);
+				drive.moveDistanceAsync(0.02_ft);
+				pros::delay(20);
+				drive.stop();
+				drive.setMaxVelocity(30);
+				INTAKEA.move(-45);
+				INTAKEB.move(-45);
+				drive.moveDistanceAsync(-0.3_ft);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 5000, 0.6, 0.03, false);
 			}
 			if(controller.get_digital(DIGITAL_UP)){
 				macroTrueArmHigh = 1;
@@ -108,16 +137,16 @@ Controller masterController;
 				macroTrueArmLow = 1;
 				macroArm = 1;
 			}
-			if(macroTrue == 1){
+		/*	if(macroTrue == 1){
 				drive.setMaxVelocity(7);
-				drive.moveDistanceAsync(0.2_ft);
+				drive.moveDistanceAsync(0.1_ft);
 				INTAKEA.move(-5);
 				INTAKEB.move(-5);
 				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 6000, 0.5, 0.02, false);
-				drive.waitUntilSettled();
+				//drive.waitUntilSettled();
 				INTAKEA.move(0);
 				INTAKEB.move(0);
-				drive.moveDistance(0.35_ft);
+				drive.moveDistance(0.2_ft);
 				pros::delay(250);
 				drive.setMaxVelocity(30);
 				INTAKEA.move(-45);
@@ -126,13 +155,15 @@ Controller masterController;
 				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 5000, 0.6, 0.03, false);
 				INTAKEA.move(-45);
 				INTAKEB.move(-45);
-				drive.waitUntilSettled();
+				//drive.waitUntilSettled();
 				INTAKEA.move(0);
 				INTAKEB.move(0);
 				macroTrue = 0;
-			}
+			}*/
 			if(macroArm == 0){
-				liftController.setTarget(0);
+				if(LIFT.get_position() != 0){
+				liftController.setTarget(0);}
+				liftController.stop();
 			}
 			else if(macroArm == 1){
 			if(macroTrueArmLow == 1){
@@ -144,7 +175,7 @@ Controller masterController;
 				macroTrueArmMid = 0;
 			}
 			if(macroTrueArmHigh == 1){
-				liftController.setTarget(-4000);
+				liftController.setTarget(-3000);
 				macroTrueArmHigh = 0;
 			}
 		}

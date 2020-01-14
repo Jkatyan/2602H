@@ -150,7 +150,6 @@ void S_moveMotor_withLimit(pros::Motor motor, int velocity, int max_value, int m
 
 void S_armsMotion_proceed(){
 	//S_moveMotor_withLimit(TILTER, TILTER_SPEED, TILTER_MAX_VALUE, TILTER_MIN_VALUE, DIGITAL_L1, DIGITAL_L2, 1);
-	//S_moveMotor_withLimit(LIFT, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, DIGITAL_L1, DIGITAL_L2, 1);
 	S_moveMotor_withLimit(INTAKEA, INTAKEA_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 	S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 }
