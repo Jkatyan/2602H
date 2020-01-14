@@ -53,6 +53,8 @@ void autonomous() {
 	drive.moveDistance(0.5_ft);
 	A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 500, 1 , 0.03, false);
 	drive.moveDistanceAsync(4_ft);
+	drive.waitUntilSettled();
+	drive.moveDistanceAsync(-4_ft);
 	/*S_chassis_move(2000, 0.5, 2500);
 	A_gyroTurn(-90,1,5000,1);
 	S_chassis_move(2000, 0.5, 2500);
