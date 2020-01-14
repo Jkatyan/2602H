@@ -97,7 +97,18 @@ Controller masterController;
 	while(true){
 		tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
 		while ( /*( !second_controller.get_digital(DIGITAL_R1) ) &&*/ ( !controller.get_digital(DIGITAL_A) ) ) {
-			S_moveMotor_withLimit(LIFT, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, DIGITAL_L1, DIGITAL_L2, 1);
+			//S_moveMotor_withLimit(LIFT, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, DIGITAL_L1, DIGITAL_L2, 1);
+			if(controller.get_digital(DIGITAL_L1)){
+				LIFT.move(-127);
+				macroArm = 1;
+			} else 	if(controller.get_digital(DIGITAL_L2)){
+					LIFT.move(127);
+				macroArm = 1;
+			}
+			else {
+				LIFT.move(0);
+				liftController.stop();
+			}
 			S_moveMotor_withLimit(INTAKEA, INTAKEA_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 			S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 			S_moveMotor_withLimit(TILTER, TILTER_SPEED, 1280, 3650, DIGITAL_A, DIGITAL_B, 2);
