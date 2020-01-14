@@ -46,7 +46,7 @@ void autonomous() {
 	RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	//Auton Code Under this line!
-
+	drive.setMaxVelocity(100);
 	//A_driveTarget(1000, 100000, 1);
 	INTAKEA.move(127);
 	INTAKEB.move(127);
