@@ -105,18 +105,11 @@ Controller masterController;
 				drive.setMaxVelocity(7);
 				INTAKEA.move(-5);
 				INTAKEB.move(-5);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 1675, 650, 0.7, 0.02, false);
-				drive.moveDistanceAsync(0.02_ft);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 2070, 650, 0.7, 0.02, false);
-				drive.moveDistanceAsync(0.02_ft);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 650, 0.7, 0.02, false);
-				drive.moveDistanceAsync(0.02_ft);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 2860, 650, 0.7, 0.02, false);
-				drive.moveDistanceAsync(0.02_ft);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 3255, 650, 0.7, 0.02, false);
-				drive.moveDistanceAsync(0.02_ft);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 650, 0.7, 0.02, false);
-				drive.moveDistanceAsync(0.02_ft);
+				LD.set_brake_mode(MOTOR_BRAKE_HOLD);
+				LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
+				RD.set_brake_mode(MOTOR_BRAKE_HOLD);
+				RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 4000, 0.7, 0.02, false);
 				pros::delay(20);
 				drive.stop();
 				drive.setMaxVelocity(30);
@@ -124,6 +117,15 @@ Controller masterController;
 				INTAKEB.move(-45);
 				drive.moveDistanceAsync(-0.3_ft);
 				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 5000, 0.6, 0.03, false);
+				LD.set_brake_mode(MOTOR_BRAKE_COAST);
+				LD2.set_brake_mode(MOTOR_BRAKE_COAST);
+				RD.set_brake_mode(MOTOR_BRAKE_COAST);
+				RD2.set_brake_mode(MOTOR_BRAKE_COAST);
+			} else {
+				LD.set_brake_mode(MOTOR_BRAKE_HOLD);
+				LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
+				RD.set_brake_mode(MOTOR_BRAKE_HOLD);
+				RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
 			}
 			if(controller.get_digital(DIGITAL_UP)){
 				macroTrueArmHigh = 1;
@@ -161,9 +163,10 @@ Controller masterController;
 				macroTrue = 0;
 			}*/
 			if(macroArm == 0){
-				if(LIFT.get_position() != 0){
-				liftController.setTarget(0);}
-				liftController.stop();
+				if(!(controller.get_digital(DIGITAL_L1)||controller.get_digital(DIGITAL_L2))){
+				if(LIFT.get_position() <= 0){
+				LIFT.move(127);}
+				liftController.stop();}
 			}
 			else if(macroArm == 1){
 			if(macroTrueArmLow == 1){
@@ -171,7 +174,7 @@ Controller masterController;
 				macroTrueArmLow = 0;
 			}
 			if(macroTrueArmMid == 1){
-				liftController.setTarget(-2000);
+				liftController.setTarget(-2100);
 				macroTrueArmMid = 0;
 			}
 			if(macroTrueArmHigh == 1){
