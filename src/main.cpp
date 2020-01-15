@@ -86,24 +86,18 @@ void display_debugInfo(int* d){
 
 void opcontrol() {
 	int display_update_count = 0;
-	int macroTrue = 0; int macroTrueArmHigh = 0; int macroTrueArmLow = 0; int macroTrueArmMid = 0; int macroArm = 0;
+	int macroTrueArmHigh = 0; int macroTrueArmLow = 0; int macroTrueArmMid = 0; int macroArm = 0;
 	LD.set_brake_mode(MOTOR_BRAKE_COAST);
 	LD2.set_brake_mode(MOTOR_BRAKE_COAST);
 	RD.set_brake_mode(MOTOR_BRAKE_COAST);
 	RD2.set_brake_mode(MOTOR_BRAKE_COAST);
-
-	//pros::ADIDigitalOut piston (8);
-Controller masterController;
-	while(true){
-		tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
-		while ( /*( !second_controller.get_digital(DIGITAL_R1) ) &&*/ ( !controller.get_digital(DIGITAL_A) ) ) {
-			//S_moveMotor_withLimit(LIFT, LIFT_SPEED, LIFT_MAX_VALUE, LIFT_MIN_VALUE, DIGITAL_L1, DIGITAL_L2, 1);
+	Controller masterController;
+	tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
+		while (true){
 			if(controller.get_digital(DIGITAL_L1)){
 				LIFT.move(-127);
-				macroArm = 1;
 			} else 	if(controller.get_digital(DIGITAL_L2)){
-					LIFT.move(127);
-				macroArm = 1;
+				LIFT.move(127);
 			}
 			else {
 				LIFT.move(0);
@@ -113,9 +107,8 @@ Controller masterController;
 			S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 			S_moveMotor_withLimit(TILTER, TILTER_SPEED, 1280, 3650, DIGITAL_A, DIGITAL_B, 2);
 			drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
-			if(controller.get_digital(DIGITAL_X)){
-				/*macroTrue = 1;*/
-				drive.setMaxVelocity(7);
+
+			if(controller.get_digital(DIGITAL_X)){ //Bring Up Stack
 				INTAKEA.move(-5);
 				INTAKEB.move(-5);
 				LD.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -125,66 +118,28 @@ Controller masterController;
 				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 4000, 0.7, 0.02, false);
 				pros::delay(20);
 				drive.stop();
-				drive.setMaxVelocity(30);
-				INTAKEA.move(-45);
-				INTAKEB.move(-45);
-				drive.moveDistanceAsync(-0.3_ft);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 5000, 0.6, 0.03, false);
+			}
+			else
+			{
 				LD.set_brake_mode(MOTOR_BRAKE_COAST);
 				LD2.set_brake_mode(MOTOR_BRAKE_COAST);
 				RD.set_brake_mode(MOTOR_BRAKE_COAST);
 				RD2.set_brake_mode(MOTOR_BRAKE_COAST);
-			} else {
-				LD.set_brake_mode(MOTOR_BRAKE_HOLD);
-				LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
-				RD.set_brake_mode(MOTOR_BRAKE_HOLD);
-				RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
 			}
+			/*
+			-If driving backwards and tray is > 90, intake out 
+			-Add button to bring down tray
+			*/
 			if(controller.get_digital(DIGITAL_UP)){
 				macroTrueArmHigh = 1;
-				macroArm = 1;
 			}
 			if(controller.get_digital(DIGITAL_RIGHT)){
 				macroTrueArmMid = 1;
-				macroArm = 1;
 			}
 			if(controller.get_digital(DIGITAL_DOWN)){
 				macroTrueArmLow = 1;
-				macroArm = 1;
 			}
-			if(controller.get_digital(DIGITAL_LEFT)){
-				macroArm = 0;
-			}
-		/*	if(macroTrue == 1){
-				drive.setMaxVelocity(7);
-				drive.moveDistanceAsync(0.1_ft);
-				INTAKEA.move(-5);
-				INTAKEB.move(-5);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 6000, 0.5, 0.02, false);
-				//drive.waitUntilSettled();
-				INTAKEA.move(0);
-				INTAKEB.move(0);
-				drive.moveDistance(0.2_ft);
-				pros::delay(250);
-				drive.setMaxVelocity(30);
-				INTAKEA.move(-45);
-				INTAKEB.move(-45);
-				drive.moveDistanceAsync(-0.4_ft);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 5000, 0.6, 0.03, false);
-				INTAKEA.move(-45);
-				INTAKEB.move(-45);
-				//drive.waitUntilSettled();
-				INTAKEA.move(0);
-				INTAKEB.move(0);
-				macroTrue = 0;
-			}*/
-			if(macroArm == 0){
-				if(!(controller.get_digital(DIGITAL_L1)||controller.get_digital(DIGITAL_L2))){
-				if(LIFT.get_position() <= 0){
-				LIFT.move(127);}
-				liftController.stop();}
-			}
-			else if(macroArm == 1){
+
 			if(macroTrueArmLow == 1){
 				liftController.setTarget(0);
 				macroTrueArmLow = 0;
@@ -197,16 +152,7 @@ Controller masterController;
 				liftController.setTarget(-3000);
 				macroTrueArmHigh = 0;
 			}
-		}
-			updatePosition();
-			display_debugInfo(&display_update_count);
 
-			pros::delay(10);
-		}
-		S_zero_all_motors();
-		while( /*second_controller.get_digital(DIGITAL_R1) ||*/ controller.get_digital(DIGITAL_A) ){
-			S_drive_chassis_arcade();
-			S_armsMotion_Amode_proceed();
 
 			updatePosition();
 			display_debugInfo(&display_update_count);
@@ -214,5 +160,4 @@ Controller masterController;
 			pros::delay(10);
 		}
 		S_zero_all_motors();
-	}
 }
