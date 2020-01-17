@@ -1,6 +1,13 @@
 #include "main.h"
 #include "autons.hpp"
 
+void setDriveBrakes(pros::motor_brake_mode_e_t mode){
+  LD.set_brake_mode(mode);
+  LD2.set_brake_mode(mode);
+  RD.set_brake_mode(mode);
+  RD2.set_brake_mode(mode);
+}
+
 void initialize() {
 	pros::lcd::initialize();
 	LIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -40,10 +47,7 @@ void autonomous() {
 
 	while( DISABLE_AUTONOMOUS ){ pros::delay(20); }
 
-	LD.set_brake_mode(MOTOR_BRAKE_HOLD);
-	LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
-	RD.set_brake_mode(MOTOR_BRAKE_HOLD);
-	RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
+	setDriveBrakes(MOTOR_BRAKE_HOLD);
 
 	//Auton Code Under this line!
 	drive.setMaxVelocity(100);
@@ -113,10 +117,7 @@ void opcontrol() {
 	int display_update_count = 0;
 	int macroTrueArmHigh = 0; int macroTrueArmLow = 0; int macroTrueArmMid = 0; int macroArm = 0;
 	int armStart = LIFT.get_position();
-	LD.set_brake_mode(MOTOR_BRAKE_COAST);
-	LD2.set_brake_mode(MOTOR_BRAKE_COAST);
-	RD.set_brake_mode(MOTOR_BRAKE_COAST);
-	RD2.set_brake_mode(MOTOR_BRAKE_COAST);
+	setDriveBrakes(MOTOR_BRAKE_COAST);
 	Controller masterController;
 	tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
 		while (true){
@@ -150,10 +151,7 @@ void opcontrol() {
 				drive.setMaxVelocity(200);
 				INTAKEA.move(-5);
 				INTAKEB.move(-5);
-				LD.set_brake_mode(MOTOR_BRAKE_HOLD);
-				LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
-				RD.set_brake_mode(MOTOR_BRAKE_HOLD);
-				RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
+				setDriveBrakes(MOTOR_BRAKE_HOLD);
 				A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1500, 1, 0.02, false);
 				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 1500, 0.7, 0.02, false);
 				pros::delay(20);
@@ -164,10 +162,7 @@ void opcontrol() {
 					drive.moveDistanceAsync(-0.4_ft);
 					INTAKEA.move(-45);
 					INTAKEB.move(-45);
-					LD.set_brake_mode(MOTOR_BRAKE_COAST);
-					LD2.set_brake_mode(MOTOR_BRAKE_COAST);
-					RD.set_brake_mode(MOTOR_BRAKE_COAST);
-					RD2.set_brake_mode(MOTOR_BRAKE_COAST);
+				  setDriveBrakes(MOTOR_BRAKE_COAST);
 					A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1000, 0.7, 0.02, false);
 					A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 1000, 1, 0.02, false);
 					drive.stop();
@@ -175,28 +170,8 @@ void opcontrol() {
 			else
 			{
 				drive.setMaxVelocity(200);
-				LD.set_brake_mode(MOTOR_BRAKE_COAST);
-				LD2.set_brake_mode(MOTOR_BRAKE_COAST);
-				RD.set_brake_mode(MOTOR_BRAKE_COAST);
-				RD2.set_brake_mode(MOTOR_BRAKE_COAST);
+				setDriveBrakes(MOTOR_BRAKE_COAST);
 			}
-
-			/*if((pot.get_value() >= 3500) && ((controller.get_analog(ANALOG_LEFT_Y) < -10) && (controller.get_analog(ANALOG_RIGHT_Y) < -10))){
-				drive.setMaxVelocity(30);
-				drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
-				INTAKEA.move(-45);
-				INTAKEB.move(-45);
-			}
-			else if((pot.get_value() >= 3500) && ((controller.get_analog(ANALOG_LEFT_Y) > -10) || (controller.get_analog(ANALOG_RIGHT_Y) > -10))){
-				drive.setMaxVelocity(30);
-				drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
-				INTAKEA.move(0);
-				INTAKEB.move(0);
-			}
-			else if((pot.get_value() < 3500)){
-				drive.setMaxVelocity(200);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 500, 1, 0.02, false);
-			*/
 
 			if(controller.get_digital(DIGITAL_RIGHT)){
 				macroTrueArmLow = 1;
@@ -207,10 +182,10 @@ void opcontrol() {
 				macroTrueArmLow = 0;
 			}
 
-			updatePosition();
-			display_debugInfo(&display_update_count);
+			//updatePosition();
+			//display_debugInfo(&display_update_count);
 
-			pros::delay(10);
+			pros::delay(20);
 		}
 		S_zero_all_motors();
 }
