@@ -116,7 +116,6 @@ void display_debugInfo(int* d){
 void opcontrol() {
 	int display_update_count = 0;
 	int macroTrueArmHigh = 0; int macroTrueArmLow = 0; int macroTrueArmMid = 0; int macroArm = 0;
-	int armStart = LIFT.get_position();
 	setDriveBrakes(MOTOR_BRAKE_COAST);
 	Controller masterController;
 	tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
@@ -125,7 +124,7 @@ void opcontrol() {
 			if(controller.get_digital(DIGITAL_L1)){
 				LIFT.move(-127);
 			} else 	if(controller.get_digital(DIGITAL_L2)){
-				if(LIFT.get_position() <= armStart){
+				if(LIFT.get_position() <= 0){
 				LIFT.move(127);
 			}
 			}
@@ -152,8 +151,8 @@ void opcontrol() {
 				INTAKEA.move(-5);
 				INTAKEB.move(-5);
 				setDriveBrakes(MOTOR_BRAKE_HOLD);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1500, 1, 0.02, false);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 1500, 0.7, 0.02, false);
+				//A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1500, 1, 0.02, false);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 2500, 0.7, 0.02, false);
 				pros::delay(20);
 				drive.stop();
 			}
