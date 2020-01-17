@@ -112,6 +112,7 @@ void display_debugInfo(int* d){
 void opcontrol() {
 	int display_update_count = 0;
 	int macroTrueArmHigh = 0; int macroTrueArmLow = 0; int macroTrueArmMid = 0; int macroArm = 0;
+	int armStart = LIFT.get_position();
 	LD.set_brake_mode(MOTOR_BRAKE_COAST);
 	LD2.set_brake_mode(MOTOR_BRAKE_COAST);
 	RD.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -123,23 +124,26 @@ void opcontrol() {
 			if(controller.get_digital(DIGITAL_L1)){
 				LIFT.move(-127);
 			} else 	if(controller.get_digital(DIGITAL_L2)){
+				if(LIFT.get_position() <= armStart){
 				LIFT.move(127);
+			}
 			}
 			else {
 				LIFT.move(0);
 				liftController.stop();
 			}
-			if(controller.get_digital(DIGITAL_A)){
+			if(controller.get_digital(DIGITAL_UP)){
 				TILTER.move(-127);
-			} else 	if(controller.get_digital(DIGITAL_B)){
+			} else if(controller.get_digital(DIGITAL_DOWN)){
+				if(pot.get_value() >= 1280){
 				TILTER.move(127);
+			}
 			}
 			else {
 				TILTER.move(0);
 			}
 			S_moveMotor_withLimit(INTAKEA, INTAKEA_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 			S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
-			S_moveMotor_withLimit(TILTER, TILTER_SPEED, 1280, 3650, DIGITAL_A, DIGITAL_B, 2);
 			drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
 
 			if(controller.get_digital(DIGITAL_X)){ //Bring Up Stack
@@ -150,10 +154,24 @@ void opcontrol() {
 				LD2.set_brake_mode(MOTOR_BRAKE_HOLD);
 				RD.set_brake_mode(MOTOR_BRAKE_HOLD);
 				RD2.set_brake_mode(MOTOR_BRAKE_HOLD);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 4000, 0.7, 0.02, false);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1500, 1, 0.02, false);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 1500, 0.7, 0.02, false);
 				pros::delay(20);
 				drive.stop();
 			}
+			else if(controller.get_digital(DIGITAL_Y)){ //Bring Up Stack
+					drive.setMaxVelocity(30);
+					drive.moveDistanceAsync(-0.4_ft);
+					INTAKEA.move(-45);
+					INTAKEB.move(-45);
+					LD.set_brake_mode(MOTOR_BRAKE_COAST);
+					LD2.set_brake_mode(MOTOR_BRAKE_COAST);
+					RD.set_brake_mode(MOTOR_BRAKE_COAST);
+					RD2.set_brake_mode(MOTOR_BRAKE_COAST);
+					A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1000, 0.7, 0.02, false);
+					A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 1000, 1, 0.02, false);
+					drive.stop();
+				}
 			else
 			{
 				drive.setMaxVelocity(200);
@@ -163,7 +181,7 @@ void opcontrol() {
 				RD2.set_brake_mode(MOTOR_BRAKE_COAST);
 			}
 
-			if((pot.get_value() >= 3500) && ((controller.get_analog(ANALOG_LEFT_Y) < -10) && (controller.get_analog(ANALOG_RIGHT_Y) < -10))){
+			/*if((pot.get_value() >= 3500) && ((controller.get_analog(ANALOG_LEFT_Y) < -10) && (controller.get_analog(ANALOG_RIGHT_Y) < -10))){
 				drive.setMaxVelocity(30);
 				drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
 				INTAKEA.move(-45);
@@ -178,15 +196,9 @@ void opcontrol() {
 			else if((pot.get_value() < 3500)){
 				drive.setMaxVelocity(200);
 				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 500, 1, 0.02, false);
-			}
+			*/
 
-			if(controller.get_digital(DIGITAL_UP)){
-				macroTrueArmHigh = 1;
-			}
 			if(controller.get_digital(DIGITAL_RIGHT)){
-				macroTrueArmMid = 1;
-			}
-			if(controller.get_digital(DIGITAL_DOWN)){
 				macroTrueArmLow = 1;
 			}
 
@@ -194,15 +206,6 @@ void opcontrol() {
 				liftController.setTarget(0);
 				macroTrueArmLow = 0;
 			}
-			if(macroTrueArmMid == 1){
-				liftController.setTarget(-2100);
-				macroTrueArmMid = 0;
-			}
-			if(macroTrueArmHigh == 1){
-				liftController.setTarget(-3000);
-				macroTrueArmHigh = 0;
-			}
-
 
 			updatePosition();
 			display_debugInfo(&display_update_count);
