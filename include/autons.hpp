@@ -35,6 +35,8 @@ extern float lastSlewRate;
 const int FILTER_BUFFER_LENGTH = 100;
 extern int* f_buf; //Filter-buffer
 
+void A_driveCurve(int targetRight, int targetLeft, int time, float speed);
+void A_driveTargetBack(int target, int time, float speed);
 void A_goTo(float targetX, float targetY);
 /*
 Goes to a specific coordinate using ODOMETRY

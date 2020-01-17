@@ -47,14 +47,39 @@ void autonomous() {
 
 	//Auton Code Under this line!
 	drive.setMaxVelocity(100);
-	//A_driveTarget(1000, 100000, 1);
 	INTAKEA.move(127);
 	INTAKEB.move(127);
+A_driveTarget(1200, 3000, 0.6);
+A_driveTargetBack(400, 2000, 0.6);
+S_chassis_turn(200, 0.4, 3000);
+pros::delay(500);
+S_reset_all_motors();
+INTAKEA.move(-25);
+INTAKEB.move(-25);
+drive.moveDistanceAsync(1_ft);
+drive.waitUntilSettled();
+A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 3000, 1, 0.02, false);
+
+drive.setMaxVelocity(100);
+INTAKEA.move(-50);
+INTAKEB.move(-50);
+drive.moveDistanceAsync(-0.5_ft);
+drive.waitUntilSettled();
+drive.stop();
+
+/*S_chassis_turn(55, 0.4, 1000);
+S_reset_all_motors();
+A_driveTarget(1000, 2000, 0.6);
+A_driveTargetBack(0, 2000, 0.6);
+S_chassis_turn(120, 0.4, 2000);*/
+
+	//A_driveTarget(1000, 100000, 1);
+/*
 	drive.moveDistance(0.5_ft);
 	A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 500, 1 , 0.03, false);
 	drive.moveDistanceAsync(4_ft);
 	drive.waitUntilSettled();
-	drive.moveDistanceAsync(-4_ft);
+	drive.moveDistanceAsync(-4_ft);*/
 	/*S_chassis_move(2000, 0.5, 2500);
 	A_gyroTurn(-90,1,5000,1);
 	S_chassis_move(2000, 0.5, 2500);
@@ -94,6 +119,7 @@ void opcontrol() {
 	Controller masterController;
 	tilterPID = pidInit (TILTERP, TILTERI, TILTERD, 0, 100.0,5,15);
 		while (true){
+			drive.setMaxVelocity(200);
 			if(controller.get_digital(DIGITAL_L1)){
 				LIFT.move(-127);
 			} else 	if(controller.get_digital(DIGITAL_L2)){
@@ -103,12 +129,21 @@ void opcontrol() {
 				LIFT.move(0);
 				liftController.stop();
 			}
+			if(controller.get_digital(DIGITAL_A)){
+				TILTER.move(-127);
+			} else 	if(controller.get_digital(DIGITAL_B)){
+				TILTER.move(127);
+			}
+			else {
+				TILTER.move(0);
+			}
 			S_moveMotor_withLimit(INTAKEA, INTAKEA_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 			S_moveMotor_withLimit(INTAKEB, INTAKEB_SPEED, 0, 0, DIGITAL_R1, DIGITAL_R2, 0);
 			S_moveMotor_withLimit(TILTER, TILTER_SPEED, 1280, 3650, DIGITAL_A, DIGITAL_B, 2);
 			drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
 
 			if(controller.get_digital(DIGITAL_X)){ //Bring Up Stack
+				drive.setMaxVelocity(200);
 				INTAKEA.move(-5);
 				INTAKEB.move(-5);
 				LD.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -121,15 +156,30 @@ void opcontrol() {
 			}
 			else
 			{
+				drive.setMaxVelocity(200);
 				LD.set_brake_mode(MOTOR_BRAKE_COAST);
 				LD2.set_brake_mode(MOTOR_BRAKE_COAST);
 				RD.set_brake_mode(MOTOR_BRAKE_COAST);
 				RD2.set_brake_mode(MOTOR_BRAKE_COAST);
 			}
-			/*
-			-If driving backwards and tray is > 90, intake out 
-			-Add button to bring down tray
-			*/
+
+			if((pot.get_value() >= 3500) && ((controller.get_analog(ANALOG_LEFT_Y) < -10) && (controller.get_analog(ANALOG_RIGHT_Y) < -10))){
+				drive.setMaxVelocity(30);
+				drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
+				INTAKEA.move(-45);
+				INTAKEB.move(-45);
+			}
+			else if((pot.get_value() >= 3500) && ((controller.get_analog(ANALOG_LEFT_Y) > -10) || (controller.get_analog(ANALOG_RIGHT_Y) > -10))){
+				drive.setMaxVelocity(30);
+				drive.tank(masterController.getAnalog(ControllerAnalog::leftY), masterController.getAnalog(ControllerAnalog::rightY));
+				INTAKEA.move(0);
+				INTAKEB.move(0);
+			}
+			else if((pot.get_value() < 3500)){
+				drive.setMaxVelocity(200);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 500, 1, 0.02, false);
+			}
+
 			if(controller.get_digital(DIGITAL_UP)){
 				macroTrueArmHigh = 1;
 			}

@@ -10,8 +10,8 @@ float maxAccel = 0.17; //Chassis
 float maxAccelMotor = 0;
 float lastSlewRate = 0;
 
-pros::Motor aLD(LDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
-pros::Motor aLD2(LD2PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aLD(LDPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor aLD2(LD2PORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor aRD(RDPORT, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor aRD2(RD2PORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor aINTAKEA(INTAKEAPORT, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -222,7 +222,7 @@ void A_driveTarget(int target, int time, float speed){
   int startTime = pros::millis();
 
     while ((atTarget != 1) && (pros::millis()-startTime) < time) {
-    driveEnc = ((abs(aLD.get_position()))+(abs(aRD.get_position())))/2;
+    driveEnc = abs(aRD.get_position());
     distance = target - driveEnc;
 
 		pros::lcd::print(1, "Drive Encoder Value: %f", driveEnc);
@@ -231,7 +231,7 @@ void A_driveTarget(int target, int time, float speed){
 		pros::lcd::print(5, "Left Encoder: %d", aLD.get_position());
 
     float val = pidCalculate(drivePID, target, driveEnc)*speed;
-    val = slewRateCalculate(val);
+    //val = slewRateCalculate(val);
     int rightVal = val;
     int leftVal = val;
 
@@ -245,4 +245,64 @@ void A_driveTarget(int target, int time, float speed){
       }
       pros::delay(20);
     }
+}
+
+void A_driveTargetBack(int target, int time, float speed){
+  int atTarget = 0;
+  int driveEnc = 0;
+  int distance = 0;
+  int startTime = pros::millis();
+
+    while ((atTarget != 1) && (pros::millis()-startTime) < time) {
+    driveEnc = aRD.get_position();
+    distance = target - driveEnc;
+
+		pros::lcd::print(1, "Drive Encoder Value: %f", driveEnc);
+		pros::lcd::print(2, "Distance from Target: %f", distance);
+    pros::lcd::print(4, "Right Encoder: %d", aRD.get_position());
+		pros::lcd::print(5, "Left Encoder: %d", aLD.get_position());
+
+    float val = pidCalculate(drivePID, target, driveEnc)*speed;
+    //val = slewRateCalculate(val);
+    int rightVal = val;
+    int leftVal = val;
+
+    aRD.move(RC*rightVal);
+    aRD2.move(RC*rightVal);
+    aLD.move(LC*leftVal);
+    aLD2.move(LC*leftVal);
+    if(driveEnc == target){
+       atTarget = 1;
+       pros::lcd::print(2, "Distance from Target: %f", distance);
+      }
+      pros::delay(20);
+    }
+}
+
+void A_driveCurve(int targetRight, int targetLeft, int time, float speed){
+  int atTarget = 0;
+  int driveEncR = 0;
+  int driveEncL = 0;
+  int startTime = pros::millis();
+
+    while ((atTarget != 1) && (pros::millis()-startTime) < time) {
+    driveEncR = (aRD.get_position());
+    driveEncL = (aLD.get_position());
+    float rval = pidCalculate(drivePID, targetRight, driveEncR)*speed;
+    float lval = pidCalculate(drivePID, targetLeft, driveEncL)*speed;
+    //val = slewRateCalculate(val);
+    int rightVal = rval;
+    int leftVal = lval;
+
+    aRD.move(RC*rightVal);
+    aRD2.move(RC*rightVal);
+    aLD.move(LC*leftVal);
+    aLD2.move(LC*leftVal);
+    if(driveEncR == targetRight){
+        if(driveEncL == targetLeft){
+       atTarget = 1;
+      }
+      pros::delay(20);
+    }
+}
 }
