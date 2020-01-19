@@ -50,16 +50,23 @@ void autonomous() {
 	setDriveBrakes(MOTOR_BRAKE_HOLD);
 
 	//Auton Code Under this line!
-	A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 500, 1, 0.02, false);
-		LIFT.move(-127);
-		pros::delay(500);
-		LIFT.move(127);
-		pros::delay(500);
-		LIFT.move(0);
-		A_driveTarget(200, 3000, 0.6);
-		drive.stop();
+  INTAKEA.move(-127);
+	INTAKEB.move(-127);
+  LIFT.move(-127);
+  pros::delay(1200);
+  liftController.setTarget(0);
+	A_motorTarget(TILTERPORT, tilterPID, 1, 634, 500, 1, 0.02, false);
+
+
+  INTAKEA.move(127);
+	INTAKEB.move(127);
+
+  
+
 
 	/*
+	INTAKEA.move(-127);
+	INTAKEB.move(-127);
 	drive.setMaxVelocity(100);
 	INTAKEA.move(127);
 	INTAKEB.move(127);
@@ -146,7 +153,7 @@ void opcontrol() {
 			if(controller.get_digital(DIGITAL_UP)){
 				TILTER.move(-127);
 			} else if(controller.get_digital(DIGITAL_DOWN)){
-				if(pot.get_value() >= 1280){
+				if(pot.get_value() >= 634){
 				TILTER.move(127);
 			}
 			}
@@ -163,7 +170,7 @@ void opcontrol() {
 				INTAKEB.move(-5);
 				setDriveBrakes(MOTOR_BRAKE_HOLD);
 				//A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1500, 1, 0.02, false);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 3500, 0.6, 0.02, false);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 2808, 3500, 0.6, 0.02, false);
 				pros::delay(20);
 				drive.stop();
 			}
@@ -173,8 +180,7 @@ void opcontrol() {
 					INTAKEA.move(-45);
 					INTAKEB.move(-45);
 				  setDriveBrakes(MOTOR_BRAKE_COAST);
-					A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1000, 0.7, 0.02, false);
-					A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 1000, 1, 0.02, false);
+					A_motorTarget(TILTERPORT, tilterPID, 1, 634, 2000, 1, 0.02, false);
 					drive.stop();
 				}
 			else
@@ -184,7 +190,7 @@ void opcontrol() {
 			}
 
 			if(controller.get_digital(DIGITAL_LEFT)){
-				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 1000, 1, 0.02, false);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 634, 1000, 1, 0.02, false);
 			}
 
 			if(controller.get_digital(DIGITAL_RIGHT)){
@@ -199,7 +205,15 @@ void opcontrol() {
 			//updatePosition();
 			//display_debugInfo(&display_update_count);
 
+      if(controller.get_digital(DIGITAL_A)){
+        INTAKEA.move(-127);
+      	INTAKEB.move(-127);
+        LIFT.move(-127);
+        pros::delay(1200);
+        liftController.setTarget(0);
+      	A_motorTarget(TILTERPORT, tilterPID, 1, 634, 500, 1, 0.02, false);
+      }
+
 			pros::delay(20);
 		}
-		S_zero_all_motors();
 }
