@@ -57,7 +57,7 @@ int S_chassis_wait_till_success(int timeOut, int mode){
 int S_chassis_move(int angle, float speed, int timeOut){
 	int s = (int) (speed * 127);
 
-	angle *= CHASSIS_GEAR_RATIO;
+	//angle *= CHASSIS_GEAR_RATIO;
 
 	LD.move_relative(angle, s);
 	RD.move_relative(angle, s);
@@ -71,7 +71,7 @@ int S_chassis_move(int angle, float speed, int timeOut){
 int S_chassis_turn(int angle, float speed, int timeOut){
 	int s = (int) (speed * 127);
 
-	angle *= CHASSIS_GEAR_RATIO;
+	//angle *= CHASSIS_GEAR_RATIO;
 
 	LD.move_relative(angle, s);
 	RD.move_relative((-1)*angle, s);

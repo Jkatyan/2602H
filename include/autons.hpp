@@ -5,6 +5,9 @@
 
 const bool DISABLE_AUTONOMOUS = false;
 
+const bool IS_RED_AUTON = false;
+const bool IS_BLUE_AUTON = true;
+
 //S_armsMotion_proceed{
 const int TILTER_MAX_VALUE = 2808;
 const int TILTER_MIN_VALUE = 634;
@@ -35,7 +38,7 @@ extern float lastSlewRate;
 const int FILTER_BUFFER_LENGTH = 100;
 extern int* f_buf; //Filter-buffer
 
-const int CHASSIS_GEAR_RATIO = 3 / 5;
+const float CHASSIS_GEAR_RATIO = 3 / 5;
 
 void A_driveCurve(int targetRight, int targetLeft, int time, float speed);
 void A_driveTargetBack(int target, int time, float speed);
