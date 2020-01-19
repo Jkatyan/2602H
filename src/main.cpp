@@ -58,11 +58,53 @@ void autonomous() {
     pros::delay(1200);
     liftController.setTarget(0);
   	A_motorTarget(TILTERPORT, tilterPID, 1, 634, 500, 1, 0.02, false);
-  //}}flipout, 2500ms
-  pros::delay(2500);
+  //}}flipout, 2000ms
+  pros::delay(2000);
 
-  INTAKEA.move(127);
-	INTAKEB.move(127);
+  INTAKEA.move(63);
+	INTAKEB.move(63);
+
+  LIFT.move(20);
+
+  pros::delay(200);
+
+  LIFT.move(1);
+
+  S_chassis_move(-1500, 1, 500);
+
+  S_chassis_move(500, 0.4, 3000);
+
+  S_chassis_turn(-160, 0.6, 2000);
+
+  S_chassis_move(600, 0.4, 3000);
+
+  S_chassis_turn(-60, 0.6, 2000);
+
+  S_chassis_move(200, 0.75, 500);
+
+  INTAKEA.move(-127);
+  INTAKEB.move(-127);
+
+  pros::delay(1500);
+
+  INTAKEA.move(0);
+  INTAKEB.move(0);
+
+  S_chassis_move(-100, 1, 500);
+
+  S_chassis_turn(200, 1, 500);
+
+  S_chassis_move(-300, 1, 500);
+
+  pros::delay(500);
+
+  INTAKEA.move(0);
+  INTAKEB.move(0);
+
+  pros::delay(500);
+
+  /*  AUTON ENDS FOR UNO_CUBE_PROTECTED  */
+  goto AUTON_ENDS;
 
   S_chassis_move(400, 0.5, 1500);
 
