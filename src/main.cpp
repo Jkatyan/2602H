@@ -50,6 +50,16 @@ void autonomous() {
 	setDriveBrakes(MOTOR_BRAKE_HOLD);
 
 	//Auton Code Under this line!
+	A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 500, 1, 0.02, false);
+		LIFT.move(-127);
+		pros::delay(500);
+		LIFT.move(127);
+		pros::delay(500);
+		LIFT.move(0);
+		A_driveTarget(200, 3000, 0.6);
+		drive.stop();
+
+	/*
 	drive.setMaxVelocity(100);
 	INTAKEA.move(127);
 	INTAKEB.move(127);
@@ -60,17 +70,18 @@ pros::delay(500);
 S_reset_all_motors();
 INTAKEA.move(-25);
 INTAKEB.move(-25);
-drive.moveDistanceAsync(1_ft);
+drive.moveDistanceAsync(0.9_ft);
 drive.waitUntilSettled();
-A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 3000, 1, 0.02, false);
+A_motorTarget(TILTERPORT, tilterPID, 1, 3600, 3000, 1, 0.02, false);
 
 drive.setMaxVelocity(100);
 INTAKEA.move(-50);
 INTAKEB.move(-50);
 drive.moveDistanceAsync(-0.5_ft);
+A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 2000, 1, 0.02, false);
 drive.waitUntilSettled();
 drive.stop();
-
+*/
 /*S_chassis_turn(55, 0.4, 1000);
 S_reset_all_motors();
 A_driveTarget(1000, 2000, 0.6);
@@ -124,9 +135,9 @@ void opcontrol() {
 			if(controller.get_digital(DIGITAL_L1)){
 				LIFT.move(-127);
 			} else 	if(controller.get_digital(DIGITAL_L2)){
-				if(LIFT.get_position() <= 0){
+
 				LIFT.move(127);
-			}
+
 			}
 			else {
 				LIFT.move(0);
@@ -152,7 +163,7 @@ void opcontrol() {
 				INTAKEB.move(-5);
 				setDriveBrakes(MOTOR_BRAKE_HOLD);
 				//A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1500, 1, 0.02, false);
-				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 2500, 0.7, 0.02, false);
+				A_motorTarget(TILTERPORT, tilterPID, 1, 3650, 3500, 0.6, 0.02, false);
 				pros::delay(20);
 				drive.stop();
 			}
@@ -170,6 +181,10 @@ void opcontrol() {
 			{
 				drive.setMaxVelocity(200);
 				setDriveBrakes(MOTOR_BRAKE_COAST);
+			}
+
+			if(controller.get_digital(DIGITAL_LEFT)){
+				A_motorTarget(TILTERPORT, tilterPID, 1, 1280, 1000, 1, 0.02, false);
 			}
 
 			if(controller.get_digital(DIGITAL_RIGHT)){
