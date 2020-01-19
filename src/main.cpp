@@ -57,11 +57,25 @@ void autonomous() {
   liftController.setTarget(0);
 	A_motorTarget(TILTERPORT, tilterPID, 1, 634, 500, 1, 0.02, false);
 
+  pros::delay(400);
+
+  INTAKEA.move(0);
+	INTAKEB.move(0);
+
+  pros::delay(400);
 
   INTAKEA.move(127);
 	INTAKEB.move(127);
 
-  
+  pros::delay(400);
+
+  S_chassis_move(400, 95, 1500);
+
+  S_chassis_move(1300, 20, 5000);
+
+  S_chassis_move(-700, 95, 2000);
+
+  S_chassis_turn(-500, 63, 2500);
 
 
 	/*
