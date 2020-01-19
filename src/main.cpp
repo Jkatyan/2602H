@@ -51,59 +51,45 @@ void autonomous() {
 
 	//Auton Code Under this line!
   //{{
-    drive.moveDistanceAsync(-0.5_ft);
+    //drive.moveDistanceAsync(-0.5_ft);
     INTAKEA.move(-127);
   	INTAKEB.move(-127);
     LIFT.move(-127);
     pros::delay(1200);
     liftController.setTarget(0);
   	A_motorTarget(TILTERPORT, tilterPID, 1, 634, 500, 1, 0.02, false);
-  //}}flipout, 2000ms
-  pros::delay(2000);
-
-  drive.stop();
-
-  pros::delay(400);
-
-  INTAKEA.move(0);
-	INTAKEB.move(0);
-
-  pros::delay(400);
+  //}}flipout, 2500ms
+  pros::delay(2500);
 
   INTAKEA.move(127);
 	INTAKEB.move(127);
 
-  pros::delay(400);
-
   S_chassis_move(400, 0.5, 1500);
 
-  S_chassis_move(700, 0.25, 2000);
+  S_chassis_move(1200, 0.25, 2000);
 
   S_chassis_move(-400, 0.75, 1500);
 
   if(IS_RED_AUTON){
-    S_chassis_turn(280, 0.5, 2500);
+    S_chassis_turn(220, 0.5, 2000);
   }
   else if(IS_BLUE_AUTON){
-    S_chassis_turn(-280, 0.5, 2500);
+    S_chassis_turn(-220, 0.5, 2000);
   }
   else{
     goto AUTON_ENDS;
   }
 
-  S_chassis_move(700, 0.75, 1500);
-
-  S_chassis_move(200, 0.15, 750);
+  S_chassis_move(220, 0.5, 500);
 
 //{{
   drive.setMaxVelocity(200);
-  INTAKEA.move(-5);
-  INTAKEB.move(-5);
+  INTAKEA.move(-25);
+  INTAKEB.move(-25);
   setDriveBrakes(MOTOR_BRAKE_HOLD);
   //A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1500, 1, 0.02, false);
   A_motorTarget(TILTERPORT, tilterPID, 1, 2808, 3500, 0.6, 0.02, false);
   pros::delay(20);
-  drive.stop();
 //}}2000ms
   pros::delay(2000);
 
