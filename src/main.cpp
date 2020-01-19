@@ -66,9 +66,18 @@ void autonomous() {
 
   S_chassis_move(400, 0.5, 1500);
 
-  S_chassis_move(1200, 0.25, 2000);
+  S_chassis_move(1250, 0.25, 2000);
 
-  S_chassis_move(-400, 0.75, 1500);
+  S_chassis_move(-450, 0.75, 1500);
+
+  pros::delay(1000);
+  INTAKEA.move(0);
+  INTAKEB.move(0);
+
+  pros::delay(200);
+
+  /*!!!  AUTON ENDS HERE FOR NO DEPOSIT  !!!*/
+  goto AUTON_ENDS;
 
   if(IS_RED_AUTON){
     S_chassis_turn(220, 0.5, 2000);
@@ -80,7 +89,7 @@ void autonomous() {
     goto AUTON_ENDS;
   }
 
-  S_chassis_move(220, 0.5, 500);
+  S_chassis_move(240, 0.5, 500);
 
 //{{
   drive.setMaxVelocity(200);
