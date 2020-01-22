@@ -26,6 +26,8 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 
+	pros::c::imu_reset(5);
+
 	pros::lcd::register_btn1_cb(on_center_button);
 }
 
@@ -35,6 +37,7 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {}
+
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
