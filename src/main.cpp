@@ -24,7 +24,6 @@ void opcontrol() {
 
 	while (true) {
 		pros::lcd::print(0, "%f", imu1.get_rotation());
-		pros::lcd::print(1, "%d", SHISHIR_IS_FUCKED_UP);
 		pros::delay(20);
 	}
 
