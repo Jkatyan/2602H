@@ -26,8 +26,6 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 
-	pros::c::imu_reset(5);
-
 	pros::lcd::register_btn1_cb(on_center_button);
 }
 
@@ -37,7 +35,6 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {}
-
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -80,6 +77,11 @@ void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
+
+	Imu imu1(7);
+
+	imu1.get_heading();
+
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
