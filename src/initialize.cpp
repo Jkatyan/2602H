@@ -2,5 +2,5 @@
 
 
 void initialize() {
-	lcd::initialize();
+	;
 }

@@ -1,8 +1,6 @@
-#ifndef _COMPONENTS_HPP
-#define _COMPONENTS_HPP
+#pragma once
+#include "main.h"
 
 
-
-
-
-#endif
+extern pros::Controller controller0;
+extern pros::Controller controller1;

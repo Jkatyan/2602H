@@ -4,7 +4,7 @@
 void opcontrol() {
 
 	while (true) {
-		lcd::print(0, "hydra_version: %s", HYDRA_VERSION_STRING);
+		controller0.print(0, 0, "main");
 		delay(20);
 	}
 
