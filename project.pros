@@ -7,10 +7,13 @@
             "kernel": {
                 "location": "C:\\Users\\dao77\\AppData\\Roaming\\PROS\\templates\\kernel@3.2.1",
                 "metadata": {
+                    "allow_online": true,
                     "cold_addr": "58720256",
                     "cold_output": "bin/cold.package.bin",
+                    "force_apply": true,
                     "hot_addr": "125829120",
                     "hot_output": "bin/hot.package.bin",
+                    "kernel_version": "3.2.1",
                     "origin": "pros-mainline",
                     "output": "bin/monolith.bin"
                 },
@@ -153,6 +156,9 @@
             "okapilib": {
                 "location": "C:\\Users\\dao77\\AppData\\Roaming\\PROS\\templates\\okapilib@4.0.2",
                 "metadata": {
+                    "allow_online": true,
+                    "force_apply": true,
+                    "kernel_version": "3.2.1",
                     "origin": "pros-mainline"
                 },
                 "name": "okapilib",

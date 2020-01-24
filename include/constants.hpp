@@ -1,8 +1,8 @@
-#ifndef _CONSTANTS_HPP_
-#define _CONSTANTS_HPP_
+#ifndef _CONSTANTS_HPP
+#define _CONSTANTS_HPP
 
 
-int co_co;
+extern char HYDRA_VERSION_STRING[];
 
 
 #endif
