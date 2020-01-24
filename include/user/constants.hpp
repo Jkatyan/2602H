@@ -16,4 +16,7 @@ extern int PORT_INTAKE_L;
 extern int PORT_INTAKE_R;
 
 
+extern int CHASSIS_MAX_ERROR;
+
+
 #endif

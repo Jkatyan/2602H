@@ -13,3 +13,6 @@ int PORT_LIFT = 5;
 int PORT_TILTER = 6;
 int PORT_INTAKE_L = 7;
 int PORT_INTAKE_R = 8;
+
+
+int ERROR_MAX_CHASSIS = 10;

@@ -38,6 +38,7 @@
 #include "user/autonomous.hpp"
 #include "user/constants.hpp"
 #include "user/components.hpp"
+#include "user/display.hpp"
 
 
 /**
