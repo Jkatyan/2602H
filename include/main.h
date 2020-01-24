@@ -35,8 +35,10 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "autonomous.hpp"
-#include "constants.hpp"
+#include "user/autonomous.hpp"
+#include "user/constants.hpp"
+#include "user/components.hpp"
+
 
 /**
  * You should add more #includes here
