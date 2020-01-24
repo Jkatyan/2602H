@@ -5,4 +5,15 @@
 extern char HYDRA_VERSION_STRING[];
 
 
+extern int PORT_LD_F;
+extern int PORT_RD_F;
+extern int PORT_LD_R;
+extern int PORT_RD_R;
+
+extern int PORT_LIFT;
+extern int PORT_TILTER;
+extern int PORT_INTAKE_L;
+extern int PORT_INTAKE_R;
+
+
 #endif
