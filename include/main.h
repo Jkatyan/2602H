@@ -35,7 +35,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "user/config.hpp"
+#include "constants.hpp"
 
 /**
  * You should add more #includes here

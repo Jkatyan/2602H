@@ -23,8 +23,9 @@ void opcontrol() {
 
 
 	while (true) {
-		pros::lcd::print(0, "%f", imu1.get_rotation());
-		pros::delay(20);
+		lcd::print(0, "%f", imu1.get_rotation());
+		lcd::print(0, "%d", co_co);
+		delay(20);
 	}
 
 }
