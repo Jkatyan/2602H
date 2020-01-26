@@ -8,7 +8,7 @@ bool is_motor_at_target(Motor motor, int error){
 
 bool is_all_chassis_motors_at_target(){
   return//:
-    is_motor_at_target(LD, CHASSIS_MAX_ERROR);
+    is_motor_at_target(LD_F, CHASSIS_MAX_ERROR);
 }
 
 

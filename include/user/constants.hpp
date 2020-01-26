@@ -15,6 +15,8 @@ extern int PORT_TILTER;
 extern int PORT_INTAKE_L;
 extern int PORT_INTAKE_R;
 
+extern int PORT_TEST_MOTOR;
+
 
 extern int CHASSIS_MAX_ERROR;
 
