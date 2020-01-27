@@ -6,7 +6,9 @@ void opcontrol() {
 	TEST_MOTOR.move_absolute(720, 127);
 
 	while (true) {
-		controller0.print(0, 0, "%f", TEST_MOTOR.get_position() - TEST_MOTOR.get_target_position());
+		controller0.print(0, 0, "Line1 code");
+		controller0.print(1, 0, "Line2 code");
+		controller0.print(2, 0, "Line3 code");
 	}
 
 }

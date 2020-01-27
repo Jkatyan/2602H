@@ -5,5 +5,5 @@ struct Autonomous_Section* AUTONOMOUS_SEQUENCE;
 
 
 void autonomous(){
-  controller0.print(1, 1, "auton test");
+  TEST_MOTOR.move(127);
 }
