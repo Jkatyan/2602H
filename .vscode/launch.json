@@ -13,6 +13,15 @@
         },
 
         {
+            "name": "Upload",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\scripts\\upload.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+        },
+
+        {
             "name": "Compile All",
             "type": "python",
             "request": "launch",
