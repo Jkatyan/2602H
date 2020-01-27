@@ -8,9 +8,12 @@
 
 # PROS
 bin/
-.vscode/
+.vscode/cquery_cached_index/
 compile_commands.json
 temp.log
 temp.errors
 *.ini
 .d/
+
+# VScode
+.vscode/settings.json

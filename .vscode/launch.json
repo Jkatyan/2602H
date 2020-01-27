@@ -1,0 +1,45 @@
+{
+    "version": "0.2.0",
+
+    "configurations": [
+
+        {
+            "name": "Compile",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\scripts\\compile.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+        },
+
+        {
+            "name": "Compile All",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\scripts\\compile_all.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+        },
+
+        {
+            "name": "Clean",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\scripts\\clean.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+        },
+
+        {
+            "name": "Fuck Shishir",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\scripts\\meme.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+        },
+
+    ],
+
+    "pythonPath" : ".\\"
+}
