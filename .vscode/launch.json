@@ -4,6 +4,15 @@
     "configurations": [
 
         {
+            "name": "Quick",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\scripts\\quick.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+        },
+
+        {
             "name": "Compile",
             "type": "python",
             "request": "launch",

@@ -5,5 +5,5 @@ struct Autonomous_Section* AUTONOMOUS_SEQUENCE;
 
 
 void autonomous(){
-  lcd::print(0, "I'm auton!!");
+  controller0.print(1, 1, "auton test");
 }
