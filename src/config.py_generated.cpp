@@ -18,3 +18,11 @@ int PORT_TEST_MOTOR = 9;
 
 
 int CHASSIS_MAX_ERROR = 10;
+
+
+void load_autonomous(){
+    AUTONOMOUS_SEQUENCE[0] = Autonomous_Section{move, 1080, 127, 2000};
+    AUTONOMOUS_SEQUENCE[1] = Autonomous_Section{turn, 360, 127, 1000};
+    AUTONOMOUS_SEQUENCE[2] = Autonomous_Section{move, 1080, 127, 2000};
+    AUTONOMOUS_SEQUENCE[3] = Autonomous_Section{end};
+}

@@ -9,6 +9,9 @@ bool is_motor_at_target(Motor motor, int error){
 bool is_all_chassis_motors_at_target(){
   return//:
     is_motor_at_target(LD_F, CHASSIS_MAX_ERROR);
+    is_motor_at_target(RD_F, CHASSIS_MAX_ERROR);
+    is_motor_at_target(LD_R, CHASSIS_MAX_ERROR);
+    is_motor_at_target(RD_R, CHASSIS_MAX_ERROR);
 }
 
 
@@ -22,10 +25,4 @@ int chassis_autonomous_motion(autonomous_section_motion_type_e motion_type, int 
     delay(20);
   }
   return -1;
-}
-
-
-
-void motion_initialize(){
-  ;/*pass*/
 }
