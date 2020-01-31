@@ -269,6 +269,18 @@ void opcontrol() {
 				INTAKEB.move(-5);
 				setDriveBrakes(MOTOR_BRAKE_HOLD);
 				//A_motorTarget(TILTERPORT, tilterPID, 1, 2465, 1500, 1, 0.02, false);
+
+        /*TILTER.move(127); Alternate Macro
+        pros::delay(2000);
+        INTAKEA.move(40);
+				INTAKEB.move(40);
+        A_motorTarget(TILTERPORT, tilterPID, 1, 2808, 1500, 0.6, 0.02, false);
+        pros::delay(20);
+				drive.stop();
+        INTAKEA.move(0);
+        INTAKEB.move(0);
+        */
+
 				A_motorTarget(TILTERPORT, tilterPID, 1, 2808, 3500, 0.6, 0.02, false);
 				pros::delay(20);
 				drive.stop();
