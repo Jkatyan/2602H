@@ -1,5 +1,5 @@
 import os
 
-os.system("scripts\\apply.py")
-os.system("scripts\\compile.py")
-os.system("scripts\\upload.py")
+os.system("python scripts\\apply.py")
+os.system("python scripts\\compile.py")
+os.system("python scripts\\upload.py")

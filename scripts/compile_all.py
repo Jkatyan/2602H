@@ -1,4 +1,4 @@
 import os
 
-os.system("scripts\\clean.py")
-os.system("scripts\\compile.py")
+os.system("python scripts\\clean.py")
+os.system("python scripts\\compile.py")

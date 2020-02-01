@@ -46,16 +46,7 @@
             "program": "${workspaceFolder}\\scripts\\clean.py",
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-        },
-
-        {
-            "name": "Fuck Shishir",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}\\scripts\\meme.py",
-            "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
-        },
+        }
 
     ],
 
