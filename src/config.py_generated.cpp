@@ -18,6 +18,7 @@ int PORT_TEST_MOTOR = 9;
 
 
 int CHASSIS_MAX_ERROR = 10;
+int CHASSIS_AUTONMOVE_HOLDTIME = 50;
 
 
 void load_autonomous(){

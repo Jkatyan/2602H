@@ -19,6 +19,7 @@ extern int PORT_TEST_MOTOR;
 
 
 extern int CHASSIS_MAX_ERROR;
+extern int CHASSIS_AUTONMOVE_HOLDTIME;
 
 
 #endif
