@@ -3,7 +3,7 @@
 
 
 enum autonomous_section_motion_type_e{
-  move, turn, lift, tilter, intake, lift_sync, tilter_sunc, end
+  end, move, turn, lift, tilter, intake, lift_sync, tilter_sunc
 };
 
 
@@ -19,6 +19,8 @@ extern struct Autonomous_Section* AUTONOMOUS_SEQUENCE;
 
 
 void autonomous_initialize();
+
+void autonomous_proceed(struct Autonomous_Section*);
 
 void load_autonomous();
 

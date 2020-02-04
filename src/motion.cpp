@@ -18,6 +18,7 @@ int wait_until(bool (*condition)(void*), int timeOut){
     if( (*condition)(buffer) ){
       return 0;
     }
+    delay(3);
   }
   return -1;
 }
@@ -50,18 +51,18 @@ bool chassis_holding_at_target(void* buffer){
   }
   else{
     if( all_chassis_motors_at_target() ){
-      *sumTime += currentTime - *lastCalcTime;
+      if( currentTime - *lastCalcTime > CHASSIS_AUTONMOVE_HOLDTIME ){
+        return true;
+      }
     }
     else{
-      *sumTime = 0;
-    }
-    if( *sumTime > CHASSIS_AUTONMOVE_HOLDTIME ){
-      return true;
+      *lastCalcTime = currentTime;
     }
   }
   return false;
 }
 
+int COUNT = 0;
 
 bool autonomous_motion(struct Autonomous_Section* section){
 
@@ -75,7 +76,9 @@ bool autonomous_motion(struct Autonomous_Section* section){
     RD_F.move_relative(len, spd);
     LD_R.move_relative(len, spd);
     RD_R.move_relative(len, spd);
-    wait_until( &chassis_holding_at_target, timeOut );
+    if( wait_until( &chassis_holding_at_target, timeOut ) == -1 ){
+      controller0.print(0, 0, "tO::mov::%d", COUNT);
+    }
   }
 
   else if( type == turn ){
@@ -83,12 +86,16 @@ bool autonomous_motion(struct Autonomous_Section* section){
     RD_F.move_relative((-1)*len, spd);
     LD_R.move_relative(len, spd);
     RD_R.move_relative((-1)*len, spd);
-    wait_until( &chassis_holding_at_target, timeOut );   
+    if( wait_until( &chassis_holding_at_target, timeOut ) == -1 ){
+      controller0.print(0, 0, "tO::mov::%d", COUNT);
+    }
   }
 
   else if( type == end ){
     return true;
   }
+
+  COUNT++;
 
   return false;
 

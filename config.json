@@ -3,29 +3,43 @@
     {
       "type": "move",
       "length": 1080,
-      "speed": 127,
-      "timeOut": 2000
+      "speed": 200,
+      "timeOut": 5000
     },
     {
       "type": "turn",
-      "length": 360,
-      "speed": 127,
-      "timeOut": 1000
+      "length": 180,
+      "speed": 200,
+      "timeOut": 5000
     },
     {
       "type": "move",
-      "length": 1080,
-      "speed": 127,
-      "timeOut": 2000
+      "length": 360,
+      "speed": 200,
+      "timeOut": 5000
     },
     {
-      "type": "end"
+      "type": "move",
+      "length": -360,
+      "speed": 200,
+      "timeOut": 5000
+    },
+    {
+      "type": "turn",
+      "length": -180,
+      "speed": 200,
+      "timeOut": 5000
+    },
+    {
+      "type": "move",
+      "length": -1080,
+      "speed": 200,
+      "timeOut": 5000
     }
   ],
   "constants": {
     "HYDRA_VERSION_STRING": "2.0.1",
-    "ports": 
-    {
+    "ports": {
       "PORT_LD_F": 11,
       "PORT_RD_F": 19,
       "PORT_LD_R": 12,
@@ -36,9 +50,9 @@
       "PORT_INTAKE_R": 10,
       "PORT_TEST_MOTOR": 4
     },
-    "autonmove_settings":{
+    "autonmove_settings": {
       "CHASSIS_MAX_ERROR": 10,
-      "CHASSIS_AUTOMOVE_HOLDTIME": 50
+      "CHASSIS_AUTONMOVE_HOLDTIME": 500
     }
   }
 }
