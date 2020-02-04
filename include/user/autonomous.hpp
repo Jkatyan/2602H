@@ -20,5 +20,7 @@ extern struct Autonomous_Section* AUTONOMOUS_SEQUENCE;
 
 void autonomous_initialize();
 
+void load_autonomous();
+
 
 #endif

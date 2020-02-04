@@ -1,9 +1,18 @@
 #include "main.h"
 
 
+void zero_buffer(void* buffer){
+  int* p = (int*)buffer;
+  for(int i = 0; i < 4; i++){
+    *(p+i) = 0;
+  }
+}
+
+
 int wait_until(bool (*condition)(void*), int timeOut){
   int start_time = millis();
   void* buffer = lv_mem_alloc( 4 * sizeof(int) );
+  zero_buffer(buffer);
 
   while( millis() - start_time < timeOut ){
     if( (*condition)(buffer) ){
@@ -14,30 +23,43 @@ int wait_until(bool (*condition)(void*), int timeOut){
 }
 
 
-bool is_motor_at_target(Motor motor, int error){
+bool motor_at_target(Motor motor, int error){
   return abs( (int)( motor.get_target_position() - motor.get_position() )  ) < error;
 }
 
 
-bool is_all_chassis_motors_at_target(){
+bool all_chassis_motors_at_target(){
   return//:
-    is_motor_at_target(LD_F, CHASSIS_MAX_ERROR) &&
-    is_motor_at_target(RD_F, CHASSIS_MAX_ERROR) &&
-    is_motor_at_target(LD_R, CHASSIS_MAX_ERROR) &&
-    is_motor_at_target(RD_R, CHASSIS_MAX_ERROR);
+    motor_at_target(LD_F, CHASSIS_MAX_ERROR) &&
+    motor_at_target(RD_F, CHASSIS_MAX_ERROR) &&
+    motor_at_target(LD_R, CHASSIS_MAX_ERROR) &&
+    motor_at_target(RD_R, CHASSIS_MAX_ERROR);
 }
 
 
 bool chassis_holding_at_target(void* buffer){
-  int* longest_hold = (int*) buffer;
+  int* sumTime = (int*)buffer;
+  int* lastCalcTime = (int*)buffer + 1;
+  int* isInitialized = (int*)buffer + 2;
 
-  if( *longest_hold < 0 ){
-    longest_hold = 0;
-  }
+  int currentTime = millis();
 
-  if( !is_all_chassis_motors_at_target() ){
-    *longest_hold = millis();
+  if( *isInitialized == 0 ){
+    *lastCalcTime = currentTime;
+    *isInitialized = 1;
   }
+  else{
+    if( all_chassis_motors_at_target() ){
+      *sumTime += currentTime - *lastCalcTime;
+    }
+    else{
+      *sumTime = 0;
+    }
+    if( *sumTime > CHASSIS_AUTONMOVE_HOLDTIME ){
+      return true;
+    }
+  }
+  return false;
 }
 
 
