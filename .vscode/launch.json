@@ -3,6 +3,7 @@
 
     "configurations": [
 
+
         {
             "name": "Quick",
             "type": "python",
@@ -35,6 +36,15 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}\\scripts\\compile_all.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+        },
+
+        {
+            "name": "Apply",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\scripts\\apply.py",
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
         },

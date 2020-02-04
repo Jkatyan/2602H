@@ -18,3 +18,4 @@ temp.errors
 # VScode
 .vscode/settings.json
 .vscode/c_cpp_properties.json
+# scripts/routes.json

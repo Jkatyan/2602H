@@ -1,23 +1,44 @@
 {
   "autonomous": [
     {
-      "type": "end",
-      "length": 0,
-      "speed": 0,
-      "timeOut": 0
+      "type": "move",
+      "length": 1080,
+      "speed": 127,
+      "timeOut": 2000
+    },
+    {
+      "type": "turn",
+      "length": 360,
+      "speed": 127,
+      "timeOut": 1000
+    },
+    {
+      "type": "move",
+      "length": 1080,
+      "speed": 127,
+      "timeOut": 2000
+    },
+    {
+      "type": "end"
     }
   ],
   "constants": {
     "HYDRA_VERSION_STRING": "2.0.1",
-    "PORT_LD_F": 1,
-    "PORT_RD_F": 2,
-    "PORT_LD_R": 3,
-    "PORT_RD_R": 4,
-    "PORT_LIFT": 5,
-    "PORT_TILTER": 6,
-    "PORT_INTAKE_L": 7,
-    "PORT_INTAKE_R": 8,
-    "PORT_TEST_MOTOR": 9,
-    "CHASSIS_MAX_ERROR": 10
+    "ports": 
+    {
+      "PORT_LD_F": 11,
+      "PORT_RD_F": 19,
+      "PORT_LD_R": 12,
+      "PORT_RD_R": 20,
+      "PORT_LIFT": 3,
+      "PORT_TILTER": 9,
+      "PORT_INTAKE_L": 1,
+      "PORT_INTAKE_R": 10,
+      "PORT_TEST_MOTOR": 4
+    },
+    "autonmove_settings":{
+      "CHASSIS_MAX_ERROR": 10,
+      "CHASSIS_AUTOMOVE_HOLDTIME": 50
+    }
   }
 }
