@@ -35,10 +35,13 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
+
+
 #include "user/autonomous.hpp"
-#include "user/constants.hpp"
 #include "user/components.hpp"
+#include "user/constants.hpp"
 #include "user/display.hpp"
+#include "user/motion.hpp"
 
 
 /**

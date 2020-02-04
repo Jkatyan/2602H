@@ -2,5 +2,6 @@
 
 
 void initialize() {
+	autonomous_initialize();
 	display_initialize();
 }

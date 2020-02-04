@@ -63,7 +63,7 @@ bool chassis_holding_at_target(void* buffer){
 }
 
 
-int autonomous_motion(struct Autonomous_Section* section){
+bool autonomous_motion(struct Autonomous_Section* section){
 
   autonomous_section_motion_type_e type = section -> movement_type;
   int len = section -> length;
@@ -78,11 +78,18 @@ int autonomous_motion(struct Autonomous_Section* section){
     wait_until( &chassis_holding_at_target, timeOut );
   }
 
-  if( type == turn ){
+  else if( type == turn ){
     LD_F.move_relative(len, spd);
     RD_F.move_relative((-1)*len, spd);
     LD_R.move_relative(len, spd);
     RD_R.move_relative((-1)*len, spd);
     wait_until( &chassis_holding_at_target, timeOut );   
   }
+
+  else if( type == end ){
+    return true;
+  }
+
+  return false;
+
 }

@@ -2,7 +2,7 @@
 #define _MOTION_HPP
 
 
-void autonomous_motion();
+bool autonomous_motion(struct Autonomous_Section*);
 
 
 #endif

@@ -9,6 +9,15 @@ void autonomous_initialize(){
 }
 
 
+void autonomous_proceed(struct Autonomous_Section* sequence){
+  for(int i = 0; i < 64; i++){
+    if( autonomous_motion(sequence + i) ){
+      return;
+    }
+  }
+}
+
+
 void autonomous(){
-  TEST_MOTOR.move(127);
+  autonomous_proceed( AUTONOMOUS_SEQUENCE );
 }
