@@ -42,7 +42,7 @@
 #include "user/constants.hpp"
 #include "user/display.hpp"
 #include "user/motion.hpp"
-
+#include "user/pid.hpp"
 
 /**
  * You should add more #includes here
