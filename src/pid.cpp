@@ -14,7 +14,6 @@ void pidInitialize (PID pid, float kP, float kI, float kD, float integral_thresh
 
 
 float pidCalculate (PID pid, float setpoint, float encoderVariable) {
-  while (1) {
   pid.error = setpoint - encoderVariable;
   pid.integral += pid.error;
   if (pid.error == 0 || pid.integral >= setpoint) {
@@ -29,6 +28,5 @@ float pidCalculate (PID pid, float setpoint, float encoderVariable) {
   power = fabs(power) > 127 ? 127 * power/fabs(power) : power;
   return power;
   pros::delay(10);
-  }
 }
 
