@@ -1,8 +1,8 @@
-#ifndef PID_CPP
-#define PID_CPP
-
 #include "main.h"
-#include "user/pid.hpp"
+
+
+float power;
+
 
 void pidInitialize (PID pid, float kP, float kI, float kD, float integral_threshold) {
 	pid.kP = kP;
@@ -11,6 +11,7 @@ void pidInitialize (PID pid, float kP, float kI, float kD, float integral_thresh
   pid.integral = 0;
   pid.integral_threshold = integral_threshold;
 }
+
 
 float pidCalculate (PID pid, float setpoint, float encoderVariable) {
   while (1) {
@@ -31,4 +32,3 @@ float pidCalculate (PID pid, float setpoint, float encoderVariable) {
   }
 }
 
-#endif

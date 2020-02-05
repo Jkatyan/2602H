@@ -1,5 +1,6 @@
-#ifndef PID_HPP
-#define PID_HPP
+#ifndef _PID_HPP
+#define _PID_HPP
+
 
 typedef struct{
 	float kP;
@@ -13,6 +14,8 @@ typedef struct{
   float target;
 } PID;
 
-float power; //Output Value
+
+extern float power;
+
 
 #endif
