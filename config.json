@@ -52,7 +52,7 @@
     },
     "autonmove_settings": {
       "CHASSIS_MAX_ERROR": 10,
-      "CHASSIS_AUTONMOVE_HOLDTIME": 500
+      "CHASSIS_AUTONMOVE_HOLDTIME": 250
     }
   }
 }

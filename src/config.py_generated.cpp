@@ -11,7 +11,7 @@ int PORT_INTAKE_L = 1;
 int PORT_INTAKE_R = 10;
 int PORT_TEST_MOTOR = 4;
 int CHASSIS_MAX_ERROR = 10;
-int CHASSIS_AUTONMOVE_HOLDTIME = 500;
+int CHASSIS_AUTONMOVE_HOLDTIME = 250;
 
 void load_autonomous(){
 	AUTONOMOUS_SEQUENCE[0] = Autonomous_Section{move, 1080, 200, 5000};
