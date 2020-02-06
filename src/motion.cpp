@@ -62,7 +62,6 @@ bool chassis_holding_at_target(void* buffer){
   return false;
 }
 
-int COUNT = 0;
 
 bool autonomous_motion(struct Autonomous_Section* section){
 
@@ -77,7 +76,7 @@ bool autonomous_motion(struct Autonomous_Section* section){
     LD_R.move_relative(len, spd);
     RD_R.move_relative(len, spd);
     if( wait_until( &chassis_holding_at_target, timeOut ) == -1 ){
-      controller0.print(0, 0, "tO::mov::%d", COUNT);
+      ;//pass
     }
   }
 
@@ -87,15 +86,17 @@ bool autonomous_motion(struct Autonomous_Section* section){
     LD_R.move_relative(len, spd);
     RD_R.move_relative((-1)*len, spd);
     if( wait_until( &chassis_holding_at_target, timeOut ) == -1 ){
-      controller0.print(0, 0, "tO::mov::%d", COUNT);
+      ;//pass
     }
+  }
+
+  else if( type == lift ){
+
   }
 
   else if( type == end ){
     return true;
   }
-
-  COUNT++;
 
   return false;
 
