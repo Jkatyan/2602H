@@ -20,8 +20,6 @@ extern struct Autonomous_Section* AUTONOMOUS_SEQUENCE;
 
 void autonomous_initialize();
 
-void autonomous_proceed(struct Autonomous_Section*);
-
 void load_autonomous();
 
 
