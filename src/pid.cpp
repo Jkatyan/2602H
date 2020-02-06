@@ -12,7 +12,7 @@ pid.kD = kD;
 }
 
 
-int pidCalculate (PID pid, float setpoint, double encoderVariable) {
+float pidCalculate (PID pid, float setpoint, double encoderVariable) {
   pid.error = setpoint - encoderVariable;
   pid.integral += pid.error;
   if (pid.error == 0 || pid.integral >= setpoint) {
