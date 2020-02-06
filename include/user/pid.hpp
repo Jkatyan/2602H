@@ -16,7 +16,7 @@ float kD;
 
 
 void pidInitialize (PID pid, float kP, float kI, float kD, float integral_threshold);
-float pidCalculate (PID pid, float setpoint, float encoderVariable);
+float pidCalculate (PID pid, float setpoint, double encoderVariable);
 
 
 extern float power;
