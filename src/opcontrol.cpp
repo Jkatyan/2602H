@@ -17,8 +17,8 @@ void opcontrol() {
 
 		int atTarget = 0;
 		while(atTarget != 1){
-			float encoder = (float)TEST_MOTOR.get_position();
-			TEST_MOTOR.move(pidCalculate (drive, 1000.0, encoder));
+			double encoder = TEST_MOTOR.get_position();
+			TEST_MOTOR.move(pidCalculate (drive, 1000.0f, encoder));
 			if (encoder == 1000){
 				atTarget = 1;
 				break;
