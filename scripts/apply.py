@@ -2,6 +2,9 @@ import sys
 import json
 
 
+print("Running HYDRA Apply")
+
+
 def print_constants(data):
     for unit in data:
         unit_type = type( data[unit] )
@@ -30,17 +33,20 @@ def print_auton(data):
     print( "}" )
 
 
-print("Running HYDRA Apply")
+try:
+    data = json.loads( open("config.json", 'r').read() )
 
-data = json.loads( open("config.json", 'r').read() )
+    #binary_data = json.loads( open("bin\config.bin", 'rb').read() )
 
-sys.stdout = open("src\\config.py_generated.cpp", 'w')
+    sys.stdout = open("src\\config.py_generated.cpp", 'w')
 
 
-print("#include \"main.h\"")
-print()
+    print("#include \"main.h\"")
+    print()
 
-print_constants( data["constants"] )
-print()
+    print_constants( data["constants"] )
+    print()
 
-print_auton( data["autonomous"] )
+    print_auton( data["autonomous"] )
+except Exception as error:
+    raise error

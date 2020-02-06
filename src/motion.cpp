@@ -18,7 +18,7 @@ int wait_until(bool (*condition)(void*), int timeOut){
     if( (*condition)(buffer) ){
       return 0;
     }
-    delay(3);
+    Task::delay(3);
   }
   return -1;
 }
