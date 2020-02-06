@@ -25,7 +25,7 @@ void opcontrol() {
 				atTarget = 1;
 				break;
 			}
-		pros::delay(10);
+			pros::delay(10);
 		}
 	}
 }
