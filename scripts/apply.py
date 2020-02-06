@@ -5,6 +5,10 @@ import json
 print("Running HYDRA Apply")
 
 
+class NonChangeException(Exception):
+    pass
+
+
 def print_constants(data):
     for unit in data:
         unit_type = type( data[unit] )
@@ -36,10 +40,15 @@ def print_auton(data):
 try:
     data = json.loads( open("config.json", 'r').read() )
 
-    #binary_data = json.loads( open("bin\config.bin", 'rb').read() )
-
+    try:
+        binary_data = json.loads( str(open("bin\config.bin", 'rb').read(), "ascii") )
+        if data == binary_data:
+            raise NonChangeException
+    except FileNotFoundError:
+        pass
+    
+    stdout = sys.stdout
     sys.stdout = open("src\\config.py_generated.cpp", 'w')
-
 
     print("#include \"main.h\"")
     print()
@@ -48,5 +57,15 @@ try:
     print()
 
     print_auton( data["autonomous"] )
-except Exception as error:
+
+    open("bin\config.bin", 'wb').write( bytes(json.dumps(data), "ascii") )
+
+    sys.stdout = stdout
+    print("HYDRA Apply: success")
+
+except FileNotFoundError as error:
+    print("HYDRA Apply error: config.json not found")
     raise error
+
+except NonChangeException:
+    print("HYDRA Apply: nothing changed!")

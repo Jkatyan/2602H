@@ -54,7 +54,7 @@
       "PORT_TILTER": 9,
       "PORT_INTAKE_L": 1,
       "PORT_INTAKE_R": 10,
-      "PORT_TEST_MOTOR": 4
+      "PORT_TEST_MOTOR": 15
     },
     "autonmove_settings": {
       "CHASSIS_MAX_ERROR": 10,
