@@ -5,15 +5,15 @@ float power;
 
 
 void pidInitialize (PID pid, float kP, float kI, float kD, float integral_threshold) {
-	pid.kP = kP;
-	pid.kI = kI;
-	pid.kD = kD;
+pid.kP = kP;
+pid.kI = kI;
+pid.kD = kD;
   pid.integral = 0;
   pid.integral_threshold = integral_threshold;
 }
 
 
-float pidCalculate (PID pid, float setpoint, float encoderVariable) {
+float pidCalculate (PID pid, float setpoint, double encoderVariable) {
   pid.error = setpoint - encoderVariable;
   pid.integral += pid.error;
   if (pid.error == 0 || pid.integral >= setpoint) {
@@ -29,4 +29,3 @@ float pidCalculate (PID pid, float setpoint, float encoderVariable) {
   return power;
   pros::delay(10);
 }
-
