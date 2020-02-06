@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 float power;
 
 
@@ -13,7 +12,7 @@ pid.kD = kD;
 }
 
 
-float pidCalculate (PID pid, float setpoint, double encoderVariable) {
+int pidCalculate (PID pid, float setpoint, double encoderVariable) {
   pid.error = setpoint - encoderVariable;
   pid.integral += pid.error;
   if (pid.error == 0 || pid.integral >= setpoint) {

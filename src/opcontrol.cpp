@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 void opcontrol() {
 
 	PID drive;
@@ -16,11 +15,10 @@ void opcontrol() {
 		delay(200);
 		*/
 
-		int atTarget;
+		int atTarget = 0;
 		while(atTarget != 1){
-			float encoder = (float)LD_F.get_position();
-			int val = pidCalculate (drive, 1000.0, encoder);
-			LD_F.move(val);
+			float encoder = (float)TEST_MOTOR.get_position();
+			TEST_MOTOR.move(pidCalculate (drive, 1000.0, encoder));
 			if (encoder == 1000){
 				atTarget = 1;
 				break;
