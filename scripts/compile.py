@@ -1,4 +1,4 @@
 import os
 
-print("Running HYDRA Comlile")
+print("Running HYDRA Compile")
 os.system("prosv5 make")

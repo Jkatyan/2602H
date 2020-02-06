@@ -35,6 +35,12 @@
       "length": -1080,
       "speed": 200,
       "timeOut": 5000
+    },
+    {
+      "type": "move",
+      "length": 0,
+      "speed": 0,
+      "timeOut": 0
     }
   ],
   "constants": {
