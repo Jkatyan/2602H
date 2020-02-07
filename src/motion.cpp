@@ -46,12 +46,8 @@ bool intake_at_target(void* buffer){
 }
 
 
-bool all_chassis_motors_at_target(){
-  return//:
-    motor_at_target(LD_F, CHASSIS_MAX_ERROR) &&
-    motor_at_target(RD_F, CHASSIS_MAX_ERROR) &&
-    motor_at_target(LD_R, CHASSIS_MAX_ERROR) &&
-    motor_at_target(RD_R, CHASSIS_MAX_ERROR);
+bool chassis_at_target(void* buffer){
+  return CHASSIS.is_at_target();
 }
 
 
@@ -67,7 +63,7 @@ bool chassis_holding_at_target(void* buffer){
     *isInitialized = 1;
   }
   else{
-    if( all_chassis_motors_at_target() ){
+    if( CHASSIS.is_at_target() ){
       if( currentTime - *lastCalcTime > CHASSIS_AUTONMOVE_HOLDTIME ){
         return true;
       }
@@ -88,20 +84,14 @@ bool autonomous_motion(struct Autonomous_Section* section){
   int timeOut = section -> timeOut;
 
   if( type == move ){
-    LD_F.move_relative(len, spd);
-    RD_F.move_relative(len, spd);
-    LD_R.move_relative(len, spd);
-    RD_R.move_relative(len, spd);
+    CHASSIS.move_relative(len, spd);
     if( wait_until( &chassis_holding_at_target, timeOut ) == -1 ){
       ;//pass, do display later
     }
   }
 
   else if( type == turn ){
-    LD_F.move_relative(len, spd);
-    RD_F.move_relative((-1)*len, spd);
-    LD_R.move_relative(len, spd);
-    RD_R.move_relative((-1)*len, spd);
+    CHASSIS.turn_relative(len, spd);
     if( wait_until( &chassis_holding_at_target, timeOut ) == -1 ){
       ;//pass, do display later
     }
@@ -162,6 +152,11 @@ bool autonomous_motion(struct Autonomous_Section* section){
 
 void opcontrol_motion(){
   ;
+}
+
+
+void load_pid(){
+  
 }
 
 
