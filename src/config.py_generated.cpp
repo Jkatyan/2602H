@@ -5,11 +5,11 @@ int LIFT_MAX_ERROR = 10;
 int TILTER_MAX_ERROR = 10;
 int INTAKE_MAX_ERROR = 10;
 int CHASSIS_MAX_ERROR = 10;
-int CHASSIS_AUTONMOVE_HOLDTIME = 250;
+int CHASSIS_AUTONMOVE_HOLDTIME = 500;
 int AUTONMOVE_WAIT_CHECKFREQ = 300;
-double VEL_P_CHASSIS = 1.0;
+double VEL_P_CHASSIS = 5.0;
 double VEL_I_CHASSIS = 0.001;
-double VEL_D_CHASSIS = 0.1;
+double VEL_D_CHASSIS = 0.001;
 double POS_P_CHASSIS = 1.0;
 double POS_I_CHASSIS = 0.001;
 double POS_D_CHASSIS = 0.1;
@@ -26,8 +26,8 @@ int PORT_IMU = 13;
 
 void load_autonomous(){
 	AUTONOMOUS_SEQUENCE[0] = Autonomous_Section{move, 1080, 100, 5000};
-	AUTONOMOUS_SEQUENCE[1] = Autonomous_Section{turn, 180, 100, 5000};
-	AUTONOMOUS_SEQUENCE[2] = Autonomous_Section{turn, -180, 100, 5000};
+	AUTONOMOUS_SEQUENCE[1] = Autonomous_Section{move, -1080, 100, 5000};
+	AUTONOMOUS_SEQUENCE[2] = Autonomous_Section{move, 1080, 100, 5000};
 	AUTONOMOUS_SEQUENCE[3] = Autonomous_Section{move, -1080, 100, 5000};
 	AUTONOMOUS_SEQUENCE[4] = Autonomous_Section{end, 0, 0, 0};
 	AUTONOMOUS_SEQUENCE[5] = Autonomous_Section{end};

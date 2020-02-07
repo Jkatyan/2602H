@@ -8,14 +8,14 @@
       "timeOut": 5000
     },
     {
-      "type": "turn",
-      "length": 180,
+      "type": "move",
+      "length": -1080,
       "speed": 100,
       "timeOut": 5000
     },
     {
-      "type": "turn",
-      "length": -180,
+      "type": "move",
+      "length": 1080,
       "speed": 100,
       "timeOut": 5000
     },
@@ -39,13 +39,13 @@
       "TILTER_MAX_ERROR": 10,
       "INTAKE_MAX_ERROR": 10,
       "CHASSIS_MAX_ERROR": 10,
-      "CHASSIS_AUTONMOVE_HOLDTIME": 250,
+      "CHASSIS_AUTONMOVE_HOLDTIME": 500,
       "AUTONMOVE_WAIT_CHECKFREQ": 300
     },
     "pid": {
-      "VEL_P_CHASSIS": 1.0,
+      "VEL_P_CHASSIS": 5.0,
       "VEL_I_CHASSIS": 0.001,
-      "VEL_D_CHASSIS": 0.1,
+      "VEL_D_CHASSIS": 0.001,
       "POS_P_CHASSIS": 1.0,
       "POS_I_CHASSIS": 0.001,
       "POS_D_CHASSIS": 0.1

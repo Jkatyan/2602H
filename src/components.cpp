@@ -18,26 +18,32 @@ void Chassis::move_relative(int len, int spd){
     RD_R.move_relative(len, spd);
 }
 
+void Chassis::set_brake_mode(motor_brake_mode_e_t mode){
+    LD_F.set_brake_mode(mode);
+    RD_F.set_brake_mode(mode);
+    LD_R.set_brake_mode(mode);
+    RD_R.set_brake_mode(mode);
+}
+
+void Chassis::set_pos_pid(double kp, double ki, double kd){
+    LD_F.set_pos_pid( Motor::convert_pid(0.0, kp, ki, kd) );
+    RD_F.set_pos_pid( Motor::convert_pid(0.0, kp, ki, kd) );
+    LD_R.set_pos_pid( Motor::convert_pid(0.0, kp, ki, kd) );
+    RD_R.set_pos_pid( Motor::convert_pid(0.0, kp, ki, kd) );
+}
+
+void Chassis::set_vel_pid(double kp, double ki, double kd){
+    LD_F.set_vel_pid( Motor::convert_pid(0.0, kp, ki, kd) );
+    RD_F.set_vel_pid( Motor::convert_pid(0.0, kp, ki, kd) );
+    LD_R.set_vel_pid( Motor::convert_pid(0.0, kp, ki, kd) );
+    RD_R.set_vel_pid( Motor::convert_pid(0.0, kp, ki, kd) );
+}
+
 void Chassis::turn_relative(int len, int spd){
     LD_F.move_relative(len, spd);
     RD_F.move_relative((-1)*len, spd);
     LD_R.move_relative(len, spd);
     RD_R.move_relative((-1)*len, spd);
-}
-
-void Chassis::set_vel_pid(double kp, double ki, double kd){
-    LD_F.set_vel_pid( Motor::convert_pid(0, kp, ki, kd) );
-    RD_F.set_vel_pid( Motor::convert_pid(0, kp, ki, kd) );
-    LD_R.set_vel_pid( Motor::convert_pid(0, kp, ki, kd) );
-    RD_R.set_vel_pid( Motor::convert_pid(0, kp, ki, kd) );
-}
-
-
-void Chassis::set_pos_pid(double kp, double ki, double kd){
-    LD_F.set_pos_pid( Motor::convert_pid(0, kp, ki, kd) );
-    RD_F.set_pos_pid( Motor::convert_pid(0, kp, ki, kd) );
-    LD_R.set_pos_pid( Motor::convert_pid(0, kp, ki, kd) );
-    RD_R.set_pos_pid( Motor::convert_pid(0, kp, ki, kd) );
 }
 
 

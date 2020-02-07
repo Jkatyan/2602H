@@ -162,12 +162,11 @@ void load_pid(){
 
 
 void motion_initialize(){
-  LD_F.set_brake_mode( E_MOTOR_BRAKE_HOLD );
-  LD_R.set_brake_mode( E_MOTOR_BRAKE_HOLD );
-  RD_F.set_brake_mode( E_MOTOR_BRAKE_HOLD );
-  RD_R.set_brake_mode( E_MOTOR_BRAKE_HOLD );
+  CHASSIS.set_brake_mode( E_MOTOR_BRAKE_HOLD );
   LIFT.set_brake_mode( E_MOTOR_BRAKE_HOLD );
   TILTER.set_brake_mode( E_MOTOR_BRAKE_HOLD );
   INTAKE_L.set_brake_mode( E_MOTOR_BRAKE_HOLD );
   INTAKE_R.set_brake_mode( E_MOTOR_BRAKE_HOLD );
+
+  load_pid();
 }

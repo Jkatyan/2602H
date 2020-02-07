@@ -10,9 +10,10 @@ class Chassis
         Chassis();
         bool is_at_target();
         void move_relative(int, int);
-        void turn_relative(int, int);
-        void set_vel_pid(double, double, double);
+        void set_brake_mode(pros::motor_brake_mode_e_t);
         void set_pos_pid(double, double, double);
+        void set_vel_pid(double, double, double);
+        void turn_relative(int, int);
 };
 
 
