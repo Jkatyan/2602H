@@ -142,6 +142,10 @@ bool autonomous_motion(struct Autonomous_Section* section){
     }
   }
 
+  else if( type == wait ){
+    Task::delay(timeOut);
+  }
+
   else if( type == end ){
     //do display later
     return true;
@@ -154,6 +158,12 @@ bool autonomous_motion(struct Autonomous_Section* section){
   return false;
 
 }
+
+
+void opcontrol_motion(){
+  ;
+}
+
 
 void motion_initialize(){
   LD_F.set_brake_mode( E_MOTOR_BRAKE_HOLD );

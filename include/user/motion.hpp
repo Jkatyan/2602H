@@ -4,6 +4,8 @@
 
 bool autonomous_motion(struct Autonomous_Section*);
 
+void opcontrol_motion();
+
 void motion_initialize();
 
 
