@@ -4,5 +4,7 @@
 
 bool autonomous_motion(struct Autonomous_Section*);
 
+void motion_initialize();
+
 
 #endif

@@ -68,4 +68,4 @@ except FileNotFoundError as error:
     raise error
 
 except NonChangeException:
-    print("HYDRA Apply: nothing changed!")
+    print("HYDRA Apply: nothing changed")

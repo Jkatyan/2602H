@@ -3,7 +3,7 @@
 
 
 enum autonomous_section_motion_type_e{
-  end, move, turn, lift, tilter, intake, lift_sync, tilter_sunc
+  end, move, turn, lift, tilter, intake_move, lift_sync, tilter_sync, intake, wait
 };
 
 
