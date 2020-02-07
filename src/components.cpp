@@ -25,6 +25,21 @@ void Chassis::turn_relative(int len, int spd){
     RD_R.move_relative((-1)*len, spd);
 }
 
+void Chassis::set_vel_pid(double kp, double ki, double kd){
+    LD_F.set_vel_pid( Motor::convert_pid(0, kp, ki, kd) );
+    RD_F.set_vel_pid( Motor::convert_pid(0, kp, ki, kd) );
+    LD_R.set_vel_pid( Motor::convert_pid(0, kp, ki, kd) );
+    RD_R.set_vel_pid( Motor::convert_pid(0, kp, ki, kd) );
+}
+
+
+void Chassis::set_pos_pid(double kp, double ki, double kd){
+    LD_F.set_pos_pid( Motor::convert_pid(0, kp, ki, kd) );
+    RD_F.set_pos_pid( Motor::convert_pid(0, kp, ki, kd) );
+    LD_R.set_pos_pid( Motor::convert_pid(0, kp, ki, kd) );
+    RD_R.set_pos_pid( Motor::convert_pid(0, kp, ki, kd) );
+}
+
 
 Motor LD_F(PORT_LD_F, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 Motor RD_F(PORT_RD_F, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);

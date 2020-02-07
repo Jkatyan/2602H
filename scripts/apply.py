@@ -22,6 +22,9 @@ def print_constants(data):
         if unit_type == int:
             print( "int " + unit + " = " + str(data[unit]) + ";")
 
+        if unit_type == float:
+            print( "double " + unit + " = " + str(data[unit]) + ";" )
+
         if unit_type == str:
             print( "char " + unit + "[] = \"" + data[unit] + "\";" )
 

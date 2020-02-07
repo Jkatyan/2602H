@@ -156,7 +156,8 @@ void opcontrol_motion(){
 
 
 void load_pid(){
-  
+  CHASSIS.set_vel_pid( VEL_P_CHASSIS, VEL_I_CHASSIS, VEL_D_CHASSIS );
+  CHASSIS.set_pos_pid( POS_P_CHASSIS, POS_I_CHASSIS, POS_D_CHASSIS );
 }
 
 

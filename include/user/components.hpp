@@ -11,6 +11,8 @@ class Chassis
         bool is_at_target();
         void move_relative(int, int);
         void turn_relative(int, int);
+        void set_vel_pid(double, double, double);
+        void set_pos_pid(double, double, double);
 };
 
 
