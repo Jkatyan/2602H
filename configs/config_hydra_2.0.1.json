@@ -55,7 +55,8 @@
       "PORT_TILTER": 9,
       "PORT_INTAKE_L": 1,
       "PORT_INTAKE_R": 10,
-      "PORT_TEST_MOTOR": 4
+      "PORT_TEST_MOTOR": 4,
+      "PORT_IMU": 13
     },
     "autonmove_settings": {
       "LIFT_MAX_ERROR": 10,

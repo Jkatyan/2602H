@@ -18,4 +18,4 @@ Motor TEST_MOTOR(PORT_TEST_MOTOR, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGR
 Controller controller0(E_CONTROLLER_MASTER);
 Controller controller1(E_CONTROLLER_PARTNER);
 
-//Imu imu0();
+Imu imu0(PORT_IMU);

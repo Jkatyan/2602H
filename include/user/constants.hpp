@@ -17,6 +17,8 @@ extern int PORT_INTAKE_R;
 
 extern int PORT_TEST_MOTOR;
 
+extern int PORT_IMU;
+
 
 extern int LIFT_MAX_ERROR;
 extern int TILTER_MAX_ERROR;
