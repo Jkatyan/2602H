@@ -2,7 +2,10 @@ import sys
 import json
 
 
-print("Running HYDRA Apply")
+target = "config_hydra_2.0.1"
+
+
+print("Running HYDRA Apply: applying \"" + target + "\"")
 
 
 class NonChangeException(Exception):
@@ -38,7 +41,7 @@ def print_auton(data):
 
 
 try:
-    data = json.loads( open("config.json", 'r').read() )
+    data = json.loads( open("configs\\" + target + ".json", 'r').read() )
 
     try:
         binary_data = json.loads( str(open("bin\config.bin", 'rb').read(), "ascii") )
@@ -64,7 +67,7 @@ try:
     print("HYDRA Apply: success")
 
 except FileNotFoundError as error:
-    print("HYDRA Apply error: config.json not found")
+    print("\033[0;31m[HYDRA Apply error]\033[0m: config \"" + target + "\" not found")
     raise error
 
 except NonChangeException:

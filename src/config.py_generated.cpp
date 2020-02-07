@@ -24,6 +24,6 @@ void load_autonomous(){
 	AUTONOMOUS_SEQUENCE[3] = Autonomous_Section{move, -360, 200, 5000};
 	AUTONOMOUS_SEQUENCE[4] = Autonomous_Section{turn, -180, 200, 5000};
 	AUTONOMOUS_SEQUENCE[5] = Autonomous_Section{move, -1080, 200, 5000};
-	AUTONOMOUS_SEQUENCE[6] = Autonomous_Section{move, 0, 0, 0};
+	AUTONOMOUS_SEQUENCE[6] = Autonomous_Section{end, 0, 0, 0};
 	AUTONOMOUS_SEQUENCE[7] = Autonomous_Section{end};
 }
