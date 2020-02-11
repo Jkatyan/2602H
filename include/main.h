@@ -4,7 +4,7 @@
  * Contains common definitions and header files used throughout your PROS
  * project.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -39,9 +39,7 @@
 /**
  * You should add more #includes here
  */
-#include "okapi/api.hpp"
-
-
+//#include "okapi/api.hpp"
 //#include "pros/api_legacy.h"
 
 /**
@@ -54,7 +52,7 @@
  */
 // using namespace pros;
 // using namespace pros::literals;
-using namespace okapi;
+// using namespace okapi;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
@@ -64,70 +62,11 @@ using namespace okapi;
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-extern pros::Controller controller;
-extern pros::Motor LD;
-extern pros::Motor RD;
-extern pros::Motor LD2;
-extern pros::Motor RD2;
-extern pros::Motor INTAKEA;
-extern pros::Motor INTAKEB;
-extern pros::Motor LIFT;
-extern pros::Motor TILTER;
-
-extern pros::ADIAnalogIn pot;
-extern pros::ADIGyro gyro;
-
-extern pros::ADIEncoder sideEnc;
-extern pros::ADIEncoder leftEnc;
-extern pros::ADIEncoder rightEnc;
-
-extern pros::ADIEncoder sideEncOdom;
-extern pros::ADIEncoder leftEncOdom;
-extern pros::ADIEncoder rightEncOdom;
-
-//Motor Ports
-const int LDPORT = 11;
-const int LD2PORT = 13;
-const int RDPORT = 20;
-const int RD2PORT = 19;
-const int INTAKEAPORT = 1;
-const int INTAKEBPORT = 10;
-const int LIFTPORT = 7;
-const int TILTERPORT = 2000;
-const char GYROPORT = 'x';
-const char POTPORT = 'c';
-//const char PISTON_L_PORT = 'a';
-
-//PID Tuning
-const float DRIVEP = 0.5;
-const float DRIVEI = 0;
-const float DRIVED = 0;
-
-const float TURNP = 0.18;
-const float TURNI = 0;
-const float TURND = 0;
-
-const float TILTERP = 0.4;
-const float TILTERI = 0;
-const float TILTERD = 0;
-
-const float LIFTP = 0.01;
-const float LIFTI = 0;
-const float LIFTD = 0;
-
-//Correction Constants
-const double RC = 1; //Chassis Speed Correction
-const double LC = 1;
-const double GC = 0.92; //Gyro Correction
-
 void autonomous(void);
 void initialize(void);
 void disabled(void);
 void competition_initialize(void);
 void opcontrol(void);
-
-
 #ifdef __cplusplus
 }
 #endif
@@ -136,8 +75,6 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
- #include "odometry.hpp"
- #include "PID.hpp"
 //#include <iostream>
 #endif
 
