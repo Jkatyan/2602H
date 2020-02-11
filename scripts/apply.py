@@ -1,5 +1,6 @@
-import sys
 import json
+import os
+import sys
 
 
 target = "config_hydra_2.0.1"
@@ -64,7 +65,10 @@ try:
 
     print_auton( data["autonomous"] )
 
-    open("bin\config.bin", 'wb').write( bytes(json.dumps(data), "ascii") )
+    if not os.path.exists("bin"):
+        os.makedirs("bin")
+
+    open("bin\\config.bin", 'wb').write( bytes(json.dumps(data), "ascii") )
 
     sys.stdout = stdout
     print("HYDRA Apply: success")
