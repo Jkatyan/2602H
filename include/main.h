@@ -62,6 +62,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+//extern pros::Imu imu;
+
 void autonomous(void);
 void initialize(void);
 void disabled(void);

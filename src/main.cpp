@@ -21,7 +21,7 @@
 #define RINTPORT 7
 #define LINTPORT -8
 
-#define IMUPORT 15
+#define IMUPORT 13
 
 //INITIALIZE
 PID drivePID;
@@ -30,21 +30,21 @@ float lastSlewTime;
 float maxAccel = 0.17; //Chassis
 float lastSlewRate = 0;
 
-pros::Imu imu(IMUPORT);
+pros::Imu imu(IMUPORT); //Pros Motors
 
-pros::Motor RD(RFPORT);
-pros::Motor RD2(RBPORT, true);
-pros::Motor LD(LFPORT);
-pros::Motor LD2(LBPORT, true);
+pros::Motor RD(abs(RFPORT));
+pros::Motor RD2(abs(RBPORT), true);
+pros::Motor LD(abs(LFPORT));
+pros::Motor LD2(abs(LBPORT), true);
 
-pros::Motor TILTER(TILTERPORT);
-pros::Motor LIFT(LIFTPORT);
-pros::Motor RIGHTINTAKE(RINTPORT);
-pros::Motor LEFTINTAKE(LINTPORT);
+pros::Motor TILTER(abs(TILTERPORT));
+pros::Motor LIFT(abs(LIFTPORT));
+pros::Motor RIGHTINTAKE(abs(RINTPORT));
+pros::Motor LEFTINTAKE(abs(LINTPORT), true);
 
 using namespace okapi;
 
-Motor rf(RFPORT);
+Motor rf(RFPORT); //Okapi Motors
 Motor rb(RBPORT);
 Motor lf(LFPORT);
 Motor lb(LBPORT);
@@ -59,10 +59,6 @@ MotorGroup intake({RINTPORT, LINTPORT});
 Controller master;
 
 //OKAPI CONTROLLERS
-ControllerButton intakeIn(ControllerDigital::R1);
-ControllerButton intakeOut(ControllerDigital::R2);
-ControllerButton liftUp(ControllerDigital::L1);
-ControllerButton liftDown(ControllerDigital::L2);
 
 auto liftController = AsyncPosControllerBuilder()
                         .withMotor(LIFTPORT) // lift motor port 3
@@ -111,11 +107,19 @@ void setDriveBrakes(pros::motor_brake_mode_e_t mode){
   RD2.set_brake_mode(mode);
 }
 
+void setDrive(int left, int right){
+  LD.move(left);
+  LD2.move(left);
+  RD.move(right);
+  RD2.move(right);
+}
+
 void resetDrive(){
   LD.tare_position();
   LD2.tare_position();
   RD.tare_position();
   RD2.tare_position();
+  setDrive(0,0);
 }
 
 float slewRateCalculate (float desiredRate) {
@@ -140,7 +144,7 @@ float slewRateCalculate (float desiredRate) {
 		return returnVal;
 }
 
-void A_driveTarget(int target, int time, float speed){
+void driveTarget(int target, int time, float speed){
   int atTarget = 0;
   int driveEnc = 0;
   int distance = 0;
@@ -150,9 +154,9 @@ void A_driveTarget(int target, int time, float speed){
     driveEnc = RD.get_position();
     distance = target - driveEnc;
 
-		pros::lcd::print(1, "Drive Encoder Value: %f", driveEnc);
-		pros::lcd::print(2, "Distance from Target: %f", distance);
-    pros::lcd::print(4, "Encoder: %d", RD.get_position());
+		//pros::lcd::print(1, "Drive Encoder Value: %f", driveEnc);
+		//pros::lcd::print(2, "Distance from Target: %f", distance);
+    //pros::lcd::print(4, "Encoder: %d", RD.get_position());
 
     float val = pidCalculate(drivePID, target, driveEnc)*speed;
     val = slewRateCalculate(val);
@@ -165,23 +169,52 @@ void A_driveTarget(int target, int time, float speed){
     LD2.move(LC*leftVal);
     if(driveEnc == target){
        atTarget = 1;
-       pros::lcd::print(2, "Distance from Target: %f", distance);
+       //pros::lcd::print(2, "Distance from Target: %f", distance);
       }
       pros::delay(20);
     }
 }
 
+void rotate(int degrees, int voltage) {
+int direction = abs(degrees)/degrees;
+setDrive(-voltage * direction, voltage * direction);
+while(fabs(imu.get_yaw()) < abs(degrees) - 0.5){
+  pros::delay(10);
+}
+pros::delay(100);
+if(fabs(imu.get_yaw()) > abs(degrees)){
+  setDrive(0.5 * voltage * direction, 0.5 * -voltage * direction);
+  while(fabs(imu.get_yaw()) > abs(degrees)){
+    pros::delay(10);
+  }
+}
+else if(fabs(imu.get_yaw()) < abs(degrees)){
+  setDrive(0.5 * -voltage * direction, 0.5 * voltage * direction);
+  while(fabs(imu.get_yaw()) > abs(degrees)){
+    pros::delay(10);
+  }
+}
+resetDrive();
+}
+
 //MAIN (AUTON) CODE
 void autonomous(){
+  //AUTON INIT
   drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
   setDriveBrakes(MOTOR_BRAKE_HOLD);
+  lift.setBrakeMode(AbstractMotor::brakeMode::hold);
+	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
   resetDrive();
-  //rotate(10,3000);
-  A_driveTarget(600,2000, 1);
-  A_driveTarget(200,2000, 1);
-  A_driveTarget(2000,5000, 0.6);
+  //AUTON START
+  rotate(-90,60);
+/*
+  //Flipout
+  //Intake max speed in
+  driveTarget(600,2000, 1);
+  driveTarget(200,2000, 1);
+  driveTarget(2000,5000, 0.6);
   //Raise arms
-  A_driveTarget(2300 ,1000, 1);
+  driveTarget(2300 ,1000, 1);
   //Arms down
   profileController->generatePath(
     {{0_ft, 0_ft, 0_deg}, {2_ft, 0.9_ft, 0_deg}}, "A");
@@ -189,15 +222,27 @@ void autonomous(){
               profileController->waitUntilSettled();
               profileController->removePath("A"); //remove path once motion is complete.
   resetDrive();
-  A_driveTarget(-500,5000, 0.6);
-  A_driveTarget(2200,5000, 0.6);
-  A_driveTarget(800,5000, 0.6);
+  driveTarget(-500,5000, 0.6);
+  driveTarget(2200,5000, 0.6);
+  driveTarget(800,5000, 0.6);
+  //Turn to face zone
+  //Drive forward
+  //Deposit
+  //Drive back
+*/
 }
 void opcontrol() {
   setDriveBrakes(MOTOR_BRAKE_COAST);
   lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
   while(true){
+    pros::lcd::print(1, "IMU Heading: %f", imu.get_heading());
+    pros::lcd::print(2, "IMU Rotations: %f", imu.get_rotation());
+    pros::lcd::print(3, "IMU Drift: %f", imu.get_gyro_rate());
+    pros::lcd::print(4, "IMU Pitch: %f", imu.get_pitch());
+    pros::lcd::print(5, "IMU Roll: %f", imu.get_roll());
+    pros::lcd::print(6, "IMU Yaw: %f", imu.get_yaw());
     myChassis->getModel()->tank(master.getAnalog(ControllerAnalog::leftY), master.getAnalog(ControllerAnalog::rightY));
+    pros::delay(20);
   }
 }
