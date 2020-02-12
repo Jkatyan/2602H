@@ -35,14 +35,26 @@ def print_auton(data):
     ind = 0
 
     for unit in data:
-        print( "\tAUTONOMOUS_SEQUENCE[" + str(ind) + "] = Autonomous_Section{" +
+        print("\tAUTONOMOUS_SEQUENCE[" + str(ind) + "] = Autonomous_Section{" +
                 unit["type"]   + ", " + str(unit["length"] ) + ", " +
             str(unit["speed"]) + ", " + str(unit["timeOut"]) + "};")
         ind += 1
     
     print( "\tAUTONOMOUS_SEQUENCE[" + str(ind) + "] = Autonomous_Section{end};")
-    print( "}" )
+    print("}")
 
+
+def print_keyBindings(data):
+    print("void load_keyBindings(){")
+    ind = 0
+
+    for unit in data:
+        print("\tKEY_MAP[" + str(ind) + "] = Key_Binding{" + unit + ", E_HYDRA_" +
+                data[unit][0] + ", E_HYDRA_" + data[unit][1] + "};")
+        ind += 1
+    
+    print( "\tKEY_MAP[" + str(ind) + "] = Key_Binding{end};" )
+    print("}")
 
 try:
     data = json.loads( open("configs\\" + target + ".json", 'r').read() )
@@ -64,6 +76,9 @@ try:
     print()
 
     print_auton( data["autonomous"] )
+    print()
+
+    print_keyBindings( data["key_bindings"] )
 
     if not os.path.exists("bin"):
         os.makedirs("bin")

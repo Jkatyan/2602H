@@ -1,14 +1,11 @@
 #ifndef _AUTONOMOUS_HPP
 #define _AUTONOMOUS_HPP
 
-
-enum autonomous_section_motion_type_e{
-  end, move, turn, lift, tilter, intake_move, lift_sync, tilter_sync, intake, wait
-};
+#include "motion.hpp"
 
 
 struct Autonomous_Section{
-  autonomous_section_motion_type_e movement_type;
+  movement_e_t movement_type;
   int length;
   int speed;
   int timeOut;

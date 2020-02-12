@@ -62,5 +62,23 @@
       "PORT_TEST_MOTOR": 4,
       "PORT_IMU": 13
     }
+  },
+  "key_bindings": {
+    "arcade_drive": [
+      "ANALOG_LEFT_Y",
+      "ANALOG_RIGHT_X"
+    ],
+    "lift": [
+      "DIGITAL_L1",
+      "DIGITAL_L2"
+    ],
+    "tilter": [
+      "DIGITAL_UP",
+      "DIGITAL_DOWN"
+    ],
+    "intake":[
+      "DIGITAL_R1",
+      "DIGITAL_R2"
+    ]
   }
 }

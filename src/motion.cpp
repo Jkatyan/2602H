@@ -78,7 +78,7 @@ bool chassis_holding_at_target(void* buffer){
 
 bool autonomous_motion(struct Autonomous_Section* section){
 
-  autonomous_section_motion_type_e type = section -> movement_type;
+  movement_e_t type = section -> movement_type;
   int len = section -> length;
   int spd = section -> speed;
   int timeOut = section -> timeOut;
@@ -155,7 +155,7 @@ void opcontrol_motion(){
 }
 
 
-void load_pid(){
+void pid_set_all(){
   CHASSIS.set_vel_pid( VEL_P_CHASSIS, VEL_I_CHASSIS, VEL_D_CHASSIS );
   CHASSIS.set_pos_pid( POS_P_CHASSIS, POS_I_CHASSIS, POS_D_CHASSIS );
 }
@@ -168,5 +168,5 @@ void motion_initialize(){
   INTAKE_L.set_brake_mode( E_MOTOR_BRAKE_HOLD );
   INTAKE_R.set_brake_mode( E_MOTOR_BRAKE_HOLD );
 
-  load_pid();
+  pid_set_all();
 }
