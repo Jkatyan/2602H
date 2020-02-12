@@ -5,11 +5,11 @@
 
 //PORTS
 #define RFPORT 20
-#define RBPORT -19
+#define RBPORT 19
 #define LFPORT 11
-#define LBPORT -12
+#define LBPORT 12
 
-#define RC 0.99
+#define RC 1
 #define LC 1
 
 #define DRIVEP 0.4
@@ -206,13 +206,12 @@ void autonomous(){
 	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
   resetDrive();
   //AUTON START
-  rotate(-90,60);
-/*
+
   //Flipout
   //Intake max speed in
   driveTarget(600,2000, 1);
   driveTarget(200,2000, 1);
-  driveTarget(2000,5000, 0.6);
+  driveTarget(2000,4000, 0.8);
   //Raise arms
   driveTarget(2300 ,1000, 1);
   //Arms down
@@ -222,14 +221,17 @@ void autonomous(){
               profileController->waitUntilSettled();
               profileController->removePath("A"); //remove path once motion is complete.
   resetDrive();
-  driveTarget(-500,5000, 0.6);
-  driveTarget(2200,5000, 0.6);
-  driveTarget(800,5000, 0.6);
+  driveTarget(-500,1000, 0.8);
+  driveTarget(2000,4000, 0.8);
+  driveTarget(800,3500, 0.8);
   //Turn to face zone
+  rotate(-137,60);
+  resetDrive();
+  driveTarget(950,3500, 0.8);
   //Drive forward
   //Deposit
   //Drive back
-*/
+
 }
 void opcontrol() {
   setDriveBrakes(MOTOR_BRAKE_COAST);
