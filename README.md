@@ -1,11 +1,23 @@
 # 2602H *JScript*
 This branch was created solely for algorithm testing away from the main program.
 
-Currently testing:
+Currently using:
       
       -Okapi 2D Motion Profiling
       
       -IMU Turns
+      
+      -PID / Slew Linear Motions
+      
+Coming soon:
+
+      -IMU assisted straight line driving
+      
+      -PID + IMU Turns
+      
+      -Auto Parallel Park / Stack (Ultrasonics -> 2D Motion Profile)
+      
+      
  
 Function documentation:
       
