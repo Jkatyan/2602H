@@ -16,21 +16,31 @@
 #define DRIVEI 0
 #define DRIVED 0.01
 
+#define GYROP 5.2
+#define GYROI 0.1
+#define GYROD 0.38
+
 #define TILTERPORT 5
 #define LIFTPORT 6
 #define RINTPORT 7
 #define LINTPORT -8
 
 #define IMUPORT 13
+#define IMUPORTB 18
 
 //INITIALIZE
 PID drivePID;
+PID gyroPID;
 
 float lastSlewTime;
 float maxAccel = 0.17; //Chassis
 float lastSlewRate = 0;
 
 pros::Imu imu(IMUPORT); //Pros Motors
+pros::Imu imuB(IMUPORTB);
+
+pros::ADIUltrasonic leftUltra ('E'/*Orange*/, 'F'/*Yellow*/);
+pros::ADIUltrasonic rightUltra ('G'/*Orange*/, 'H'/*Yellow*/);
 
 pros::Motor RD(abs(RFPORT));
 pros::Motor RD2(abs(RBPORT), true);
@@ -88,6 +98,7 @@ auto profileController =
 
     void initialize() {
       imu.reset();
+      imuB.reset();
       pros::delay(2000);
     	pros::lcd::initialize();
     	pros::lcd::set_text(1, "2602H JScript");
@@ -197,16 +208,55 @@ else if(fabs(imu.get_yaw()) < abs(degrees)){
 resetDrive();
 }
 
+void rotateGyro(int target, int time, float speed){
+  int direction = abs(target)/target;
+  int atTarget = 0;
+  int driveEnc = 0;
+  int distance = 0;
+  int startTime = pros::millis();
+
+  while ((atTarget != 1) && (pros::millis()-startTime) < time) {
+  driveEnc = (imu.get_heading() + imuB.get_heading())/2;
+  distance = target - driveEnc;
+
+  float val = pidCalculate(gyroPID, target, driveEnc)*speed;
+  val = ((fabs(driveEnc-target)>180)? -1 : 1)*val;
+  //val = slewRateCalculate(val);
+
+    RD.move(-RC*val);
+    RD2.move(-RC*val);
+    LD.move(LC*val);
+    LD2.move(LC*val);
+
+  if(driveEnc == target){
+     atTarget = 1;
+     //pros::lcd::print(2, "Distance from Target: %f", distance);
+    }
+    pros::delay(20);
+  }
+  resetDrive();
+}
+
 //MAIN (AUTON) CODE
 void autonomous(){
   //AUTON INIT
   drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
+  gyroPID = pidInit (GYROP, GYROI, GYROD, 0, 10.0,99999,99999);
   setDriveBrakes(MOTOR_BRAKE_HOLD);
   lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
   resetDrive();
   //AUTON START
+ rotateGyro(270,2000,0.5);
 
+  while(true){
+    pros::lcd::print(2, "IMU 1 Drift: %f", imu.get_gyro_rate());
+    pros::lcd::print(3, "IMU 1 Yaw: %f", imu.get_yaw());
+    pros::lcd::print(5, "IMU 2 Drift: %f", imuB.get_gyro_rate());
+    pros::lcd::print(6, "IMU 2 Yaw: %f", imuB.get_yaw());
+    pros::delay(20);
+  }
+/*
   //Flipout
   //Intake max speed in
   driveTarget(600,2000, 1);
@@ -231,19 +281,19 @@ void autonomous(){
   //Drive forward
   //Deposit
   //Drive back
-
+*/
 }
 void opcontrol() {
   setDriveBrakes(MOTOR_BRAKE_COAST);
   lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
   while(true){
-    pros::lcd::print(1, "IMU Heading: %f", imu.get_heading());
-    pros::lcd::print(2, "IMU Rotations: %f", imu.get_rotation());
-    pros::lcd::print(3, "IMU Drift: %f", imu.get_gyro_rate());
-    pros::lcd::print(4, "IMU Pitch: %f", imu.get_pitch());
-    pros::lcd::print(5, "IMU Roll: %f", imu.get_roll());
-    pros::lcd::print(6, "IMU Yaw: %f", imu.get_yaw());
+    pros::lcd::print(1, "IMU 1 Drift: %f", imu.get_gyro_rate());
+    pros::lcd::print(2, "IMU 1 Yaw: %f", imu.get_yaw());
+    pros::lcd::print(3, "IMU 2 Drift: %f", imuB.get_gyro_rate());
+    pros::lcd::print(4, "IMU 2 Yaw: %f", imuB.get_yaw());
+    pros::lcd::print(5, "Left Ultrasonic: %f", leftUltra.get_value());
+		 pros::lcd::print(6, "Right Ultrasonic: %f", rightUltra.get_value());
     myChassis->getModel()->tank(master.getAnalog(ControllerAnalog::leftY), master.getAnalog(ControllerAnalog::rightY));
     pros::delay(20);
   }
