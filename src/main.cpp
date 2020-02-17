@@ -186,29 +186,7 @@ void driveTarget(int target, int time, float speed){
     }
 }
 
-void rotate(int degrees, int voltage) {
-int direction = abs(degrees)/degrees;
-setDrive(-voltage * direction, voltage * direction);
-while(fabs(imu.get_yaw()) < abs(degrees) - 0.5){
-  pros::delay(10);
-}
-pros::delay(100);
-if(fabs(imu.get_yaw()) > abs(degrees)){
-  setDrive(0.5 * voltage * direction, 0.5 * -voltage * direction);
-  while(fabs(imu.get_yaw()) > abs(degrees)){
-    pros::delay(10);
-  }
-}
-else if(fabs(imu.get_yaw()) < abs(degrees)){
-  setDrive(0.5 * -voltage * direction, 0.5 * voltage * direction);
-  while(fabs(imu.get_yaw()) > abs(degrees)){
-    pros::delay(10);
-  }
-}
-resetDrive();
-}
-
-void rotateGyro(int target, int time, float speed){
+void rotate(int target, int time, float speed){
   int direction = abs(target)/target;
   int atTarget = 0;
   int driveEnc = 0;
@@ -221,7 +199,7 @@ void rotateGyro(int target, int time, float speed){
 
   float val = pidCalculate(gyroPID, target, driveEnc)*speed;
   val = ((fabs(driveEnc-target)>180)? -1 : 1)*val;
-  //val = slewRateCalculate(val);
+  val = slewRateCalculate(val);
 
     RD.move(-RC*val);
     RD2.move(-RC*val);
@@ -247,7 +225,7 @@ void autonomous(){
 	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
   resetDrive();
   //AUTON START
- rotateGyro(270,2000,0.5);
+ rotate(270,2000,0.5);
 
   while(true){
     pros::lcd::print(2, "IMU 1 Drift: %f", imu.get_gyro_rate());
