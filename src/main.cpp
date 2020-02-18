@@ -9,9 +9,16 @@
 #define LFPORT 11
 #define LBPORT 12
 
-#define RC 1
-#define LC 1
+#define TILTERPORT -9
+#define LIFTPORT 3
+#define RINTPORT 1
+#define LINTPORT -10
 
+#define IMUPORT 13
+#define IMUPORTB 18
+#define POTPORT 'c'
+
+//SETTINGS
 #define DRIVEP 0.4
 #define DRIVEI 0
 #define DRIVED 0.01
@@ -20,13 +27,18 @@
 #define GYROI 0.1
 #define GYROD 0.38
 
-#define TILTERPORT 5
-#define LIFTPORT 6
-#define RINTPORT 7
-#define LINTPORT -8
+#define RC 1 //Right Chassis Speed
+#define LC 1 //Left Chassis Speed
 
-#define IMUPORT 13
-#define IMUPORTB 18
+#define INTAKE_IN 127
+#define INTAKE_OUT -127
+
+#define LIFT_UP -127
+#define LIFT_DOWN 100
+
+#define TILTER_SPEED 127
+#define TILTER_MIN 1374 //Tilter Pot Min Position
+#define TILTER_MAX 2 //Tilter Pot Max Position
 
 //INITIALIZE
 PID drivePID;
@@ -36,18 +48,21 @@ float lastSlewTime;
 float maxAccel = 0.17; //Chassis
 float lastSlewRate = 0;
 
-pros::Imu imu(IMUPORT); //Pros Motors
+pros::Imu imu(IMUPORT);
 pros::Imu imuB(IMUPORTB);
+pros::ADIAnalogIn pot (POTPORT);
 
 pros::ADIUltrasonic leftUltra ('E'/*Orange*/, 'F'/*Yellow*/);
 pros::ADIUltrasonic rightUltra ('G'/*Orange*/, 'H'/*Yellow*/);
 
-pros::Motor RD(abs(RFPORT));
+pros::Controller controller(pros::E_CONTROLLER_MASTER);
+
+pros::Motor RD(abs(RFPORT)); //Pros Motors
 pros::Motor RD2(abs(RBPORT), true);
 pros::Motor LD(abs(LFPORT));
 pros::Motor LD2(abs(LBPORT), true);
 
-pros::Motor TILTER(abs(TILTERPORT));
+pros::Motor TILTER(abs(TILTERPORT), true);
 pros::Motor LIFT(abs(LIFTPORT));
 pros::Motor RIGHTINTAKE(abs(RINTPORT));
 pros::Motor LEFTINTAKE(abs(LINTPORT), true);
@@ -116,6 +131,13 @@ void setDriveBrakes(pros::motor_brake_mode_e_t mode){
   LD2.set_brake_mode(mode);
   RD.set_brake_mode(mode);
   RD2.set_brake_mode(mode);
+}
+
+void setArmBrakes(pros::motor_brake_mode_e_t mode){
+  RIGHTINTAKE.set_brake_mode(mode);
+  LEFTINTAKE.set_brake_mode(mode);
+  LIFT.set_brake_mode(mode);
+  TILTER.set_brake_mode(mode);
 }
 
 void setDrive(int left, int right){
@@ -187,7 +209,7 @@ void driveTarget(int target, int time, float speed){
 }
 
 void rotate(int target, int time, float speed){
-  int direction = abs(target)/target;
+//  int direction = abs(target)/target;
   int atTarget = 0;
   int driveEnc = 0;
   int distance = 0;
@@ -221,6 +243,7 @@ void autonomous(){
   drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
   gyroPID = pidInit (GYROP, GYROI, GYROD, 0, 10.0,99999,99999);
   setDriveBrakes(MOTOR_BRAKE_HOLD);
+  setArmBrakes(MOTOR_BRAKE_HOLD);
   lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
   resetDrive();
@@ -263,16 +286,19 @@ void autonomous(){
 }
 void opcontrol() {
   setDriveBrakes(MOTOR_BRAKE_COAST);
+  setArmBrakes(MOTOR_BRAKE_HOLD);
   lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
   while(true){
-    pros::lcd::print(1, "IMU 1 Drift: %f", imu.get_gyro_rate());
     pros::lcd::print(2, "IMU 1 Yaw: %f", imu.get_yaw());
-    pros::lcd::print(3, "IMU 2 Drift: %f", imuB.get_gyro_rate());
-    pros::lcd::print(4, "IMU 2 Yaw: %f", imuB.get_yaw());
-    pros::lcd::print(5, "Left Ultrasonic: %f", leftUltra.get_value());
-		 pros::lcd::print(6, "Right Ultrasonic: %f", rightUltra.get_value());
+    pros::lcd::print(3, "IMU 2 Yaw: %f", imuB.get_yaw());
     myChassis->getModel()->tank(master.getAnalog(ControllerAnalog::leftY), master.getAnalog(ControllerAnalog::rightY));
+    //LIFT
+    (controller.get_digital(DIGITAL_L1)) ? LIFT.move(LIFT_UP) : (controller.get_digital(DIGITAL_L2)) ? LIFT.move(LIFT_DOWN) : LIFT.move(0);
+    //INTAKES
+    (controller.get_digital(DIGITAL_R1)) ? RIGHTINTAKE.move(INTAKE_IN) && LEFTINTAKE.move(INTAKE_IN) : (controller.get_digital(DIGITAL_R2)) ? RIGHTINTAKE.move(INTAKE_OUT) && LEFTINTAKE.move(INTAKE_OUT) : RIGHTINTAKE.move(0) && LEFTINTAKE.move(0);
+    //TILTER
+    if(controller.get_digital(DIGITAL_UP)){ TILTER.move(TILTER_SPEED); } else if(controller.get_digital(DIGITAL_DOWN)){ if(pot.get_value() >= TILTER_MIN){ TILTER.move(-TILTER_SPEED); } } else { TILTER.move(0); }
     pros::delay(20);
   }
 }
