@@ -1,10 +1,18 @@
 import os
+import sys
 
 
-print("\033[0;33m[warning]\033[0m: Robot is bad")
-print("\033[0;31m[error]\033[0m: Tejas is stupid")
+show_program_info = True
 
 
-os.system("python scripts\\apply.py")
-os.system("python scripts\\compile.py")
-os.system("python scripts\\upload.py")
+if show_program_info:
+    print("\033[5;31;47m[READ THIS BEFORE UPLOADING]\033[0m")
+    print("\033[5;30;45mThis program belongs to:\n\
+    Team 2602H for VEX 2020 tower takeover:\n\
+    Alopa, Jay, Justin, Neel, Shishir, Tanya, Tejas, Zack\033[0m")
+    print("\033[5;31;47mconfirmed to continue? [Y/N]\033[0m", end = ': ')
+
+if not show_program_info or input()[0].lower() == 'y':
+    os.system("python scripts\\apply.py")
+    os.system("python scripts\\compile.py")
+    os.system("python scripts\\upload.py")
