@@ -86,7 +86,7 @@ try:
     open("bin\\config.bin", 'wb').write( bytes(json.dumps(data), "ascii") )
 
     sys.stdout = stdout
-    print("HYDRA Apply: success")
+    print("HYDRA Apply: changes applied \033[0;32m[DONE]\033[0m")
 
 except FileNotFoundError as error:
     print("\033[0;31m[HYDRA Apply error]\033[0m: config \"" + target + "\" not found")

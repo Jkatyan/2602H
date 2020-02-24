@@ -8,12 +8,13 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "__SIZE_TYPE__=unsigned int"
             ],
             "compilerPath": "D:\\MinGW\\bin\\gcc.exe",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "intelliSenseMode": "clang-x86",
+            "intelliSenseMode": "gcc-x64",
             "compileCommands": "${workspaceFolder}/compile_commands.json"
         }
     ],
