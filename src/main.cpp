@@ -359,9 +359,17 @@ void opcontrol() {
     if(controller.get_digital(DIGITAL_X)){
       setDriveBrakes(MOTOR_BRAKE_HOLD);
       while(pot.get_value() <= ((TILTER_MAX+TILTER_MIN)/2)) { TILTER.move(TILTER_SPEED) pros::delay(10); }
-      //motorTarget(TILTERPORT, tilterPID, 1, 2808, 3500, 0.6, 0.02, false);
+      RIGHTINTAKE.move(INTAKE_IN);
+      LEFTINTAKE.move(INTAKE_IN);
+      motorTarget(TILTERPORT, tilterPID, 1, TILTER_MAX, 3500, 0.6, 0.02, true);
+      RIGHTINTAKE.move(0);
+      LEFTINTAKE.move(0);
       setDriveBrakes(MOTOR_BRAKE_COAST);
     }
+    if(controller.get_digital(DIGITAL_Y)){
+      motorTarget(TILTERPORT, tilterPID, 1, TILTER_MIN, 2000, 1, 0.02, false);
+    }
+
     pros::delay(20);
   }
 }
