@@ -8,7 +8,7 @@
 
 # PROS
 bin/
-.vscode/
+# .vscode/
 compile_commands.json
 temp.log
 temp.errors
