@@ -13,12 +13,13 @@ void opcontrol_initialize(){
 void opcontrol() {
 	using namespace okapi::literals;
 
-	okapi::MotorGroup MG({(const okapi::Motor&)LD_F, (const okapi::Motor&)LD_R});
+	okapi::MotorGroup LD({(const okapi::Motor&)LD_F, (const okapi::Motor&)LD_R});
+	okapi::MotorGroup RD({(const okapi::Motor&)RD_F, (const okapi::Motor&)RD_R});
 
-	/*std::shared_ptr<okapi::ChassisController> myChassis = okapi::ChassisControllerBuilder()//:
-		.withMotors({-1, -2}, {3, 4})
+	std::shared_ptr<okapi::ChassisController> myChassis = okapi::ChassisControllerBuilder()//:
+		.withMotors(LD, RD)
 		.withDimensions( okapi::AbstractMotor::gearset::green, {{4_in, 11.5_in}, okapi::imev5GreenTPR} )
-		.build();*/
+		.build();
 
 	while(1){
 		/*pass*/;
