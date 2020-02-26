@@ -1,38 +1,29 @@
 #ifndef _COMPONENTS_HPP
 #define _COMPONENTS_HPP
 
-#include "api.h"
+#include "okapi/api.hpp"
 
 
-class Chassis
-{
-    public:
-        Chassis();
-        bool is_at_target();
-        void move_relative(int, int);
-        void set_brake_mode(pros::motor_brake_mode_e_t);
-        void set_pos_pid(double, double, double);
-        void set_vel_pid(double, double, double);
-        void turn_relative(int, int);
-};
+namespace Shishir{
+    namespace Hot{
+        extern okapi::Controller CONTROLLER_A;
+        extern okapi::Controller CONTROLLER_B;
 
 
-extern pros::Motor LD_F;
-extern pros::Motor RD_F;
-extern pros::Motor LD_R;
-extern pros::Motor RD_R;
+        extern std::shared_ptr<okapi::ChassisModel> CHASSIS;
 
-extern Chassis CHASSIS;
+        extern okapi::Motor LIFT;
+        extern okapi::Motor TILTER;
 
-extern pros::Motor LIFT;
-extern pros::Motor TILTER;
-extern pros::Motor INTAKE_L;
-extern pros::Motor INTAKE_R;
-
-extern pros::Motor TEST_MOTOR;
+        extern okapi::MotorGroup INTAKE;
 
 
-extern pros::Controller controller0;
-extern pros::Controller controller1;
+        extern std::shared_ptr<okapi::AsyncMotionProfileController> MOTION_PROFILER;
+
+
+        extern okapi::Rate TIMER;
+    }
+}
+
 
 #endif

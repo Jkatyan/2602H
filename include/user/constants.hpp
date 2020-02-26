@@ -36,5 +36,10 @@ extern int PORT_TEST_MOTOR;
 
 extern int PORT_IMU;
 
+extern double CHASSIS_WHEEL_TRACK;
+extern double CHASSIS_WHEEL_DIAMETER;
+extern double CHASSIS_GEAR_RASIO;
+
+
 
 #endif

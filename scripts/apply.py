@@ -78,7 +78,8 @@ try:
     print_auton( data["autonomous"] )
     print()
 
-    print_keyBindings( data["key_bindings"] )
+    #print_keyBindings( data["key_bindings"] )
+    #fix later
 
     if not os.path.exists("bin"):
         os.makedirs("bin")

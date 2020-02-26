@@ -3,14 +3,14 @@
 
 struct Autonomous_Section* AUTONOMOUS_SEQUENCE;
 
-
+/*
 void autonomous_proceed(struct Autonomous_Section* sequence){
   for(int i = 0; i < 64; i++){
     if( autonomous_motion(sequence + i) ){
       return;
     }
   }
-}
+}*/
 
 
 void autonomous_initialize(){
@@ -20,5 +20,5 @@ void autonomous_initialize(){
 
 
 void autonomous(){
-  autonomous_proceed( AUTONOMOUS_SEQUENCE );
+  //autonomous_proceed( AUTONOMOUS_SEQUENCE );
 }

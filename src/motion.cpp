@@ -1,6 +1,6 @@
 #include "main.h"
 
-
+/*
 void zero_buffer(void* buffer){
   int* p = (int*)buffer;
   for(int i = 0; i < 4; i++){
@@ -169,4 +169,23 @@ void motion_initialize(){
   INTAKE_R.set_brake_mode( E_MOTOR_BRAKE_HOLD );
 
   pid_set_all();
+}
+*/
+
+namespace Shishir{
+  namespace Hot{
+    void chassis_drive_arcade(double x, double a, bool usePowerCurve, bool useVelocityPID){
+      if(usePowerCurve){
+        x *= abs(x);
+        a *= abs(a);
+      }
+      if(useVelocityPID){
+        CHASSIS->left(x+a);
+        CHASSIS->right(x-a);
+      }
+      else{
+        CHASSIS->arcade(x, a);
+      }
+    }
+  }
 }

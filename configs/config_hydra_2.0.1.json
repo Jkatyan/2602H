@@ -34,21 +34,12 @@
   ],
   "constants": {
     "HYDRA_VERSION_STRING": "2.0.1",
-    "autonmove_settings": {
-      "LIFT_MAX_ERROR": 10,
-      "TILTER_MAX_ERROR": 10,
-      "INTAKE_MAX_ERROR": 10,
-      "CHASSIS_MAX_ERROR": 10,
-      "CHASSIS_AUTONMOVE_HOLDTIME": 500,
-      "AUTONMOVE_WAIT_CHECKFREQ": 300
+    "Chassis dimensions": {
+      "CHASSIS_WHEEL_DIAMETER": 0.08255,
+      "CHASSIS_WHEEL_TRACK": 0.24,
+      "CHASSIS_GEAR_RASIO": 1.667
     },
-    "pid": {
-      "VEL_P_CHASSIS": 5.0,
-      "VEL_I_CHASSIS": 0.001,
-      "VEL_D_CHASSIS": 0.001,
-      "POS_P_CHASSIS": 1.0,
-      "POS_I_CHASSIS": 0.001,
-      "POS_D_CHASSIS": 0.1
+    "PID": {
     },
     "ports": {
       "PORT_LD_F": 11,

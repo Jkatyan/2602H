@@ -7,6 +7,9 @@ int INTAKE_MAX_ERROR = 10;
 int CHASSIS_MAX_ERROR = 10;
 int CHASSIS_AUTONMOVE_HOLDTIME = 500;
 int AUTONMOVE_WAIT_CHECKFREQ = 300;
+double CHASSIS_WHEEL_DIAMETER = 0.08255;
+double CHASSIS_WHEEL_TRACK = 0.24;
+double CHASSIS_GEAR_RASIO = 1.667;
 double VEL_P_CHASSIS = 5.0;
 double VEL_I_CHASSIS = 0.001;
 double VEL_D_CHASSIS = 0.001;
@@ -33,10 +36,3 @@ void load_autonomous(){
 	AUTONOMOUS_SEQUENCE[5] = Autonomous_Section{end};
 }
 
-void load_keyBindings(){
-	KEY_MAP[0] = Key_Binding{arcade_drive, E_HYDRA_ANALOG_LEFT_Y, E_HYDRA_ANALOG_RIGHT_X};
-	KEY_MAP[1] = Key_Binding{lift, E_HYDRA_DIGITAL_L1, E_HYDRA_DIGITAL_L2};
-	KEY_MAP[2] = Key_Binding{tilter, E_HYDRA_DIGITAL_UP, E_HYDRA_DIGITAL_DOWN};
-	KEY_MAP[3] = Key_Binding{intake, E_HYDRA_DIGITAL_R1, E_HYDRA_DIGITAL_R2};
-	KEY_MAP[4] = Key_Binding{end};
-}

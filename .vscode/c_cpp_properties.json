@@ -8,8 +8,7 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE",
-                "__SIZE_TYPE__=unsigned int"
+                "_UNICODE"
             ],
             "compilerPath": "D:\\MinGW\\bin\\gcc.exe",
             "cStandard": "c11",

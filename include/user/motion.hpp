@@ -9,6 +9,7 @@ enum movement_e_t{
 };
 
 
+/*
 bool motor_at_target(pros::Motor, int);
 
 bool autonomous_motion(struct Autonomous_Section*);
@@ -16,6 +17,13 @@ bool autonomous_motion(struct Autonomous_Section*);
 void opcontrol_motion();
 
 void motion_initialize();
+*/
 
+
+namespace Shishir{
+  namespace Hot{
+    void chassis_drive_arcade(double, double, bool = false, bool = false);
+  }
+}
 
 #endif

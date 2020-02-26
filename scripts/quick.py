@@ -2,7 +2,7 @@ import os
 import sys
 
 
-show_program_info = True
+show_program_info = False
 
 
 if show_program_info:
