@@ -181,13 +181,15 @@ void apply_powerCurve(double* x, double c = 2){
   }
 }
 
+
 namespace Hybot{
   namespace API{
     void chassis_drive_arcade(double x, double r){
       Components::CHASSIS->arcade(x, r);
     }
     void chassis_drive_arcade_powerCurve(double x, double r){
-
+      apply_powerCurve(&x, CHASSIS_POWERCURVE_CURVATURE);
+      apply_powerCurve(&r, CHASSIS_POWERCURVE_CURVATURE);
       Components::CHASSIS->arcade(x, r);
     }
   }

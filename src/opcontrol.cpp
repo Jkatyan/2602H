@@ -27,15 +27,15 @@ void opcontrol() {
 
 	
 
-	Shishir::Hot::CHASSIS->setBrakeMode(okapi::AbstractMotor::brakeMode::hold);
+	Hybot::Components::CHASSIS->setBrakeMode(okapi::AbstractMotor::brakeMode::hold);
 
 	while(1){
 
-		Shishir::Hot::chassis_drive_arcade(
-			Shishir::Hot::CONTROLLER_A.getAnalog(okapi::ControllerAnalog::leftY),
-			Shishir::Hot::CONTROLLER_A.getAnalog(okapi::ControllerAnalog::rightX),
-		true);
+		Hybot::API::chassis_drive_arcade_powerCurve(
+			Hybot::Components::CONTROLLER_A.getAnalog(okapi::ControllerAnalog::leftY),
+			Hybot::Components::CONTROLLER_A.getAnalog(okapi::ControllerAnalog::rightX)
+		);
 
-		Shishir::Hot::TIMER.delay( okapi::QFrequency(30.0) );
+		Hybot::Components::TIMER.delay( okapi::QFrequency(30.0) );
 	}
 }

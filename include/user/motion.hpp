@@ -22,7 +22,8 @@ void motion_initialize();
 
 namespace Hybot{
   namespace API{
-    void chassis_drive_arcade(double, double, bool = false, bool = false);
+    void chassis_drive_arcade(double, double);
+    void chassis_drive_arcade_powerCurve(double, double);
   }
 }
 
