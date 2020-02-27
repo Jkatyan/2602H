@@ -75,8 +75,9 @@ try:
     print_constants( data["constants"] )
     print()
 
-    print_auton( data["autonomous"] )
-    print()
+    #print_auton( data["autonomous"] )
+    #print()
+    #fix later
 
     #print_keyBindings( data["key_bindings"] )
     #fix later

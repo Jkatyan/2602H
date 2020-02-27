@@ -1,8 +1,8 @@
 #include "main.h"
 
 
-namespace Shishir{
-    namespace Hot{
+namespace Hybot{
+    namespace Components{
         /*Controller*/
         okapi::Controller CONTROLLER_A( okapi::ControllerId::master );
         okapi::Controller CONTROLLER_B( okapi::ControllerId::partner );
@@ -32,7 +32,7 @@ namespace Shishir{
         /*Motion Profiler*/
         std::shared_ptr<okapi::AsyncMotionProfileController> MOTION_PROFILER =
             okapi::AsyncMotionProfileControllerBuilder()
-            .withLimits({0.5, 0.2, 10.0})
+            .withLimits({CHASSIS_MAX_VELOCITY, CHASSIS_MAX_ACCELERATION, CHASSIS_MAX_JERK})
             .withOutput(Chassis_Controller_Pointer)
             .buildMotionProfileController();
 

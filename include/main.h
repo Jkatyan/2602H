@@ -43,12 +43,13 @@
 #include "user/display.hpp"
 #include "user/motion.hpp"
 #include "user/opcontrol.hpp"
+#include "user/tetris.hpp"
 
 /**
  * You should add more #includes here
  */
 #include "okapi/api.hpp"
-#include "pros/api_legacy.h"
+//#include "pros/api_legacy.h"
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

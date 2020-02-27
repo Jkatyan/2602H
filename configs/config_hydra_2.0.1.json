@@ -2,42 +2,28 @@
   "version": "2.0.1",
   "autonomous": [
     {
-      "type": "move",
-      "length": 1080,
-      "speed": 100,
-      "timeOut": 5000
+      "name": "MOVE_A",
+      "vertical": 0.3,
+      "horizontal": 0.0,
+      "rotational": 0.0
     },
     {
-      "type": "move",
-      "length": -1080,
-      "speed": 100,
-      "timeOut": 5000
-    },
-    {
-      "type": "move",
-      "length": 1080,
-      "speed": 100,
-      "timeOut": 5000
-    },
-    {
-      "type": "move",
-      "length": -1080,
-      "speed": 100,
-      "timeOut": 5000
-    },
-    {
-      "type": "end",
-      "length": 0,
-      "speed": 0,
-      "timeOut": 0
+      "name": "MOVE_B",
+      "vertical": 0.3,
+      "horizontal": 0.3,
+      "rotational": 45.0
     }
   ],
   "constants": {
     "HYDRA_VERSION_STRING": "2.0.1",
-    "Chassis dimensions": {
+    "Chassis attributes": {
+      "CHASSIS_MAX_VELOCITY": 0.5,
+      "CHASSIS_MAX_ACCELERATION": 0.25,
+      "CHASSIS_MAX_JERK": 10.0,
       "CHASSIS_WHEEL_DIAMETER": 0.08255,
       "CHASSIS_WHEEL_TRACK": 0.24,
-      "CHASSIS_GEAR_RASIO": 1.667
+      "CHASSIS_GEAR_RASIO": 1.667,
+      "CHASSIS_POWERCURVE_CURVATURE": 2
     },
     "PID": {
     },

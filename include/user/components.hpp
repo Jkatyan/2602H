@@ -4,8 +4,8 @@
 #include "okapi/api.hpp"
 
 
-namespace Shishir{
-    namespace Hot{
+namespace Hybot{
+    namespace Components{
         extern okapi::Controller CONTROLLER_A;
         extern okapi::Controller CONTROLLER_B;
 

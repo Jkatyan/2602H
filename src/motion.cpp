@@ -172,20 +172,23 @@ void motion_initialize(){
 }
 */
 
-namespace Shishir{
-  namespace Hot{
-    void chassis_drive_arcade(double x, double a, bool usePowerCurve, bool useVelocityPID){
-      if(usePowerCurve){
-        x *= abs(x);
-        a *= abs(a);
-      }
-      if(useVelocityPID){
-        CHASSIS->left(x+a);
-        CHASSIS->right(x-a);
-      }
-      else{
-        CHASSIS->arcade(x, a);
-      }
+void apply_powerCurve(double* x, double c = 2){
+  if(x >= 0){
+    *x = pow(*x, c);
+  }
+  else{
+    *x = (-1) * pow( abs(*x),c );
+  }
+}
+
+namespace Hybot{
+  namespace API{
+    void chassis_drive_arcade(double x, double r){
+      Components::CHASSIS->arcade(x, r);
+    }
+    void chassis_drive_arcade_powerCurve(double x, double r){
+
+      Components::CHASSIS->arcade(x, r);
     }
   }
 }

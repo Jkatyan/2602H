@@ -5,23 +5,6 @@
 extern char HYDRA_VERSION_STRING[];
 
 
-extern double VEL_P_CHASSIS;
-extern double VEL_I_CHASSIS;
-extern double VEL_D_CHASSIS;
-extern double POS_P_CHASSIS;
-extern double POS_I_CHASSIS;
-extern double POS_D_CHASSIS;
-
-
-extern int LIFT_MAX_ERROR;
-extern int TILTER_MAX_ERROR;
-extern int INTAKE_MAX_ERROR;
-
-extern int CHASSIS_MAX_ERROR;
-extern int CHASSIS_AUTONMOVE_HOLDTIME;
-extern int AUTONMOVE_WAIT_CHECKFREQ;
-
-
 extern int PORT_LD_F;
 extern int PORT_RD_F;
 extern int PORT_LD_R;
@@ -36,10 +19,16 @@ extern int PORT_TEST_MOTOR;
 
 extern int PORT_IMU;
 
+
+extern double CHASSIS_MAX_VELOCITY;
+extern double CHASSIS_MAX_ACCELERATION;
+extern double CHASSIS_MAX_JERK;
+
 extern double CHASSIS_WHEEL_TRACK;
 extern double CHASSIS_WHEEL_DIAMETER;
 extern double CHASSIS_GEAR_RASIO;
 
+extern double CHASSIS_POWERCURVE_CURVATURE;
 
 
 #endif
