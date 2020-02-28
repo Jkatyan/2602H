@@ -17,20 +17,20 @@
   "constants": {
     "HYDRA_VERSION_STRING": "2.0.1",
     "Chassis attributes": {
-      "CHASSIS_MAX_VELOCITY": 0.5,
-      "CHASSIS_MAX_ACCELERATION": 0.25,
+      "CHASSIS_MAX_VELOCITY": 0.1,
+      "CHASSIS_MAX_ACCELERATION": 1.0,
       "CHASSIS_MAX_JERK": 10.0,
-      "CHASSIS_WHEEL_DIAMETER": 0.08255,
-      "CHASSIS_WHEEL_TRACK": 0.24,
-      "CHASSIS_GEAR_RASIO": 1.667,
+      "CHASSIS_WHEEL_DIAMETER": 0.1043,
+      "CHASSIS_WHEEL_TRACK": 0.235,
+      "CHASSIS_GEAR_RASIO": 1.0,
       "CHASSIS_POWERCURVE_CURVATURE": 2.0
     },
     "PID": {},
     "ports": {
-      "PORT_LD_F": 11,
+      "PORT_LD_F": 15,
       "PORT_RD_F": 19,
       "PORT_LD_R": 12,
-      "PORT_RD_R": 20,
+      "PORT_RD_R": 18,
       "PORT_LIFT": 3,
       "PORT_TILTER": 9,
       "PORT_INTAKE_L": 1,

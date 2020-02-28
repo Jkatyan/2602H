@@ -9,8 +9,8 @@ namespace Hybot{
 
 
         /*Motors*/
-        okapi::MotorGroup LD( {okapi::Motor(PORT_LD_F, false, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees), okapi::Motor(PORT_LD_R, true, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees)} );
-        okapi::MotorGroup RD( {okapi::Motor(PORT_RD_F, true, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees), okapi::Motor(PORT_RD_R, false, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees)} );
+        okapi::MotorGroup LD( {okapi::Motor(PORT_LD_F, false, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees), okapi::Motor(PORT_LD_R, false, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees)} );
+        okapi::MotorGroup RD( {okapi::Motor(PORT_RD_F, true, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees), okapi::Motor(PORT_RD_R, true, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees)} );
 
         okapi::Motor LIFT(PORT_LIFT, false, okapi::AbstractMotor::gearset::red, okapi::AbstractMotor::encoderUnits::degrees);
         okapi::Motor TILTER(PORT_TILTER, false, okapi::AbstractMotor::gearset::red, okapi::AbstractMotor::encoderUnits::degrees);
@@ -19,11 +19,11 @@ namespace Hybot{
 
 
         /*Chassis*/
-        okapi::ChassisScales HydraChassisScale({okapi::QLength(CHASSIS_WHEEL_DIAMETER), okapi::QLength(CHASSIS_WHEEL_TRACK)}, okapi::imev5GreenTPR * CHASSIS_GEAR_RASIO);
+        okapi::ChassisScales Hydra_Chassis_Scale({okapi::QLength(CHASSIS_WHEEL_DIAMETER), okapi::QLength(CHASSIS_WHEEL_TRACK)}, okapi::imev5GreenTPR * CHASSIS_GEAR_RASIO);
 
         std::shared_ptr<okapi::ChassisController> Chassis_Controller_Pointer = okapi::ChassisControllerBuilder()
             .withMotors(LD, RD)
-            .withDimensions(okapi::AbstractMotor::gearset::green, HydraChassisScale)
+            .withDimensions(okapi::AbstractMotor::gearset::green, Hydra_Chassis_Scale)
             .build();
 
         std::shared_ptr<okapi::ChassisModel> CHASSIS = (*Chassis_Controller_Pointer).getModel();

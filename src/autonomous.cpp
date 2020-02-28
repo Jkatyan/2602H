@@ -14,8 +14,8 @@ void autonomous_proceed(struct Autonomous_Section* sequence){
 
 
 void autonomous_initialize(){
-  AUTONOMOUS_SEQUENCE = (struct Autonomous_Section*)( lv_mem_alloc( 64 * sizeof(Autonomous_Section) ) );
-  load_autonomous();
+  //AUTONOMOUS_SEQUENCE = (struct Autonomous_Section*)( lv_mem_alloc( 64 * sizeof(Autonomous_Section) ) );
+  //load_autonomous();
 }
 
 

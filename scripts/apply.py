@@ -3,7 +3,7 @@ import os
 import sys
 
 
-target = "config_hydra_2.0.1"
+target = "config_test_chassis_2.0.1"
 
 
 print("Running HYDRA Apply: applying \"" + target + "\"")

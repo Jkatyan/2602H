@@ -173,11 +173,11 @@ void motion_initialize(){
 */
 
 void apply_powerCurve(double* x, double c = 2){
-  if(x >= 0){
+  if(*x >= 0){
     *x = pow(*x, c);
   }
   else{
-    *x = (-1) * pow( abs(*x),c );
+    *x = (-1.0) * pow( abs(*x),c );
   }
 }
 

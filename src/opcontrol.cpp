@@ -12,26 +12,45 @@ void opcontrol_initialize(){
 
 void opcontrol() {
 
-	using namespace okapi::literals;/*
+	using namespace okapi::literals;
+
+	Hybot::Components::CHASSIS->setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
+	
+	Hybot::Components::MOTION_PROFILER->generatePath({ 
+		{okapi::QLength(0.0), okapi::QLength(0.0), okapi::QAngle(0.0)}, 
+		{okapi::QLength(0.5), okapi::QLength(0.5), okapi::QAngle(90.0)}},
+	"A" );
+
+	Hybot::Components::MOTION_PROFILER->setTarget("A", false, false);
+
+	Hybot::Components::MOTION_PROFILER->waitUntilSettled();
+
+	Hybot::Components::TIMER.delayUntil(1000);
+
+	Hybot::Components::MOTION_PROFILER->setTarget("A", true, true);
+
+	Hybot::Components::MOTION_PROFILER->waitUntilSettled();
+
+	Hybot::Components::TIMER.delayUntil(1000);
 
 
-	MOTION_PROFILER->generatePath( {{0_ft, 0_ft, 0_deg}, {1.5_ft, 1.5_ft, 90_deg}}, "A" );
 
-	MOTION_PROFILER->setTarget("A");
+	/*Hybot::Components::CHASSIS->driveVector(0.2, 0.05);
+	Hybot::Components::TIMER.delayUntil(3000);
 
-	MOTION_PROFILER->waitUntilSettled();
+	Hybot::Components::CHASSIS->stop();
+	Hybot::Components::TIMER.delayUntil(250);
 
+	Hybot::Components::CHASSIS->driveVector(-0.2, -0.05);
+	Hybot::Components::TIMER.delayUntil(3000);
+
+	Hybot::Components::CHASSIS->stop();
 
 	while(1);*/
 
-
-	
-
-	Hybot::Components::CHASSIS->setBrakeMode(okapi::AbstractMotor::brakeMode::hold);
-
 	while(1){
 
-		Hybot::API::chassis_drive_arcade_powerCurve(
+		Hybot::API::chassis_drive_arcade(
 			Hybot::Components::CONTROLLER_A.getAnalog(okapi::ControllerAnalog::leftY),
 			Hybot::Components::CONTROLLER_A.getAnalog(okapi::ControllerAnalog::rightX)
 		);
