@@ -208,7 +208,7 @@ void driveTarget(int target, int time, float speed){
     RD2.move(RC*rightVal);
     LD.move(LC*leftVal);
     LD2.move(LC*leftVal);
-    if(driveEnc == target){
+    if(driveEnc == target && ((pros::millis()-startTime) == time)){
        atTarget = 1;
       }
       pros::delay(20);
@@ -298,20 +298,23 @@ void autonomous(){
 
   //Flipout
   //Intake max speed in
+
+
+  TILTER.move(127); pros::delay(1000); TILTER.move(0);
+  TILTER.move(-80);
+  driveTarget(500,1000, 1);
+  TILTER.move(0);
+
   RIGHTINTAKE.move(INTAKE_IN);
   LEFTINTAKE.move(INTAKE_IN);
-
-  driveTarget(600,2000, 1);
-  driveTarget(100,600, 1);
   resetDrive();
   driveTarget(1200,4000, 1);
 
   profileController->generatePath(
-    {{0_ft, 0_ft, 0_deg}, {2_ft, 1.5_ft, 0_deg}}, "A");
+    {{0_ft, 0_ft, 0_deg}, {1.1_ft, 1.3_ft, 0_deg}}, "A");
   profileController->setTarget("A", true, true); //setTarget("A", true, true); to follow path backwards.
               profileController->waitUntilSettled();
               profileController->removePath("A"); //remove path once motion is complete.
-  rotate(0,500,1);
   resetDrive();
   driveTarget(-800,1500, 1);
   RIGHTINTAKE.move(INTAKE_IN);
@@ -320,14 +323,14 @@ resetDrive();
   driveTarget(2800,4000, 0.6);
   driveTarget(1400,3500, 1);
   //Turn to face zone
-  RIGHTINTAKE.move(INTAKE_OUT*0.12);
-  LEFTINTAKE.move(INTAKE_OUT*0.12);
-  rotate(120,2000,1);
-  //rotate(-137,60, 1.0);
+  RIGHTINTAKE.move(INTAKE_OUT*0.18);
+  LEFTINTAKE.move(INTAKE_OUT*0.18);
+  //rotate(-200,2000,1);
+  rotate(-137,60, 1.0);
   resetDrive();
   RIGHTINTAKE.move(0);
   LEFTINTAKE.move(0);
-  driveTarget(950,1000, 1);
+  driveTarget(1200,1000, 1);
   //Drive forward
   //Deposit
   myChassis->setMaxVelocity(30);
@@ -362,7 +365,6 @@ resetDrive();
 
 }
 void opcontrol() {
-  int x = 0;
   int rTarget, lTarget;
 
   drivePID = pidInit (DRIVEP, DRIVEI, DRIVED, 0, 100.0,5,15);
@@ -381,6 +383,7 @@ void opcontrol() {
     //LCD
     pros::lcd::print(2, "IMU 1 Yaw: %f", imu.get_yaw());
     pros::lcd::print(3, "IMU 2 Yaw: %f", imuB.get_yaw());
+    pros::lcd::print(4, "RM TORQUE: %f", RIGHTINTAKE.get_torque());
 
     //Chassis
     /*Tank Drive Code*/ myChassis->getModel()->tank(master.getAnalog(ControllerAnalog::leftY), master.getAnalog(ControllerAnalog::rightY));
@@ -389,17 +392,17 @@ void opcontrol() {
     /*Lift Up / Down*/ (controller.get_digital(DIGITAL_L1)) ? LIFT.move(LIFT_UP) : (controller.get_digital(DIGITAL_L2)) ? LIFT.move(LIFT_DOWN) : LIFT.move(0);
 
     //INTAKES
+    /*Intake In / Out*/
+    int x = 0;
     if(controller.get_digital(DIGITAL_A)){
       x++;
-      pros::delay(100);
+      pros::delay(150);
       if (x >= 2) { x = 0; controller.set_text(0, 0, "PROS HOLD"); }
       if (x == 1){
-        rTarget = RIGHTINTAKE.get_position(); lTarget = LEFTINTAKE.get_position();
         controller.set_text(0, 0, "IDLE POWER");
       }
 
     }
-    /*Intake In / Out*/
     if(controller.get_digital(DIGITAL_R1)){
       RIGHTINTAKE.move(INTAKE_IN);
       LEFTINTAKE.move(INTAKE_IN);
@@ -412,10 +415,6 @@ void opcontrol() {
       RIGHTINTAKE.move(0) && LEFTINTAKE.move(0);
     }
     else if (x == 1){
-      /*
-      RIGHTINTAKE.move(pidCalculate(intakePID, rTarget, RIGHTINTAKE.get_position()));
-      LEFTINTAKE.move(pidCalculate(intakePID, lTarget, LEFTINTAKE.get_position()));
-      */
       RIGHTINTAKE.move(75) && LEFTINTAKE.move(75);
     }
 
@@ -423,36 +422,33 @@ void opcontrol() {
     /*Tilter Up / Down*/ (controller.get_digital(DIGITAL_UP)) ? TILTER.move(TILTER_SPEED) : (controller.get_digital(DIGITAL_DOWN)) ? TILTER.move(-TILTER_SPEED) : TILTER.move(0);
 
     if(controller.get_digital(DIGITAL_Y)){
-      myChassis->setMaxVelocity(40);
+      myChassis->setMaxVelocity(200);
       myChassis->moveDistanceAsync(-0.5_ft);
       TILTER.move_relative(-4300, 200);
-      RIGHTINTAKE.move(-100);
-      LEFTINTAKE.move(-100);
+      RIGHTINTAKE.move(-127);
+      LEFTINTAKE.move(-127);
       pros::Task::delay(1950);
       RIGHTINTAKE.move(0);
       LEFTINTAKE.move(0);
       RIGHTINTAKE.set_brake_mode(MOTOR_BRAKE_HOLD);
       LEFTINTAKE.set_brake_mode(MOTOR_BRAKE_HOLD);
       setDriveBrakes(MOTOR_BRAKE_COAST);
-      myChassis->setMaxVelocity(200);
     } /*Tilter Back Up Macro*/
     if(controller.get_digital(DIGITAL_X)){
-        x = 0;
         /*while(line.get_value() >= 2600){
           RIGHTINTAKE.move(-30);
           LEFTINTAKE.move(-30);
         }*/
-        myChassis->setMaxVelocity(20);
+        myChassis->setMaxVelocity(30);
         LIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
         setDriveBrakes(MOTOR_BRAKE_HOLD);
         myChassis->moveDistanceAsync(0.14_ft);
-        while(pot.get_value() <= 2000) { TILTER.move(127); pros::delay(10); pros::lcd::print(4, "potV:%d", pot.get_value()); }
+        while(pot.get_value() <= 1950) { TILTER.move(127); pros::delay(10); pros::lcd::print(4, "potV:%d", pot.get_value()); }
         RIGHTINTAKE.set_brake_mode(MOTOR_BRAKE_COAST);
         LEFTINTAKE.set_brake_mode(MOTOR_BRAKE_COAST);
         RIGHTINTAKE.move(127);
         LEFTINTAKE.move(127);
         LIFT.move(20);
-        
         //motorTarget(TILTERPORT, tilterPID, 0, TILTER_MAX, 1000, 0.6, 0.02, false);
         TILTER.move_relative(2920, 70);
         pros::Task::delay(2570);
