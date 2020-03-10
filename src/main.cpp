@@ -452,6 +452,7 @@ void opcontrol() {
         RIGHTINTAKE.move(127);
         LEFTINTAKE.move(127);
         LIFT.move(20);
+        
         //motorTarget(TILTERPORT, tilterPID, 0, TILTER_MAX, 1000, 0.6, 0.02, false);
         TILTER.move_relative(2920, 70);
         pros::Task::delay(2570);
