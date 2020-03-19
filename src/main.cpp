@@ -48,8 +48,8 @@
 #define LIFT_DOWN 100
 
 #define TILTER_SPEED 127
-#define TILTER_MIN 1200 //Tilter Pot Min Position
-#define TILTER_MAX 2000 //Tilter Pot Max Position
+#define TILTER_MIN 1148 //Tilter Pot Min Position
+#define TILTER_MAX 3400 //Tilter Pot Max Position
 
 //INITIALIZE
 PID drivePID;
@@ -384,7 +384,7 @@ void opcontrol() {
     pros::lcd::print(2, "IMU 1 Yaw: %f", imu.get_yaw());
     pros::lcd::print(3, "IMU 2 Yaw: %f", imuB.get_yaw());
     pros::lcd::print(4, "RM TORQUE: %f", RIGHTINTAKE.get_torque());
-
+     pros::lcd::print(5, "potV:%d", pot.get_value());
     //Chassis
     /*Tank Drive Code*/ myChassis->getModel()->tank(master.getAnalog(ControllerAnalog::leftY), master.getAnalog(ControllerAnalog::rightY));
 
@@ -422,7 +422,7 @@ void opcontrol() {
     /*Tilter Up / Down*/ (controller.get_digital(DIGITAL_UP)) ? TILTER.move(TILTER_SPEED) : (controller.get_digital(DIGITAL_DOWN)) ? TILTER.move(-TILTER_SPEED) : TILTER.move(0);
 
     if(controller.get_digital(DIGITAL_Y)){
-      myChassis->setMaxVelocity(200);
+      myChassis->setMaxVelocity(60);
       myChassis->moveDistanceAsync(-0.5_ft);
       TILTER.move_relative(-4300, 200);
       RIGHTINTAKE.move(-127);
@@ -449,9 +449,30 @@ void opcontrol() {
         RIGHTINTAKE.move(127);
         LEFTINTAKE.move(127);
         LIFT.move(20);
-        //motorTarget(TILTERPORT, tilterPID, 0, TILTER_MAX, 1000, 0.6, 0.02, false);
-        TILTER.move_relative(2920, 70);
-        pros::Task::delay(2570);
+        //motorTarget(TILTERPORT, tilterPID, 1, 2000, 1000, 0.6, 0.02, true);
+        while(pot.get_value() < 2500){
+        TILTER.move(127);
+        pros::Task::delay(10);
+        }
+        while(pot.get_value() < 2800){
+        TILTER.move(80);
+        pros::Task::delay(10);
+        }
+        while(pot.get_value() < 3100){
+        TILTER.move(60);
+        pros::Task::delay(10);
+        }
+        while(pot.get_value() < 3200){
+        TILTER.move(40);
+        pros::Task::delay(10);
+        }
+        RIGHTINTAKE.move(-60);
+        LEFTINTAKE.move(-60);
+        while(pot.get_value() < 3350){
+        TILTER.move(25);
+        pros::Task::delay(10);
+        }
+        TILTER.move(0);
         RIGHTINTAKE.move(0);
         LEFTINTAKE.move(0);
         myChassis->setMaxVelocity(200);
