@@ -434,11 +434,8 @@ void opcontrol() {
       LEFTINTAKE.set_brake_mode(MOTOR_BRAKE_HOLD);
       setDriveBrakes(MOTOR_BRAKE_COAST);
     } /*Tilter Back Up Macro*/
-    if(controller.get_digital(DIGITAL_X)){
-        /*while(line.get_value() >= 2600){
-          RIGHTINTAKE.move(-30);
-          LEFTINTAKE.move(-30);
-        }*/
+    if(controller.get_digital(DIGITAL_B)){
+
         myChassis->setMaxVelocity(30);
         LIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
         setDriveBrakes(MOTOR_BRAKE_HOLD);
@@ -455,20 +452,74 @@ void opcontrol() {
         pros::Task::delay(10);
         }
         while(pot.get_value() < 2800){
-        TILTER.move(80);
+        TILTER.move(55);
         pros::Task::delay(10);
         }
         while(pot.get_value() < 3100){
-        TILTER.move(60);
-        pros::Task::delay(10);
-        }
-        while(pot.get_value() < 3200){
-        TILTER.move(40);
+        TILTER.move(30);
         pros::Task::delay(10);
         }
         RIGHTINTAKE.move(-60);
         LEFTINTAKE.move(-60);
-        while(pot.get_value() < 3350){
+        while(pot.get_value() < 3275){
+        TILTER.move(25);
+        pros::Task::delay(10);
+        }
+        TILTER.move(0);
+        RIGHTINTAKE.move(0);
+        LEFTINTAKE.move(0);
+        myChassis->setMaxVelocity(200);
+    } /*Tilter Deposit Macro*/
+    if(controller.get_digital(DIGITAL_X)){
+
+    if(line.get_value() >= 2700 /*NO Cube*/){
+      while(line.get_value() >= 2700 && !(controller.get_digital(DIGITAL_B))){
+          RIGHTINTAKE.move(INTAKE_OUT*0.5);
+          LEFTINTAKE.move(INTAKE_OUT*0.5);
+        }
+        RIGHTINTAKE.move(INTAKE_IN);
+        LEFTINTAKE.move(INTAKE_IN);
+        pros::delay(750);
+        RIGHTINTAKE.move(0);
+        LEFTINTAKE.move(0);
+    }
+    else{
+      while(line.get_value() <= 2700 && !(controller.get_digital(DIGITAL_B))){
+          RIGHTINTAKE.move(INTAKE_IN*0.65);
+          LEFTINTAKE.move(INTAKE_IN*0.65);
+        }
+        RIGHTINTAKE.move(INTAKE_OUT*0.15);
+        LEFTINTAKE.move(INTAKE_OUT*0.15);
+        pros::delay(300);
+        RIGHTINTAKE.move(0);
+        LEFTINTAKE.move(0);
+    }
+        myChassis->setMaxVelocity(30);
+        LIFT.set_brake_mode(MOTOR_BRAKE_HOLD);
+        setDriveBrakes(MOTOR_BRAKE_HOLD);
+        myChassis->moveDistanceAsync(0.14_ft);
+        while(pot.get_value() <= 1950) { TILTER.move(127); pros::delay(10); pros::lcd::print(4, "potV:%d", pot.get_value()); }
+        RIGHTINTAKE.set_brake_mode(MOTOR_BRAKE_COAST);
+        LEFTINTAKE.set_brake_mode(MOTOR_BRAKE_COAST);
+        RIGHTINTAKE.move(127);
+        LEFTINTAKE.move(127);
+        LIFT.move(20);
+        //motorTarget(TILTERPORT, tilterPID, 1, 2000, 1000, 0.6, 0.02, true);
+        while(pot.get_value() < 2500){
+        TILTER.move(127);
+        pros::Task::delay(10);
+        }
+        while(pot.get_value() < 2850){
+        TILTER.move(55);
+        pros::Task::delay(10);
+        }
+        while(pot.get_value() < 3100){
+        TILTER.move(30);
+        pros::Task::delay(10);
+        }
+        RIGHTINTAKE.move(-60);
+        LEFTINTAKE.move(-60);
+        while(pot.get_value() < 3275){
         TILTER.move(25);
         pros::Task::delay(10);
         }
